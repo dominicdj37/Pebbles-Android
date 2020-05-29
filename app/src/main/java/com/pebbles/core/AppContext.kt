@@ -2,6 +2,7 @@ package com.pebbles.core
 
 import android.app.Application
 import android.util.Log
+import com.pebbles.core.Constants.APP_TAG
 
 class AppContext: Application() {
 
@@ -10,8 +11,8 @@ class AppContext: Application() {
     }
 
     override fun onCreate() {
+        Log.d(APP_TAG,"Application started")
         super.onCreate()
-        Log.d("App","onCreate")
         //application wide
     }
 
