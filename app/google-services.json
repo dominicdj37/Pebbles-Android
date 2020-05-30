@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "941536264673",
+    "firebase_url": "https://nodemcutest-eba2f.firebaseio.com",
+    "project_id": "nodemcutest-eba2f",
+    "storage_bucket": "nodemcutest-eba2f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:941536264673:android:cc665146e592b6be3512a0",
+        "android_client_info": {
+          "package_name": "com.pebbles"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "941536264673-k63v6qjvq4irh59b36kmam03d7i14l6m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pebbles",
+            "certificate_hash": "d06d471858b402fe3ae2d1ab64dad36827e8f188"
+          }
+        },
+        {
+          "client_id": "941536264673-2f31a9521bdk1u5r7n2en04otmntdoas.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBG-EPK0yUwCkdFq1oMbIOiTz3_mxk5gf4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "941536264673-2f31a9521bdk1u5r7n2en04otmntdoas.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
