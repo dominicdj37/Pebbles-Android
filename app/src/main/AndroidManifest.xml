@@ -5,16 +5,22 @@
     <application
         android:name=".core.AppContext"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_app_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.activities.HomeActivity"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme.homeTheme">
+        </activity>
         <activity
             android:name=".ui.activities.SplashScreenActivity"
             android:theme="@style/splashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

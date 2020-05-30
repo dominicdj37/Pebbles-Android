@@ -11,6 +11,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.pebbles.R
 import com.pebbles.core.Constants.APP_TAG
 import com.pebbles.core.Constants.RC_SIGN_IN
+import com.pebbles.core.Repo
+import com.pebbles.core.Repo.response
+import com.pebbles.core.Repo.user
 import com.pebbles.core.Run
 
 class SplashScreenActivity : BaseActivity() {
@@ -49,15 +52,18 @@ class SplashScreenActivity : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == RC_SIGN_IN) {
-            val response = IdpResponse.fromResultIntent(data)
+            Repo.response = IdpResponse.fromResultIntent(data)
             Log.d(APP_TAG, "sign in response: $response")
 
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in
-                val user = FirebaseAuth.getInstance().currentUser
+                Repo.user = FirebaseAuth.getInstance().currentUser
                 // ...
                 Log.d(APP_TAG, "sign in user: $user")
-
+                if (user != null) {
+                    navigateToHome()
+                    finish()
+                }
             } else {
                 // Sign in failed. If response is null the user canceled the
                 // sign-in flow using the back button. Otherwise check
@@ -66,6 +72,8 @@ class SplashScreenActivity : BaseActivity() {
             }
         }
     }
+
+
     //endregion
 
 }

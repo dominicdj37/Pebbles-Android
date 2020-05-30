@@ -1,5 +1,6 @@
 package com.pebbles.ui.activities
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -31,4 +32,9 @@ open class BaseActivity: AppCompatActivity() {
         }
         win.attributes = winParams
     }
+
+    fun navigateToHome() {
+        startActivity(Intent(this, HomeActivity::class.java))
+    }
+
 }
