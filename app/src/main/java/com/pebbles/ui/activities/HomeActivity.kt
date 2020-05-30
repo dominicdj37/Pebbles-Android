@@ -1,5 +1,6 @@
 package com.pebbles.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -13,6 +14,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.firebase.ui.auth.AuthUI
 import com.pebbles.R
 import com.pebbles.core.Repo
 import com.pebbles.core.assignImageFromUrl
@@ -30,8 +32,11 @@ class HomeActivity : BaseActivity() {
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener {
+                    navigateToSplashScreen()
+                }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
@@ -54,6 +59,13 @@ class HomeActivity : BaseActivity() {
 
 
 
+    }
+
+    private fun navigateToSplashScreen() {
+        Repo.user = null
+        Repo.response = null
+        startActivity(Intent(this, SplashScreenActivity::class.java))
+        finish()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
