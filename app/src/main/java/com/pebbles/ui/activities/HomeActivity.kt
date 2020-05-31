@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -12,7 +11,6 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.firebase.ui.auth.AuthUI
 import com.pebbles.R
@@ -51,19 +49,14 @@ class HomeActivity : BaseActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        navView.getHeaderView(0).profileNameTextView.text = Repo.user?.displayName
+        navView.getHeaderView(0).profileNameTextView.text = Repo.user?.name
         navView.getHeaderView(0).profileEmailTextView.text = Repo.user?.email
-        navView.getHeaderView(0).profileImageView.assignImageFromUrl(Repo.user?.photoUrl.toString(),true, isCircleCrop = true)
-
-
-
-
-
+        navView.getHeaderView(0).profileImageView.assignImageFromUrl(Repo.user?.profilePhotoUrl.toString(),true, isCircleCrop = true)
     }
 
     private fun navigateToSplashScreen() {
         Repo.user = null
-        Repo.response = null
+        Repo.firebaseLoginResponse = null
         startActivity(Intent(this, SplashScreenActivity::class.java))
         finish()
     }
