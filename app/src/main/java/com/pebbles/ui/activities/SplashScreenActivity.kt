@@ -55,6 +55,7 @@ class SplashScreenActivity : BaseActivity() {
             AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
+                .setIsSmartLockEnabled(false)
                 .setTheme(R.style.loginTheme)
                 .setLogo(R.drawable.ic_logo)
                 .build(), RC_SIGN_IN

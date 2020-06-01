@@ -13,6 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.widget.Toolbar
 import com.firebase.ui.auth.AuthUI
+import com.google.android.gms.auth.api.Auth
 import com.pebbles.R
 import com.pebbles.core.Repo
 import com.pebbles.core.assignImageFromUrl
