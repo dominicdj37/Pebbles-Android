@@ -17,7 +17,6 @@ class AppContext: Application() {
         Log.d(APP_TAG,"Application started")
         super.onCreate()
 
-
         //application wide
     }
 

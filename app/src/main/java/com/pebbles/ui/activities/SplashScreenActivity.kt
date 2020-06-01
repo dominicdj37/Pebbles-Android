@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
@@ -15,6 +16,7 @@ import com.pebbles.core.DatabaseHelper
 import com.pebbles.core.Repo
 import com.pebbles.core.Run
 import com.pebbles.data.User
+import kotlinx.android.synthetic.main.activity_splash_screen.*
 
 class SplashScreenActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,12 +24,24 @@ class SplashScreenActivity : BaseActivity() {
         setContentView(R.layout.activity_splash_screen)
 
         startSplashTimer()
-
+        progress_signIn.visibility = View.VISIBLE
+        loginButton.visibility = View.GONE
     }
 
     private fun startSplashTimer() {
-        Run.after(5000) {
-            navigateToFirebaseLogin()
+        Run.after(2000) {
+            if(FirebaseAuth.getInstance().currentUser != null) {
+                onLoginSuccess(null, FirebaseAuth.getInstance().currentUser)
+            } else {
+
+                loginButton.visibility = View.VISIBLE
+                progress_signIn.visibility = View.GONE
+                loginButton.setOnClickListener {
+                    loginButton.visibility = View.GONE
+                    progress_signIn.visibility = View.VISIBLE
+                    navigateToFirebaseLogin()
+                }
+            }
         }
     }
 
@@ -57,10 +71,9 @@ class SplashScreenActivity : BaseActivity() {
                 val user = FirebaseAuth.getInstance().currentUser
                 onLoginSuccess(response, user)
             } else {
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
+
+                loginButton.visibility = View.VISIBLE
+                progress_signIn.visibility = View.GONE
             }
         }
     }
