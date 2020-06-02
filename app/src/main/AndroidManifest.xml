@@ -10,11 +10,12 @@
         android:roundIcon="@mipmap/ic_app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
-            android:name=".ui.activities.HomeActivity"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.homeTheme">
+            android:name=".ui.activities.HomePageActivity"
+            android:theme="@style/homeTheme">
         </activity>
+
         <activity
             android:name=".ui.activities.SplashScreenActivity"
             android:theme="@style/splashScreenTheme">

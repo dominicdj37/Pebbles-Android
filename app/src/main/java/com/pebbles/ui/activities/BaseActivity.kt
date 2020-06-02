@@ -1,12 +1,14 @@
 package com.pebbles.ui.activities
 
+import android.R
 import android.content.Intent
+import android.content.res.TypedArray
 import android.graphics.Color
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+
 
 open class BaseActivity: AppCompatActivity() {
 
@@ -17,6 +19,9 @@ open class BaseActivity: AppCompatActivity() {
                 View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
         window.statusBarColor = Color.TRANSPARENT
+
+        window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
     }
 
@@ -34,7 +39,7 @@ open class BaseActivity: AppCompatActivity() {
     }
 
     fun navigateToHome() {
-        startActivity(Intent(this, HomeActivity::class.java))
+        startActivity(Intent(this, HomePageActivity::class.java))
     }
 
 }
