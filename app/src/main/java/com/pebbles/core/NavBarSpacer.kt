@@ -15,7 +15,7 @@ class NavBarSpacer @JvmOverloads constructor(context: Context, attrs: AttributeS
     init {
         if (context is Activity) {
             context.window.decorView.setOnApplyWindowInsetsListener { _, insets ->
-                statusHeight = insets.systemWindowInsetBottom
+                statusHeight = insets.stableInsetBottom
                 requestLayout()
                 insets
             }

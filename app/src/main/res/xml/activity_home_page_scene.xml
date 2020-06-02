@@ -22,6 +22,6 @@
     <ConstraintSet android:id="@+id/end">
         <Constraint
             android:id="@+id/guideline1"
-            motion:layout_constraintGuide_percent=".2"/>
+            motion:layout_constraintGuide_percent=".5"/>
     </ConstraintSet>
 </MotionScene>

@@ -19,22 +19,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.pebbles.core.StatusBarSpacer
-            android:id="@+id/statusBarSpacer"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/sideMenuIcon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/statusBarSpacer"
-            app:srcCompat="@drawable/side_menu_icon" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.Guideline
@@ -42,17 +26,128 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.90" />
+        app:layout_constraintGuide_percent="0.85" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/bg_top_rounded"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/navBarSpacer2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.pebbles.core.NavBarSpacer
+        android:id="@+id/navBarSpacer2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/settingsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Setttings"
+        android:textColor="@drawable/text_view_selected_color"
+        app:layout_constraintEnd_toEndOf="@+id/settingsIcon"
+        app:layout_constraintStart_toStartOf="@+id/settingsIcon"
+        app:layout_constraintTop_toBottomOf="@+id/settingsIcon" />
+
+    <TextView
+        android:id="@+id/otherDevicesTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Other Devices"
+        android:textColor="@drawable/text_view_selected_color"
+        app:layout_constraintEnd_toEndOf="@+id/otherDevicesIcon"
+        app:layout_constraintStart_toStartOf="@+id/otherDevicesIcon"
+        app:layout_constraintTop_toBottomOf="@+id/otherDevicesIcon" />
+
+    <TextView
+        android:id="@+id/myTanksTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Tanks"
+        android:textColor="@drawable/text_view_selected_color"
+        app:layout_constraintEnd_toEndOf="@+id/myTanksIcon"
+        app:layout_constraintStart_toStartOf="@+id/myTanksIcon"
+        app:layout_constraintTop_toBottomOf="@+id/myTanksIcon" />
+
+    <TextView
+        android:id="@+id/taskTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tasks"
+        android:textColor="@drawable/text_view_selected_color"
+        app:layout_constraintEnd_toEndOf="@+id/taskIcon"
+        app:layout_constraintStart_toStartOf="@+id/taskIcon"
+        app:layout_constraintTop_toBottomOf="@+id/taskIcon" />
+
+    <com.pebbles.core.StatusBarSpacer
+        android:id="@+id/statusBarSpacer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/sideMenuIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/statusBarSpacer"
+        app:srcCompat="@drawable/side_menu_icon" />
+
+
+    <ImageView
+        android:id="@+id/myTanksIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toStartOf="@id/otherDevicesIcon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline1"
+        app:srcCompat="@drawable/my_tanks_button" />
+
+    <ImageView
+        android:id="@+id/otherDevicesIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toStartOf="@id/taskIcon"
+        app:layout_constraintStart_toEndOf="@id/myTanksIcon"
+        app:layout_constraintTop_toBottomOf="@id/guideline1"
+        app:srcCompat="@drawable/other_devices_button" />
+
+    <ImageView
+        android:id="@+id/taskIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toStartOf="@id/settingsIcon"
+        app:layout_constraintStart_toEndOf="@id/otherDevicesIcon"
+        app:layout_constraintTop_toBottomOf="@id/guideline1"
+        app:srcCompat="@drawable/tasks_button" />
+
+    <ImageView
+        android:id="@+id/settingsIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/taskIcon"
+        app:layout_constraintTop_toBottomOf="@id/guideline1"
+        app:srcCompat="@drawable/tasks_button" />
+
+
 </androidx.constraintlayout.motion.widget.MotionLayout>
