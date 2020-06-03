@@ -6,7 +6,7 @@
     <Transition
         motion:constraintSetEnd="@+id/end"
         motion:constraintSetStart="@id/start"
-        motion:duration="1000">
+        motion:duration="500">
        <KeyFrameSet>
        </KeyFrameSet>
         <OnSwipe
@@ -15,7 +15,8 @@
             motion:dragDirection="dragUp" />
     </Transition>
 
-    <ConstraintSet android:id="@+id/start">
+    <ConstraintSet android:id="@+id/start">`
+
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
@@ -23,18 +24,306 @@
             android:id="@+id/guideline1"
             motion:layout_constraintGuide_percent=".5"/>
     </ConstraintSet>
+
+
+
+
+
+
     <Transition
-        android:id="@+id/StartToMyTanksClicked"
         motion:constraintSetStart="@+id/start"
-        motion:constraintSetEnd="@+id/startClickMyTanks">
-        <OnClick motion:targetId="@+id/myTanksIcon" />
+        motion:constraintSetEnd="@+id/startClickMyTanks"
+        motion:duration="500">
+        <OnClick motion:targetId="@+id/myTanksIcon" motion:clickAction="transitionToEnd" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/constraintLayout2"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragUp" />
     </Transition>
 
+    <Transition
+        motion:constraintSetStart="@+id/end"
+        motion:constraintSetEnd="@+id/startClickMyTanks"
+        motion:duration="500">
+        <OnClick motion:targetId="@+id/myTanksIcon" motion:clickAction="transitionToEnd" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/constraintLayout2"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragUp" />
+    </Transition>
+
+    <Transition
+        motion:constraintSetStart="@+id/startClickOtherDevices"
+        motion:constraintSetEnd="@+id/startClickMyTanks"
+        motion:duration="500">
+        <OnClick motion:targetId="@+id/myTanksIcon" motion:clickAction="transitionToEnd" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/constraintLayout2"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragUp" />
+    </Transition>
+
+    <Transition
+        motion:constraintSetStart="@+id/startClickTasks"
+        motion:constraintSetEnd="@+id/startClickMyTanks"
+        motion:duration="500">
+        <OnClick motion:targetId="@+id/myTanksIcon" motion:clickAction="transitionToEnd" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/constraintLayout2"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragUp" />
+    </Transition>
+
+    <Transition
+        motion:constraintSetStart="@+id/startClickSettings"
+        motion:constraintSetEnd="@+id/startClickMyTanks"
+        motion:duration="500">
+        <OnClick motion:targetId="@+id/myTanksIcon" motion:clickAction="transitionToEnd" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/constraintLayout2"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragUp" />
+    </Transition>
+
+
+
+
+
+
+
+
+
+    <Transition
+        motion:constraintSetStart="@+id/start"
+        motion:constraintSetEnd="@+id/startClickOtherDevices"
+        motion:duration="500">
+        <OnClick motion:targetId="@+id/otherDevicesIcon"  motion:clickAction="transitionToEnd" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/constraintLayout2"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragUp" />
+    </Transition>
+
+    <Transition
+        motion:constraintSetStart="@+id/end"
+        motion:constraintSetEnd="@+id/startClickOtherDevices"
+        motion:duration="500">
+        <OnClick motion:targetId="@+id/otherDevicesIcon"  motion:clickAction="transitionToEnd" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/constraintLayout2"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragUp" />
+    </Transition>
+
+    <Transition
+        motion:constraintSetStart="@+id/startClickMyTanks"
+        motion:constraintSetEnd="@+id/startClickOtherDevices"
+        motion:duration="500">
+        <OnClick motion:targetId="@+id/otherDevicesIcon"  motion:clickAction="transitionToEnd" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/constraintLayout2"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragUp" />
+    </Transition>
+
+    <Transition
+        motion:constraintSetStart="@+id/startClickTasks"
+        motion:constraintSetEnd="@+id/startClickOtherDevices"
+        motion:duration="500">
+        <OnClick motion:targetId="@+id/otherDevicesIcon"  motion:clickAction="transitionToEnd" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/constraintLayout2"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragUp" />
+    </Transition>
+
+    <Transition
+        motion:constraintSetStart="@+id/startClickSettings"
+        motion:constraintSetEnd="@+id/startClickOtherDevices"
+        motion:duration="500">
+        <OnClick motion:targetId="@+id/otherDevicesIcon"  motion:clickAction="transitionToEnd" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/constraintLayout2"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragUp" />
+    </Transition>
+
+
+
+
+
+
+    <Transition
+        motion:constraintSetStart="@+id/start"
+        motion:constraintSetEnd="@+id/startClickTasks"
+        motion:duration="500">
+        <OnClick motion:targetId="@+id/taskIcon"  motion:clickAction="transitionToEnd" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/constraintLayout2"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragUp" />
+    </Transition>
+
+    <Transition
+        motion:constraintSetStart="@+id/end"
+        motion:constraintSetEnd="@+id/startClickTasks"
+        motion:duration="500">
+        <OnClick motion:targetId="@+id/taskIcon"  motion:clickAction="transitionToEnd" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/constraintLayout2"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragUp" />
+    </Transition>
+
+    <Transition
+        motion:constraintSetStart="@+id/startClickMyTanks"
+        motion:constraintSetEnd="@+id/startClickTasks"
+        motion:duration="500">
+        <OnClick motion:targetId="@+id/taskIcon"  motion:clickAction="transitionToEnd" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/constraintLayout2"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragUp" />
+    </Transition>
+
+    <Transition
+        motion:constraintSetStart="@+id/startClickOtherDevices"
+        motion:constraintSetEnd="@+id/startClickTasks"
+        motion:duration="500">
+        <OnClick motion:targetId="@+id/taskIcon"  motion:clickAction="transitionToEnd" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/constraintLayout2"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragUp" />
+    </Transition>
+
+    <Transition
+        motion:constraintSetStart="@+id/startClickSettings"
+        motion:constraintSetEnd="@+id/startClickTasks"
+        motion:duration="500">
+        <OnClick motion:targetId="@+id/taskIcon"  motion:clickAction="transitionToEnd" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/constraintLayout2"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragUp" />
+    </Transition>
+
+
+
+
+
+
+
+    <Transition
+        motion:constraintSetStart="@+id/start"
+        motion:constraintSetEnd="@+id/startClickSettings"
+        motion:duration="500">
+        <OnClick motion:targetId="@+id/settingsIcon"  motion:clickAction="transitionToEnd" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/constraintLayout2"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragUp" />
+    </Transition>
+
+    <Transition
+        motion:constraintSetStart="@+id/end"
+        motion:constraintSetEnd="@+id/startClickSettings"
+        motion:duration="500">
+        <OnClick motion:targetId="@+id/settingsIcon"  motion:clickAction="transitionToEnd" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/constraintLayout2"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragUp" />
+    </Transition>
+
+    <Transition
+        motion:constraintSetStart="@+id/startClickMyTanks"
+        motion:constraintSetEnd="@+id/startClickSettings"
+        motion:duration="500">
+        <OnClick motion:targetId="@+id/settingsIcon"  motion:clickAction="transitionToEnd" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/constraintLayout2"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragUp" />
+    </Transition>
+
+    <Transition
+        motion:constraintSetStart="@+id/startClickOtherDevices"
+        motion:constraintSetEnd="@+id/startClickSettings"
+        motion:duration="500">
+        <OnClick motion:targetId="@+id/settingsIcon"  motion:clickAction="transitionToEnd" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/constraintLayout2"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragUp" />
+    </Transition>
+
+    <Transition
+        motion:constraintSetStart="@+id/startClickTasks"
+        motion:constraintSetEnd="@+id/startClickSettings"
+        motion:duration="500">
+        <OnClick motion:targetId="@+id/settingsIcon"  motion:clickAction="transitionToEnd" />
+        <OnSwipe
+            motion:touchAnchorId="@+id/constraintLayout2"
+            motion:touchAnchorSide="top"
+            motion:dragDirection="dragUp" />
+    </Transition>
+
+
+
+
+
     <ConstraintSet android:id="@+id/startClickMyTanks">
-        <Constraint android:id="@id/otherDevicesIcon">
-            <PropertySet android:alpha="0">
-            </PropertySet>
-        </Constraint>
+        <Constraint
+            android:id="@+id/itemSelectedView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            motion:layout_constraintTop_toTopOf="@id/myTanksIcon"
+            motion:layout_constraintBottom_toBottomOf="@id/myTanksIcon"
+            motion:layout_constraintStart_toStartOf="@id/myTanksIcon"
+            motion:layout_constraintEnd_toEndOf="@id/myTanksIcon"/>
+        <Constraint
+            android:id="@+id/guideline1"
+            motion:layout_constraintGuide_percent=".5"/>
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/startClickOtherDevices">
+        <Constraint
+            android:id="@+id/itemSelectedView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            motion:layout_constraintTop_toTopOf="@id/otherDevicesIcon"
+            motion:layout_constraintBottom_toBottomOf="@id/otherDevicesIcon"
+            motion:layout_constraintStart_toStartOf="@id/otherDevicesIcon"
+            motion:layout_constraintEnd_toEndOf="@id/otherDevicesIcon"/>
+        <Constraint
+            android:id="@+id/guideline1"
+            motion:layout_constraintGuide_percent=".5"/>
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/startClickTasks">
+        <Constraint
+            android:id="@+id/itemSelectedView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            motion:layout_constraintTop_toTopOf="@id/taskIcon"
+            motion:layout_constraintBottom_toBottomOf="@id/taskIcon"
+            motion:layout_constraintStart_toStartOf="@id/taskIcon"
+            motion:layout_constraintEnd_toEndOf="@id/taskIcon"/>
+        <Constraint
+            android:id="@+id/guideline1"
+            motion:layout_constraintGuide_percent=".5"/>
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/startClickSettings">
+        <Constraint
+            android:id="@+id/itemSelectedView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            motion:layout_constraintTop_toTopOf="@id/settingsIcon"
+            motion:layout_constraintBottom_toBottomOf="@id/settingsIcon"
+            motion:layout_constraintStart_toStartOf="@id/settingsIcon"
+            motion:layout_constraintEnd_toEndOf="@id/settingsIcon"/>
         <Constraint
             android:id="@+id/guideline1"
             motion:layout_constraintGuide_percent=".5"/>
