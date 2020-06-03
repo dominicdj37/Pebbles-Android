@@ -5,7 +5,7 @@
     android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/spash_gradient"
+    android:background="@color/colorPrimaryDark"
     app:layoutDescription="@xml/activity_home_page_scene"
     tools:showPaths="true">
 
@@ -44,7 +44,7 @@
         android:id="@+id/navBarSpacer2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/colorAccent"
+        android:background="@color/colorPrimaryDark2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -78,44 +78,44 @@
         app:layout_constraintTop_toBottomOf="@+id/statusBarSpacer"
         app:srcCompat="@drawable/side_menu_icon" />
 
-        <ImageView
-            android:id="@+id/settingsIcon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/taskIcon"
-            app:layout_constraintTop_toBottomOf="@id/guideline1"
-            app:srcCompat="@drawable/settings_button" />
+    <ImageView
+        android:id="@+id/settingsIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/taskIcon"
+        app:layout_constraintTop_toBottomOf="@id/guideline1"
+        app:srcCompat="@drawable/settings_button" />
 
-        <ImageView
-            android:id="@+id/taskIcon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toStartOf="@id/settingsIcon"
-            app:layout_constraintStart_toEndOf="@id/otherDevicesIcon"
-            app:layout_constraintTop_toBottomOf="@id/guideline1"
-            app:srcCompat="@drawable/tasks_button" />
+    <ImageView
+        android:id="@+id/taskIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toStartOf="@id/settingsIcon"
+        app:layout_constraintStart_toEndOf="@id/otherDevicesIcon"
+        app:layout_constraintTop_toBottomOf="@id/guideline1"
+        app:srcCompat="@drawable/tasks_button" />
 
-        <ImageView
-            android:id="@+id/otherDevicesIcon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toStartOf="@id/taskIcon"
-            app:layout_constraintStart_toEndOf="@id/myTanksIcon"
-            app:layout_constraintTop_toBottomOf="@id/guideline1"
-            app:srcCompat="@drawable/other_devices_button" />
+    <ImageView
+        android:id="@+id/otherDevicesIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toStartOf="@id/taskIcon"
+        app:layout_constraintStart_toEndOf="@id/myTanksIcon"
+        app:layout_constraintTop_toBottomOf="@id/guideline1"
+        app:srcCompat="@drawable/other_devices_button" />
 
-        <ImageView
-            android:id="@+id/myTanksIcon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toStartOf="@id/otherDevicesIcon"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guideline1"
-            app:srcCompat="@drawable/my_tanks_button" />
+    <ImageView
+        android:id="@+id/myTanksIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toStartOf="@id/otherDevicesIcon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline1"
+        app:srcCompat="@drawable/my_tanks_button" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
