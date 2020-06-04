@@ -43,6 +43,7 @@
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toBottomOf="@+id/welcomeTextView">
         </Constraint>
+        <Constraint android:id="@+id/lightIndicator" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
@@ -71,18 +72,16 @@
 
         </Constraint>
         <Constraint android:id="@+id/waterLevelProgressBar"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="0dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_marginStart="16dp"
             motion:layout_constraintStart_toEndOf="@id/welcomeTextView"
             motion:layout_constraintBottom_toBottomOf="@id/welcomeTextView"
             motion:layout_constraintTop_toTopOf="@+id/welcomeTextView">
         </Constraint>
         <Constraint android:id="@+id/waterLevelProgressBarBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="0dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_marginStart="16dp"
             motion:layout_constraintStart_toEndOf="@id/welcomeTextView"
             motion:layout_constraintBottom_toBottomOf="@id/welcomeTextView"
@@ -91,7 +90,36 @@
         <Constraint android:id="@+id/progressText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            motion:layout_constraintTop_toTopOf="@+id/waterLevelProgressBarBack"
+            motion:layout_constraintEnd_toEndOf="@id/waterLevelProgressBar"
+            motion:layout_constraintBottom_toBottomOf="@id/waterLevelProgressBar"
             android:alpha="0">
+        </Constraint>
+        <Constraint android:id="@+id/waterDropIconImageView"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/ic_water_drop"
+            motion:layout_constraintBottom_toBottomOf="@id/waterLevelProgressBarBack"
+            motion:layout_constraintEnd_toEndOf="@id/waterLevelProgressBarBack"
+            motion:layout_constraintStart_toStartOf="@id/waterLevelProgressBarBack"
+            motion:layout_constraintTop_toTopOf="@id/waterLevelProgressBarBack">
+        </Constraint>
+        <Constraint android:id="@+id/lightIndicator"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            motion:layout_constraintStart_toEndOf="@id/waterLevelProgressBarBack"
+            motion:layout_constraintTop_toTopOf="@id/waterLevelProgressBarBack"
+            motion:layout_constraintBottom_toBottomOf="@id/waterLevelProgressBarBack">
+        </Constraint>
+
+        <Constraint android:id="@+id/filterIndicator"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            motion:layout_constraintStart_toEndOf="@id/lightIndicator"
+            motion:layout_constraintTop_toTopOf="@id/lightIndicator"
+            motion:layout_constraintBottom_toBottomOf="@id/lightIndicator">
         </Constraint>
     </ConstraintSet>
 

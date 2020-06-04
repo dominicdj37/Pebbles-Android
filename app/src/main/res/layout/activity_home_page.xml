@@ -20,7 +20,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -63,7 +64,7 @@
         android:layout_height="200dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:progress="20"
+        android:progress="90"
         android:progressDrawable="@drawable/bg_progress"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/welcomeTextView" />
@@ -75,14 +76,50 @@
         android:gravity="center"
         android:text="20%"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="36sp"
-        android:layout_marginStart="16dp"
+        android:textSize="24sp"
         app:autoSizeTextType="none"
         app:layout_constraintBottom_toBottomOf="@id/waterLevelProgressBar"
         app:layout_constraintEnd_toEndOf="@id/waterLevelProgressBar"
-        app:layout_constraintStart_toStartOf="@id/waterLevelProgressBar"
-        app:layout_constraintTop_toTopOf="@id/waterLevelProgressBar">
+        app:layout_constraintTop_toTopOf="@+id/waterLevelProgressBarBack"
+        android:layout_marginEnd="12dp"
+        >
     </TextView>
+
+
+    <ImageView
+        android:id="@+id/waterDropIconImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_water_drop"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="@id/waterLevelProgressBarBack"
+        app:layout_constraintEnd_toEndOf="@id/waterLevelProgressBarBack"
+        app:layout_constraintStart_toStartOf="@id/waterLevelProgressBarBack"
+        app:layout_constraintTop_toTopOf="@id/waterLevelProgressBarBack">
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/lightIndicator"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/light_indicatior_off"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toEndOf="@id/waterLevelProgressBarBack"
+        app:layout_constraintTop_toTopOf="@id/waterLevelProgressBarBack"></ImageView>
+
+    <ImageView
+        android:id="@+id/filterIndicator"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/filter_indicator_off"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.21"
+        app:layout_constraintStart_toEndOf="@id/waterLevelProgressBarBack"
+        app:layout_constraintTop_toBottomOf="@id/lightIndicator"></ImageView>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout

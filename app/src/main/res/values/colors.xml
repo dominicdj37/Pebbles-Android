@@ -7,5 +7,9 @@
     <color name="colorAccent">#52559D</color>
 
     <color name="color_button_active">#F3F38F</color>
+    <color name="black">#000000</color>
+    <color name="light_on">#B10000</color>
+
+    <color name="light_off">#5C5C5C</color>
 
 </resources>
