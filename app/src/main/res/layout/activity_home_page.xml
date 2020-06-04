@@ -122,11 +122,25 @@
         app:layout_constraintTop_toBottomOf="@id/lightIndicator"></ImageView>
 
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/deviceRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:elevation="4dp"
+        android:foregroundGravity="center"
+        app:layout_constraintBottom_toTopOf="@id/guideline1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filterIndicator"
+        app:layout_constraintVertical_bias="1.0" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/bg_top_rounded"
+        android:elevation="4dp"
         app:layout_constraintBottom_toTopOf="@+id/navBarSpacer2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -138,6 +152,7 @@
         android:id="@+id/navBarSpacer2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:elevation="4dp"
         android:background="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -155,7 +170,8 @@
         android:id="@+id/itemSelectedView"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:background="@drawable/bg_rounded_top"
+        android:elevation="4dp"
+        android:background="@drawable/item_selected_bg"
         app:layout_constraintBottom_toBottomOf="@id/myTanksIcon"
         app:layout_constraintEnd_toEndOf="@id/myTanksIcon"
         app:layout_constraintStart_toStartOf="@id/myTanksIcon"
@@ -167,6 +183,7 @@
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:elevation="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/statusBarSpacer"
         app:srcCompat="@drawable/side_menu_icon" />
@@ -176,6 +193,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginTop="16dp"
+        android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/taskIcon"
         app:layout_constraintTop_toBottomOf="@id/guideline1"
@@ -186,6 +204,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginTop="16dp"
+        android:elevation="4dp"
         app:layout_constraintEnd_toStartOf="@id/settingsIcon"
         app:layout_constraintStart_toEndOf="@id/otherDevicesIcon"
         app:layout_constraintTop_toBottomOf="@id/guideline1"
@@ -196,6 +215,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginTop="16dp"
+        android:elevation="4dp"
         app:layout_constraintEnd_toStartOf="@id/taskIcon"
         app:layout_constraintStart_toEndOf="@id/myTanksIcon"
         app:layout_constraintTop_toBottomOf="@id/guideline1"
@@ -206,6 +226,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginTop="16dp"
+        android:elevation="4dp"
         app:layout_constraintEnd_toStartOf="@id/otherDevicesIcon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline1"

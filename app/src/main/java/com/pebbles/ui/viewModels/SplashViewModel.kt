@@ -1,4 +1,4 @@
-package com.pebbles.ui.activities.ui.viewModels
+package com.pebbles.ui.viewModels
 
 import androidx.lifecycle.ViewModel
 import com.google.firebase.database.DatabaseReference

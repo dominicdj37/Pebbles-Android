@@ -49,7 +49,7 @@
     <ConstraintSet android:id="@+id/end">
         <Constraint
             android:id="@+id/guideline1"
-            motion:layout_constraintGuide_percent=".2"/>
+            motion:layout_constraintGuide_percent=".4"/>
         <Constraint android:id="@+id/topContentLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
