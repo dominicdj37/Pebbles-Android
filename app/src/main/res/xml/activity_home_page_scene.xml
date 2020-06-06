@@ -6,9 +6,9 @@
     <Transition
         motion:constraintSetEnd="@+id/end"
         motion:constraintSetStart="@id/start"
+        motion:motionInterpolator="easeInOut"
         motion:duration="500">
-       <KeyFrameSet>
-       </KeyFrameSet>
+
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
@@ -49,7 +49,7 @@
     <ConstraintSet android:id="@+id/end">
         <Constraint
             android:id="@+id/guideline1"
-            motion:layout_constraintGuide_percent=".4"/>
+            motion:layout_constraintGuide_percent=".3"/>
         <Constraint android:id="@+id/topContentLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -120,6 +120,43 @@
             motion:layout_constraintStart_toEndOf="@id/lightIndicator"
             motion:layout_constraintTop_toTopOf="@id/lightIndicator"
             motion:layout_constraintBottom_toBottomOf="@id/lightIndicator">
+        </Constraint>
+
+        <Constraint android:id="@+id/shortcut1Layout"
+            android:layout_height="60dp"
+            motion:layout_constraintTop_toBottomOf="@+id/sideMenuIcon"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintBottom_toTopOf="@id/guideline1"
+            android:layout_marginStart="24dp">
+        </Constraint>
+
+
+        <Constraint android:id="@+id/shortcut2Layout"
+            android:layout_height="60dp"
+            motion:layout_constraintTop_toTopOf="@+id/shortcut1Layout"
+            motion:layout_constraintStart_toEndOf="@+id/shortcut1Layout"
+            motion:layout_constraintBottom_toBottomOf="@id/shortcut1Layout"
+            motion:layout_constraintEnd_toStartOf="@id/shortcut3Layout"
+            android:layout_marginStart="16dp">
+        </Constraint>
+
+        <Constraint android:id="@+id/shortcut3Layout"
+            android:layout_height="60dp"
+            motion:layout_constraintTop_toTopOf="@+id/shortcut2Layout"
+            motion:layout_constraintStart_toEndOf="@+id/shortcut2Layout"
+            motion:layout_constraintBottom_toBottomOf="@id/shortcut2Layout"
+            motion:layout_constraintEnd_toStartOf="@id/shortcut4Layout"
+            android:layout_marginStart="16dp">
+        </Constraint>
+
+        <Constraint android:id="@+id/shortcut4Layout"
+            android:layout_height="60dp"
+            motion:layout_constraintTop_toTopOf="@+id/shortcut3Layout"
+            motion:layout_constraintStart_toEndOf="@+id/shortcut3Layout"
+            motion:layout_constraintBottom_toBottomOf="@id/shortcut3Layout"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="16dp">
         </Constraint>
     </ConstraintSet>
 

@@ -8,9 +8,7 @@ import com.pebbles.data.Device
 
 class DevicesAdapter(
     val list: ArrayList<Any>,
-    private val deviceListClickListener: DeviceListClickListener,
-    private val deviceRecyclerView: RecyclerView
-): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val deviceListClickListener: DeviceListClickListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
         return when(list[position]) {
@@ -22,12 +20,6 @@ class DevicesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutView = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
-
-        val width: Int = deviceRecyclerView.width
-        val params: ViewGroup.LayoutParams = layoutView.layoutParams
-        params.width = (((width * 0.98).toInt()))
-        layoutView.layoutParams = params
-
         return when (viewType) {
             R.layout.devices_item_layout -> DeviceViewHolder(
                 layoutView
