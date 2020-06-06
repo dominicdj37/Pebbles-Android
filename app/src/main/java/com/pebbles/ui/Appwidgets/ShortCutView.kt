@@ -11,6 +11,8 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.pebbles.R
+import com.pebbles.core.assignImageFromUrl
+import com.pebbles.data.Device
 
 class ShortCutView : ConstraintLayout {
 
@@ -46,12 +48,51 @@ class ShortCutView : ConstraintLayout {
     //end region
 
     //region click listeners
-    var scrollToTeamFormationComponent: ((String?) -> Unit)? = null
-    var beforeNavigationToWebView: (() -> Unit)? = null
+    var onSwitch: ((Device) -> Unit)? = null
+    var onAddClicked: (() -> Unit)? = null
+    var onSettingsClicked: ((Device) -> Unit)? = null
     //endregion
 
     fun init(context: Context?) {
         val layout = LayoutInflater.from(context).inflate(R.layout.custom_shortcut_view, this)
+        shortcutBackLayout = layout.findViewById(R.id.shortcutBackLayout)
+
+        shortcutDeviceImage = layout.findViewById(R.id.shortcutDeviceImage)
+        addShortCut = layout.findViewById(R.id.addShortCut)
+        shortcutdeviceNameTextView = layout.findViewById(R.id.shortcutdeviceNameTextView)
+        shortcutdeviceButton = layout.findViewById(R.id.shortcutdeviceButton)
+        device1SettingsImageView = layout.findViewById(R.id.device1SettingsImageView)
+        setAddDeviceLayout()
+    }
+
+    fun setAddDeviceLayout() {
+        shortcutBackLayout.visibility = View.GONE
+        addShortCut.visibility = View.VISIBLE
+        shortcutdeviceNameTextView.visibility = View.GONE
+        shortcutdeviceButton.visibility = View.GONE
+        device1SettingsImageView.visibility = View.GONE
+
+        addShortCut.setOnClickListener {
+            onAddClicked?.invoke()
+        }
+    }
+
+    fun setDevice(device: Device) {
+        shortcutBackLayout.visibility = View.VISIBLE
+        addShortCut.visibility = View.GONE
+        shortcutdeviceNameTextView.visibility = View.VISIBLE
+        shortcutdeviceButton.visibility = View.VISIBLE
+        device1SettingsImageView.visibility = View.VISIBLE
+
+
+        shortcutDeviceImage.assignImageFromUrl(device.imageUrl)
+        shortcutdeviceNameTextView.text = device.name
+        shortcutdeviceButton.setOnClickListener {
+            onSwitch?.invoke(device)
+        }
+        device1SettingsImageView.setOnClickListener {
+            onSettingsClicked?.invoke(device)
+        }
 
 
     }

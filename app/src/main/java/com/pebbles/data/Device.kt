@@ -1,10 +1,14 @@
 package com.pebbles.data
 
+import com.google.firebase.database.IgnoreExtraProperties
+
+@IgnoreExtraProperties
 data class Device (
-    var deviceId: Int? = null,
-    var deviceName: String? = null,
-    var isAutomated: Boolean = false,
-    var isDeviceOn: Boolean = false,
-    var isDeviceConnected: Boolean = false,
-    var deviceImageUrl: String? = null
+    var id: Int? = null,
+    var name: String? = null,
+    var isAuto: Boolean = false,
+    var isConnected: Boolean = false,
+    var state: Int = 0,
+    var imageUrl: String? = null,
+    var port: Int = -1
 )

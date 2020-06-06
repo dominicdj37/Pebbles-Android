@@ -2,19 +2,16 @@ package com.pebbles.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.core.view.GravityCompat
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.fragment.app.Fragment
 import com.firebase.ui.auth.AuthUI
 import com.pebbles.R
-import com.pebbles.Utils.ResourceUtils.getColorResource
-import com.pebbles.Utils.ResourceUtils.getDrawableResource
+import com.pebbles.core.DatabaseHelper
 import com.pebbles.core.Repo
 import com.pebbles.core.assignImageFromUrl
 import com.pebbles.data.Device
-import com.pebbles.ui.adapters.AddDeviceDataHolder
-import com.pebbles.ui.adapters.DeviceDataHolder
 import com.pebbles.ui.adapters.DevicesAdapter
+import com.pebbles.ui.fragments.DeviceFragment
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.activity_home_page.*
@@ -31,13 +28,30 @@ class HomePageActivity : BaseActivity(), DevicesAdapter.DeviceListClickListener 
         initNavigationView()
 
 
-        initializeShortCutDevices()
-
-
+        initializeFragments()
         intiDevicesView()
     }
 
+    private fun initializeFragments() {
+        val fragment = DeviceFragment.newInstance(0)
+        loadFragment(fragment)
+    }
+
     private fun initializeShortCutDevices() {
+
+        Repo.deviceShortCuts[0].let {shId ->
+            Repo.devices.find { it.id?.toLong() == shId }?.let {
+                shortcut1Layout.setDevice(it)
+            }
+        }
+        Repo.deviceShortCuts[1].let {shId ->
+            Repo.devices.find { it.id?.toLong() == shId }?.let {
+                shortcut2Layout.setDevice(it)
+            }
+        }
+//        shortcut1Layout.setDevice(Device(0, "LED Light 1", isAuto = true, state = 0, isDeviceConnected = true, deviceImageUrl = "https://firebasestorage.googleapis.com/v0/b/nodemcutest-eba2f.appspot.com/o/intro_beleuchtungs-steuerung_0618.jpg?alt=media&token=6a25a904-82bb-4d63-946f-f62fb44624dc" ))
+//        shortcut2Layout.setDevice(Device(0, "LED Light 2", isAutomated = false, isDeviceOn = true, isDeviceConnected = true, deviceImageUrl = "https://firebasestorage.googleapis.com/v0/b/nodemcutest-eba2f.appspot.com/o/led-aquarium-light.jpg?alt=media&token=e5e005d3-dc19-4cc6-a4f5-d837ee6b917c" ))
+//        shortcut3Layout.setDevice(Device(0, "Filter Submersible  ", isAutomated = false, isDeviceOn = false, isDeviceConnected = true, deviceImageUrl = "https://firebasestorage.googleapis.com/v0/b/nodemcutest-eba2f.appspot.com/o/aquarium-water-filter-500x500.jpg?alt=media&token=0faed990-8c36-40b4-ad0a-340e128dc23e " ))
 
     }
 
@@ -53,6 +67,26 @@ class HomePageActivity : BaseActivity(), DevicesAdapter.DeviceListClickListener 
         deviceRecyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL)
         adapter = DevicesAdapter(list,this)
         deviceRecyclerView.adapter = adapter*/
+
+
+        Repo.user?.id?.let {
+            DatabaseHelper.returnDevicesForUid(it, {
+                val fragment = supportFragmentManager.findFragmentById(R.id.bottomFragment)
+                if (fragment is DeviceFragment) {
+                    fragment.reloadDeviceList()
+                }
+
+                DatabaseHelper.returnUserShortCuts({
+                    initializeShortCutDevices()
+                },{})
+
+            }, {
+
+            })
+
+
+        }
+
     }
 
 
@@ -85,7 +119,6 @@ class HomePageActivity : BaseActivity(), DevicesAdapter.DeviceListClickListener 
     }
 
     override fun onDeviceSwitchClicked(device: Device) {
-        device.isDeviceOn = !device.isDeviceOn
         adapter?.notifyDataSetChanged()
     }
 
@@ -93,5 +126,11 @@ class HomePageActivity : BaseActivity(), DevicesAdapter.DeviceListClickListener 
 
     }
 
+
+    private fun loadFragment(fragment: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.bottomFragment, fragment)
+        transaction.commitAllowingStateLoss()
+    }
 
 }
