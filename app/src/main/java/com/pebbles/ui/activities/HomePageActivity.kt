@@ -2,10 +2,13 @@ package com.pebbles.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.firebase.ui.auth.AuthUI
 import com.pebbles.R
+import com.pebbles.Utils.ResourceUtils.getColorResource
+import com.pebbles.Utils.ResourceUtils.getDrawableResource
 import com.pebbles.core.Repo
 import com.pebbles.core.assignImageFromUrl
 import com.pebbles.data.Device
@@ -26,8 +29,18 @@ class HomePageActivity : BaseActivity(), DevicesAdapter.DeviceListClickListener 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         initNavigationView()
+
+
+        initializeShortCutDevices()
+
+
         intiDevicesView()
     }
+
+    private fun initializeShortCutDevices() {
+
+    }
+
 
     private fun intiDevicesView() {
         /*val list = arrayListOf<Any>()

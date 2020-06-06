@@ -13,4 +13,6 @@
     <color name="light_off">#5C5C5C</color>
 
     <color name="light_accent">#4A52559D</color>
+
+    <color name="transparent">#00000000</color>
 </resources>
