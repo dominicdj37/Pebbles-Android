@@ -13,6 +13,7 @@ class DeviceViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val automaticStatusTextView: TextView = itemView.findViewById(R.id.automaticStatusTextView)
     private val deviceButton: ImageView = itemView.findViewById(R.id.deviceButton)
     private val deviceImageView: ImageView = itemView.findViewById(R.id.deviceImageView)
+    private val deviceSettingsImageView: ImageView = itemView.findViewById(R.id.deviceSettingsImageView)
 
 
 
@@ -24,6 +25,9 @@ class DeviceViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
         automaticStatusTextView.text = if (dataHolder.device.isAuto) { "Automatic" } else { "Manual" }
         deviceButton.setOnClickListener {
             onDeviceListClickListener.onDeviceSwitchClicked(dataHolder.device)
+        }
+        deviceSettingsImageView.setOnClickListener {
+            onDeviceListClickListener.onDeviceAddShortcutClicked(dataHolder.device)
         }
 
     }

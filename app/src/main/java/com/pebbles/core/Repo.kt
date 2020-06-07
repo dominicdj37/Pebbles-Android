@@ -2,6 +2,7 @@ package com.pebbles.core
 
 import com.firebase.ui.auth.IdpResponse
 import com.pebbles.data.Device
+import com.pebbles.data.Shortcuts
 import com.pebbles.data.User
 
 object Repo {
@@ -11,6 +12,7 @@ object Repo {
     val devices: ArrayList<Device>
         get() = user?.devices ?: arrayListOf()
 
-    val deviceShortCuts: ArrayList<Long> = arrayListOf()
+    val deviceShortCuts: ArrayList<Shortcuts> = arrayListOf()
+    var selectedShortCutAddPosition: String? = "s1"
 
 }

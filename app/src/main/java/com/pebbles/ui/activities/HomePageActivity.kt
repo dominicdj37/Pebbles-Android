@@ -5,12 +5,13 @@ import android.os.Bundle
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.firebase.ui.auth.AuthUI
+import com.google.android.material.snackbar.Snackbar
 import com.pebbles.R
+import com.pebbles.Utils.ResourceUtils.getStringResource
 import com.pebbles.core.DatabaseHelper
 import com.pebbles.core.Repo
 import com.pebbles.core.assignImageFromUrl
-import com.pebbles.data.Device
-import com.pebbles.ui.adapters.DevicesAdapter
+import com.pebbles.ui.Appwidgets.ShortCutView
 import com.pebbles.ui.fragments.DeviceFragment
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_home.view.*
@@ -18,9 +19,7 @@ import kotlinx.android.synthetic.main.activity_home_page.*
 import kotlinx.android.synthetic.main.nav_layout.view.*
 
 
-class HomePageActivity : BaseActivity(), DevicesAdapter.DeviceListClickListener {
-
-    private var adapter: DevicesAdapter? = null
+class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionListener{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,53 +37,64 @@ class HomePageActivity : BaseActivity(), DevicesAdapter.DeviceListClickListener 
     }
 
     private fun initializeShortCutDevices() {
+        DatabaseHelper.returnUserShortCuts({
+            val shortcutViews: ArrayList<ShortCutView> = arrayListOf()
+            val viewsToRemove: ArrayList<ShortCutView> = arrayListOf()
+            shortcut1Layout.tag = "s1"
+            shortcut2Layout.tag = "s2"
+            shortcut3Layout.tag = "s3"
+            shortcut4Layout.tag = "s4"
+            shortcutViews.add(shortcut1Layout)
+            shortcutViews.add(shortcut2Layout)
+            shortcutViews.add(shortcut3Layout)
+            shortcutViews.add(shortcut4Layout)
 
-        Repo.deviceShortCuts[0].let {shId ->
-            Repo.devices.find { it.id?.toLong() == shId }?.let {
-                shortcut1Layout.setDevice(it)
+            Repo.deviceShortCuts.forEach {sc->
+                shortcutViews.find { view-> view.tag.toString() == sc.tag }?.let {view ->
+                    Repo.devices.find { it.id?.toLong() == sc.deviceID }?.let {
+                        view.setDevice(it)
+                        viewsToRemove.add(view)
+                        view.onRemoveClicked = { device,tag ->
+                            DatabaseHelper.removeShortcut(tag, device) {
+                                initializeShortCutDevices()
+                            }
+                        }
+                    }
+                }
             }
-        }
-        Repo.deviceShortCuts[1].let {shId ->
-            Repo.devices.find { it.id?.toLong() == shId }?.let {
-                shortcut2Layout.setDevice(it)
+
+            shortcutViews.removeAll(viewsToRemove)
+            shortcutViews.takeIf { it.isNotEmpty() }?.let {
+                Repo.selectedShortCutAddPosition = it.first().tag.toString()
             }
-        }
-//        shortcut1Layout.setDevice(Device(0, "LED Light 1", isAuto = true, state = 0, isDeviceConnected = true, deviceImageUrl = "https://firebasestorage.googleapis.com/v0/b/nodemcutest-eba2f.appspot.com/o/intro_beleuchtungs-steuerung_0618.jpg?alt=media&token=6a25a904-82bb-4d63-946f-f62fb44624dc" ))
-//        shortcut2Layout.setDevice(Device(0, "LED Light 2", isAutomated = false, isDeviceOn = true, isDeviceConnected = true, deviceImageUrl = "https://firebasestorage.googleapis.com/v0/b/nodemcutest-eba2f.appspot.com/o/led-aquarium-light.jpg?alt=media&token=e5e005d3-dc19-4cc6-a4f5-d837ee6b917c" ))
-//        shortcut3Layout.setDevice(Device(0, "Filter Submersible  ", isAutomated = false, isDeviceOn = false, isDeviceConnected = true, deviceImageUrl = "https://firebasestorage.googleapis.com/v0/b/nodemcutest-eba2f.appspot.com/o/aquarium-water-filter-500x500.jpg?alt=media&token=0faed990-8c36-40b4-ad0a-340e128dc23e " ))
+            shortcutViews.forEach {
+                it.setAddDeviceLayout()
+
+                it.onAddClicked = {tag->
+                    Repo.selectedShortCutAddPosition = tag
+                    parentLayout.transitionToState(R.id.startClickMyTanks)
+                    Snackbar.make(cl,"Add a device from device list", Snackbar.LENGTH_SHORT).show()
+                }
+            }
+
+        },{
+            showDismissiveAlertDialog(getStringResource(R.string.error_title),getStringResource(R.string.error_api))
+        })
 
     }
 
 
     private fun intiDevicesView() {
-        /*val list = arrayListOf<Any>()
-        list.add(DeviceDataHolder(Device(0, "LED Light 1", isAutomated = true, isDeviceOn = false, isDeviceConnected = true, deviceImageUrl = "https://firebasestorage.googleapis.com/v0/b/nodemcutest-eba2f.appspot.com/o/intro_beleuchtungs-steuerung_0618.jpg?alt=media&token=6a25a904-82bb-4d63-946f-f62fb44624dc" )))
-        list.add(DeviceDataHolder(Device(0, "LED Light 2", isAutomated = false, isDeviceOn = true, isDeviceConnected = true, deviceImageUrl = "https://firebasestorage.googleapis.com/v0/b/nodemcutest-eba2f.appspot.com/o/led-aquarium-light.jpg?alt=media&token=e5e005d3-dc19-4cc6-a4f5-d837ee6b917c" )))
-        list.add(DeviceDataHolder(Device(0, "Filter Submersible  ", isAutomated = false, isDeviceOn = false, isDeviceConnected = true, deviceImageUrl = "https://firebasestorage.googleapis.com/v0/b/nodemcutest-eba2f.appspot.com/o/aquarium-water-filter-500x500.jpg?alt=media&token=0faed990-8c36-40b4-ad0a-340e128dc23e " )))
-        list.add(DeviceDataHolder(Device(0, "LED Light", isAutomated = true, isDeviceOn = true, isDeviceConnected = true, deviceImageUrl = "https://firebasestorage.googleapis.com/v0/b/nodemcutest-eba2f.appspot.com/o/best-small-aquarium-filter.jpg?alt=media&token=67c9d055-029c-455b-9400-d62466cb5e9b" )))
-        list.add(DeviceDataHolder(Device(0, "LED Light", isAutomated = true, isDeviceOn = false, isDeviceConnected = true, deviceImageUrl = "https://firebasestorage.googleapis.com/v0/b/nodemcutest-eba2f.appspot.com/o/filter1.jpg?alt=media&token=fa05caaf-0fcb-47a9-886f-ce00f56aa096" )))
-        list.add(AddDeviceDataHolder())
-        deviceRecyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL)
-        adapter = DevicesAdapter(list,this)
-        deviceRecyclerView.adapter = adapter*/
-
-
         Repo.user?.id?.let {
             DatabaseHelper.returnDevicesForUid(it, {
                 val fragment = supportFragmentManager.findFragmentById(R.id.bottomFragment)
                 if (fragment is DeviceFragment) {
                     fragment.reloadDeviceList()
                 }
-
-                DatabaseHelper.returnUserShortCuts({
-                    initializeShortCutDevices()
-                },{})
-
+                initializeShortCutDevices()
             }, {
-
+                showDismissiveAlertDialog(getStringResource(R.string.error_title),getStringResource(R.string.error_api))
             })
-
-
         }
 
     }
@@ -118,19 +128,14 @@ class HomePageActivity : BaseActivity(), DevicesAdapter.DeviceListClickListener 
         finish()
     }
 
-    override fun onDeviceSwitchClicked(device: Device) {
-        adapter?.notifyDataSetChanged()
-    }
-
-    override fun onAddDeviceClicked() {
-
-    }
-
-
     private fun loadFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.bottomFragment, fragment)
         transaction.commitAllowingStateLoss()
+    }
+
+    override fun shortcutAdded() {
+        initializeShortCutDevices()
     }
 
 }

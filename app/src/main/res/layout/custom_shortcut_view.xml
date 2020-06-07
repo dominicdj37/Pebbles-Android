@@ -1,124 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:background="@color/transparent">
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/shortcutBackLayout"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/shortcutDeviceImage"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
-            android:background="@drawable/bg_rounded_white_small"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/shortcutmask"
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/shortcutBackLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/triangle" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/shortcutDeviceImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_rounded_white_small"
+                    android:scaleType="fitXY"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <ImageView
+                    android:id="@+id/shortcutmask"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/triangle" />
 
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/addShortCut"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        android:background="@drawable/button_border"
-        app:layout_constraintBottom_toBottomOf="@id/shortcutBackLayout"
-        app:layout_constraintEnd_toEndOf="@id/shortcutBackLayout"
-        app:layout_constraintStart_toStartOf="@id/shortcutBackLayout"
-        app:layout_constraintTop_toTopOf="@id/shortcutBackLayout">
-
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:src="@drawable/ic_add_button"
-            app:layout_constraintTop_toTopOf="parent">
-        </ImageView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add a Device"
-            android:textSize="8sp"
-            android:textColor="@color/light_accent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.85">
-        </TextView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <Button
-        android:id="@+id/shortcutdeviceButton"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@android:drawable/ic_lock_power_off"
-        app:layout_constraintBottom_toBottomOf="@+id/shortcutdeviceNameTextView"
-        app:layout_constraintEnd_toEndOf="@+id/shortcutBackLayout"
-        app:layout_constraintTop_toTopOf="@+id/shortcutdeviceNameTextView" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/addShortCut"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/button_border"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/shortcutBackLayout"
+                app:layout_constraintEnd_toEndOf="@id/shortcutBackLayout"
+                app:layout_constraintStart_toStartOf="@id/shortcutBackLayout"
+                app:layout_constraintTop_toTopOf="@id/shortcutBackLayout">
 
-    <TextView
-        android:id="@+id/shortcutdeviceNameTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
-        android:elevation="10dp"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:text="LED Light"
-        android:textColor="@color/colorPrimaryDark2"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/shortcutBackLayout"
-        app:layout_constraintEnd_toStartOf="@+id/shortcutdeviceButton"
-        app:layout_constraintStart_toStartOf="@id/shortcutBackLayout">
-    </TextView>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_add_button"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"></ImageView>
 
-    <ImageView
-        android:id="@+id/device1SettingsImageView"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:elevation="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/shortcutBackLayout"
-        app:layout_constraintTop_toTopOf="@+id/shortcutBackLayout"
-        app:srcCompat="@drawable/ic_settings" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add a Device"
+                    android:textColor="@color/light_accent"
+                    android:textSize="8sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.85"></TextView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+            <Button
+                android:id="@+id/shortcutdeviceButton"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/power_switch"
+                app:layout_constraintBottom_toBottomOf="@+id/shortcutdeviceNameTextView"
+                app:layout_constraintEnd_toEndOf="@+id/shortcutBackLayout"
+                app:layout_constraintTop_toTopOf="@+id/shortcutdeviceNameTextView" />
+
+            <TextView
+                android:id="@+id/shortcutdeviceNameTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
+                android:elevation="10dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="LED Light"
+                android:textColor="@color/colorPrimaryDark2"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/shortcutBackLayout"
+                app:layout_constraintEnd_toStartOf="@+id/shortcutdeviceButton"
+                app:layout_constraintStart_toStartOf="@id/shortcutBackLayout"></TextView>
+
+            <ImageView
+                android:id="@+id/device1SettingsImageView"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:elevation="5dp"
+                app:layout_constraintEnd_toEndOf="@+id/shortcutBackLayout"
+                app:layout_constraintTop_toTopOf="@+id/shortcutBackLayout"
+                app:srcCompat="@drawable/ic_trash" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,10 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.RecyclerView
 import com.pebbles.R
 import com.pebbles.core.assignImageFromUrl
 import com.pebbles.data.Device
@@ -49,8 +47,8 @@ class ShortCutView : ConstraintLayout {
 
     //region click listeners
     var onSwitch: ((Device) -> Unit)? = null
-    var onAddClicked: (() -> Unit)? = null
-    var onSettingsClicked: ((Device) -> Unit)? = null
+    var onAddClicked: ((String) -> Unit)? = null
+    var onRemoveClicked: ((Device, String) -> Unit)? = null
     //endregion
 
     fun init(context: Context?) {
@@ -73,7 +71,7 @@ class ShortCutView : ConstraintLayout {
         device1SettingsImageView.visibility = View.GONE
 
         addShortCut.setOnClickListener {
-            onAddClicked?.invoke()
+            onAddClicked?.invoke(this.tag.toString())
         }
     }
 
@@ -91,7 +89,8 @@ class ShortCutView : ConstraintLayout {
             onSwitch?.invoke(device)
         }
         device1SettingsImageView.setOnClickListener {
-            onSettingsClicked?.invoke(device)
+
+            onRemoveClicked?.invoke(device,this.tag.toString())
         }
 
 

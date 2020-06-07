@@ -45,6 +45,7 @@ class DevicesAdapter(
     interface DeviceListClickListener {
         fun onDeviceSwitchClicked(device: Device)
         fun onAddDeviceClicked()
+        fun onDeviceAddShortcutClicked(device: Device)
     }
 
 

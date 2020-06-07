@@ -5,9 +5,13 @@ import android.content.Intent
 import android.content.res.TypedArray
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Message
 import android.view.View
 import android.view.WindowManager
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.pebbles.Utils.ResourceUtils.getStringResource
+import com.pebbles.data.Device
 
 
 open class BaseActivity: AppCompatActivity() {
@@ -40,6 +44,25 @@ open class BaseActivity: AppCompatActivity() {
 
     fun navigateToHome() {
         startActivity(Intent(this, HomePageActivity::class.java))
+    }
+
+
+    fun showDismissiveAlertDialog(title: String, message: String, onDismiss: () -> Unit? = {}) {
+            val mAlertDialog = AlertDialog.Builder(this).create()
+            mAlertDialog.setTitle(title)
+            mAlertDialog.setMessage(message)
+            mAlertDialog.setCancelable(false)
+            mAlertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "ok", Message())
+            mAlertDialog.setOnShowListener {
+                val positive = mAlertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                positive?.transformationMethod = null
+
+                positive?.setOnClickListener {
+                    mAlertDialog.dismiss()
+                    onDismiss.invoke()
+                }
+            }
+            mAlertDialog.show()
     }
 
 }

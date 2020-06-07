@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.database.*
 import com.pebbles.core.Constants.APP_TAG
 import com.pebbles.data.Device
+import com.pebbles.data.Shortcuts
 import com.pebbles.data.User
 
 object DatabaseHelper {
@@ -71,19 +72,55 @@ object DatabaseHelper {
 
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.exists()) {
-                    p0.children.forEach { deviceId->
-                        deviceId.value?.let { deviceId ->
-                            Repo.deviceShortCuts.add(deviceId as Long)
+                    Repo.deviceShortCuts.clear()
+                    p0.children.forEach{ shortcuts->
+                         val id = shortcuts.child(shortcuts.key.toString()).value
+                            Repo.deviceShortCuts.add(Shortcuts(shortcuts.key, id as Long?) )
                         }
-                    }
                     onFetched.invoke()
-
                 } else {
-
+                    Repo.deviceShortCuts.clear()
+                    onFetched.invoke()
                 }
             }
 
         })
+    }
+
+    fun addDeviceShortCut(device: Device, onFetched: () -> Unit, onError: () -> Unit) {
+        Repo.selectedShortCutAddPosition?.let { it ->
+            databaseReference?.child("deviceShortcuts")?.child(Repo.user?.id!!)?.child(it)?.child(it)?.setValue(device.id) { er, ref ->
+                if (er == null) {
+                        when {
+                            it[1] == '1' -> {
+                                Repo.selectedShortCutAddPosition = "s2"
+                            }
+                            it[1] == '2' -> {
+                                Repo.selectedShortCutAddPosition = "s3"
+                            }
+                            it[1] == '3' -> {
+                                Repo.selectedShortCutAddPosition = "s4"
+                            }
+                            it[1] == '4' -> {
+                                Repo.selectedShortCutAddPosition = "s1"
+                            }
+                    }
+
+                    onFetched.invoke()
+                } else {
+                    onError.invoke()
+                }
+            }
+        }
+
+    }
+
+    fun removeShortcut(key: String, device: Device, onFetched: () -> Unit) {
+            databaseReference?.child("deviceShortcuts")?.child(Repo.user?.id!!)?.child(key)?.removeValue { err, ref ->
+                if(err == null) {
+                        onFetched.invoke()
+                }
+            }
     }
 
 }

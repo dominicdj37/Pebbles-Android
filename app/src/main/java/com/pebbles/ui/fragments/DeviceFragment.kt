@@ -1,5 +1,6 @@
 package com.pebbles.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.pebbles.R
+import com.pebbles.core.DatabaseHelper
 import com.pebbles.core.Repo
 import com.pebbles.data.Device
 import com.pebbles.ui.adapters.AddDeviceDataHolder
@@ -24,6 +26,7 @@ class DeviceFragment : Fragment(), DeviceListClickListener {
 
     private val deviceList = arrayListOf<Any>(AddDeviceDataHolder())
     private lateinit var deviceAdapter: DevicesAdapter
+    private var listener: OnDeviceTabInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +34,16 @@ class DeviceFragment : Fragment(), DeviceListClickListener {
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnDeviceTabInteractionListener) {
+            listener = context
+        } else {
+            throw RuntimeException("$context must implement OnDeviceTabInteractionListener")
+        }
+
     }
 
     override fun onCreateView(
@@ -83,5 +96,18 @@ class DeviceFragment : Fragment(), DeviceListClickListener {
 
     override fun onAddDeviceClicked() {
 
+    }
+
+    override fun onDeviceAddShortcutClicked(device: Device) {
+        DatabaseHelper.addDeviceShortCut(device, {
+            listener?.shortcutAdded()
+        }, {
+
+        })
+    }
+
+
+    interface OnDeviceTabInteractionListener {
+        fun shortcutAdded()
     }
 }
