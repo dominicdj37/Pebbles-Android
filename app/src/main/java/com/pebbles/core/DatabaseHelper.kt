@@ -9,7 +9,7 @@ import com.pebbles.data.User
 
 object DatabaseHelper {
 
-    private var databaseReference: DatabaseReference? = null
+    var databaseReference: DatabaseReference? = null
 
     fun initialize() {
         databaseReference = FirebaseDatabase.getInstance().reference
@@ -64,7 +64,7 @@ object DatabaseHelper {
     }
 
     fun returnUserShortCuts(onFetched: () -> Unit, onError: () -> Unit) {
-        databaseReference?.child("deviceShortcuts")?.child(Repo.user?.id!!)
+        databaseReference?.child("deviceShortcuts")?.child(Repo.user?.deviceSetId!!)
             ?.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
                 onError.invoke()
@@ -89,7 +89,7 @@ object DatabaseHelper {
 
     fun addDeviceShortCut(device: Device, onFetched: () -> Unit, onError: () -> Unit) {
         Repo.selectedShortCutAddPosition?.let { it ->
-            databaseReference?.child("deviceShortcuts")?.child(Repo.user?.id!!)?.child(it)?.child(it)?.setValue(device.id) { er, ref ->
+            databaseReference?.child("deviceShortcuts")?.child(Repo.user?.deviceSetId!!)?.child(it)?.child(it)?.setValue(device.id) { er, ref ->
                 if (er == null) {
                         when {
                             it[1] == '1' -> {
@@ -116,11 +116,26 @@ object DatabaseHelper {
     }
 
     fun removeShortcut(key: String, device: Device, onFetched: () -> Unit) {
-            databaseReference?.child("deviceShortcuts")?.child(Repo.user?.id!!)?.child(key)?.removeValue { err, ref ->
+            databaseReference?.child("deviceShortcuts")?.child(Repo.user?.deviceSetId!!)?.child(key)?.removeValue { err, ref ->
                 if(err == null) {
                         onFetched.invoke()
                 }
             }
+    }
+
+
+    fun switchDevice(device: Device, onSwitched: () -> Unit, onError: () -> Unit) {
+        device.port.let {
+            val port = "D$it"
+            val newState = if(device.state == 1) 0 else 1
+            databaseReference?.child("portData")?.child(Repo.user?.deviceSetId!!)?.child(port)?.setValue(newState) { er, ref ->
+                if (er == null) {
+                    onSwitched.invoke()
+                } else {
+                    onError.invoke()
+                }
+            }
+        }
     }
 
 }

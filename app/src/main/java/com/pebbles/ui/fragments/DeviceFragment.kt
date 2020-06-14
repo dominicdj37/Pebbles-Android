@@ -91,7 +91,7 @@ class DeviceFragment : Fragment(), DeviceListClickListener {
     }
 
     override fun onDeviceSwitchClicked(device: Device) {
-
+        listener?.onSwitch(device)
     }
 
     override fun onAddDeviceClicked() {
@@ -109,5 +109,6 @@ class DeviceFragment : Fragment(), DeviceListClickListener {
 
     interface OnDeviceTabInteractionListener {
         fun shortcutAdded()
+        fun onSwitch(device: Device)
     }
 }
