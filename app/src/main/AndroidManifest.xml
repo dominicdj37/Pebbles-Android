@@ -29,6 +29,32 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+
+        <service
+            android:name=".backgroundServices.MyFilterTileService"
+            android:icon="@drawable/ic_water_filter"
+            android:label="Filter"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE"/>
+            </intent-filter>
+        </service>
+
+
+        <service
+            android:name=".backgroundServices.MyLightTileService"
+            android:icon="@drawable/ic_light_bulb"
+            android:label="Light"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE"/>
+            </intent-filter>
+        </service>
+
+
     </application>
 
 </manifest>

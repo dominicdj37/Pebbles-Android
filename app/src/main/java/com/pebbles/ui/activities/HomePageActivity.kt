@@ -99,15 +99,15 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
     }
 
-    private fun switchDevice(device: Device) {
-        if(device.state != -1) {
-            DatabaseHelper.switchDevice(device, {
+        private fun switchDevice(device: Device) {
+            if(device.state != -1) {
+                DatabaseHelper.switchDevice(device, {
 
-            } ) {
-                //error
+                } ) {
+                    //error
+                }
             }
         }
-    }
 
     private fun initDeviceStateListener() {
         val messageListener = object : ValueEventListener {
