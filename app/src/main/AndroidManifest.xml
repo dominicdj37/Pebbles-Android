@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pebbles">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
     <application
         android:name=".core.AppContext"
         android:allowBackup="true"
@@ -11,11 +13,29 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+
+        <service android:name=".backgroundServices.PebblesService">
+        </service>
+
+
+        <receiver android:name=".PebblesWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/pebbles_widget_info" />
+        </receiver>
+
+        <activity android:name=".PebblesWidgetConfigureActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.activities.HomePageActivity"
-            android:theme="@style/homeTheme">
-        </activity>
-
+            android:theme="@style/homeTheme" />
         <activity
             android:name=".ui.activities.SplashScreenActivity"
             android:theme="@style/splashScreenTheme">
@@ -30,31 +50,24 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-
         <service
             android:name=".backgroundServices.MyFilterTileService"
             android:icon="@drawable/ic_water_filter"
             android:label="Filter"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-
             <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE"/>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
         </service>
-
-
         <service
             android:name=".backgroundServices.MyLightTileService"
             android:icon="@drawable/ic_light_bulb"
             android:label="Light"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-
             <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE"/>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
         </service>
-
-
     </application>
 
 </manifest>

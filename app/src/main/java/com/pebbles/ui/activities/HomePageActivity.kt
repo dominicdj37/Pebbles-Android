@@ -11,6 +11,7 @@ import com.google.firebase.database.ValueEventListener
 import com.pebbles.R
 import com.pebbles.Utils.ResourceUtils.getDrawableResource
 import com.pebbles.Utils.ResourceUtils.getStringResource
+import com.pebbles.backgroundServices.PebblesService
 import com.pebbles.core.DatabaseHelper
 import com.pebbles.core.Repo
 import com.pebbles.core.assignImageFromUrl
@@ -33,7 +34,7 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
         initializeDevicesFragments()
         intiDevicesView()
-
+        PebblesService.startService(this, "message")
 
     }
     private fun initializeDevicesFragments() {

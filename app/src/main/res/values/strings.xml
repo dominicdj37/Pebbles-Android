@@ -2,4 +2,7 @@
     <string name="app_name">Pebbles</string>
     <string name="error_title">Ops!</string>
     <string name="error_api">Something went wrong. Please try again later.</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="configure">Configure</string>
+    <string name="add_widget">Add widget</string>
 </resources>

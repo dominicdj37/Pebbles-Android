@@ -66,7 +66,7 @@ class MyFilterTileService: TileService() {
     override fun onStartListening() {
         super.onStartListening()
         Repo.devices.takeIf { it.isNotEmpty() }?.let {
-            it.find { device -> device.port == 2 }?.let {device ->
+            it.find { device -> device.port == 1 }?.let {device ->
                 if(device.state == 1) {
                     qsTile.state = Tile.STATE_ACTIVE
                     qsTile.label = "Filter On"
