@@ -11,9 +11,10 @@
         android:layout_height="20dp"
         android:layout_centerVertical="true"
         android:layout_gravity="center"
-        android:layout_marginStart="8dp"
-        android:visibility="visible"
-        android:background="@drawable/ic_bubbles" />
+        android:layout_marginStart="16dp"
+        android:background="@drawable/ic_notification_icon"
+        android:backgroundTint="@color/colorPrimary2"
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/textView4"
@@ -23,6 +24,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:layout_centerVertical="true"
         android:layout_toRightOf="@id/imageView2"
         android:fontFamily="cursive"
         android:text="Pebbles is taking care of your Aquarium."
@@ -31,11 +33,11 @@
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="20dp"
-        android:layout_alignParentRight="true"
         android:layout_height="20dp"
-        android:layout_marginEnd="8dp"
-        android:layout_gravity="center"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/ic_wink" />
 
 </RelativeLayout>

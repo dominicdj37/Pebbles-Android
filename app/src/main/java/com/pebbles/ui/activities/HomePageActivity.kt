@@ -191,6 +191,7 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
     }
 
     private fun logout() {
+        PebblesService.stopService(this)
         AuthUI.getInstance()
                 .signOut(this)
                 .addOnCompleteListener {

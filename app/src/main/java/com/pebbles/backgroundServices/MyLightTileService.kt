@@ -52,11 +52,15 @@ class MyLightTileService: TileService() {
         super.onTileAdded()
         // Update state
 
-        if(Repo.devices.isNullOrEmpty()){
+        if(Repo.devices.isEmpty()){
             qsTile.state = Tile.STATE_UNAVAILABLE
             qsTile.label = "Light"
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 qsTile.subtitle = "Sign in to enable"
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                qsTile.subtitle = ""
             }
         }
         // Update looks
@@ -67,6 +71,10 @@ class MyLightTileService: TileService() {
         super.onStartListening()
         Repo.devices.takeIf { it.isNotEmpty() }?.let {
             it.find { device -> device.port == 2 }?.let {device ->
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    qsTile.subtitle = ""
+                }
+
                 if(device.state == 1) {
                     qsTile.state = Tile.STATE_ACTIVE
                     qsTile.label = "Light On"
@@ -75,10 +83,14 @@ class MyLightTileService: TileService() {
                     qsTile.label = "Light Off"
                 }
 
+
             }
         } ?: let {
             qsTile.state = Tile.STATE_UNAVAILABLE
             qsTile.label = "Light"
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                qsTile.subtitle = "Sign in to enable"
+            }
         }
 
         // Update looks

@@ -62,7 +62,9 @@ class PebblesService: Service() {
         val notificationBigLayout = RemoteViews(packageName, R.layout.notification_expanded_layout)
 
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.mipmap.ic_app_icon_round)
+            .setSmallIcon(R.drawable.ic_notification_icon)
+            .setColor(getColor(R.color.colorPrimary2))
+            .setColorized(true)
             .setCustomContentView(notificationLayout)
             .setContentIntent(pendingIntent)
             .build()
@@ -75,7 +77,7 @@ class PebblesService: Service() {
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val serviceChannel = NotificationChannel(CHANNEL_ID, "Foreground Service Channel",
+            val serviceChannel = NotificationChannel(CHANNEL_ID, "Pebbles Service",
                 NotificationManager.IMPORTANCE_DEFAULT)
             val manager = getSystemService(NotificationManager::class.java)
             manager!!.createNotificationChannel(serviceChannel)

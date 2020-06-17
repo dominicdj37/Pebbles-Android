@@ -52,13 +52,18 @@ class MyFilterTileService: TileService() {
         super.onTileAdded()
         // Update state
 
-        if(Repo.devices.isNullOrEmpty()){
+        if(Repo.devices.isEmpty()){
             qsTile.state = Tile.STATE_UNAVAILABLE
             qsTile.label = "Filter"
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 qsTile.subtitle = "Sign in to enable"
             }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                qsTile.subtitle = ""
+            }
         }
+
         // Update looks
         qsTile.updateTile()
     }
@@ -66,6 +71,11 @@ class MyFilterTileService: TileService() {
     override fun onStartListening() {
         super.onStartListening()
         Repo.devices.takeIf { it.isNotEmpty() }?.let {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                qsTile.subtitle = ""
+            }
+
             it.find { device -> device.port == 1 }?.let {device ->
                 if(device.state == 1) {
                     qsTile.state = Tile.STATE_ACTIVE
@@ -79,6 +89,9 @@ class MyFilterTileService: TileService() {
         } ?: let {
             qsTile.state = Tile.STATE_UNAVAILABLE
             qsTile.label = "Filter"
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                qsTile.subtitle = "Sign in to enable"
+            }
         }
 
         // Update looks
