@@ -34,6 +34,7 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
         initializeDevicesFragments()
         intiDevicesView()
+        initTempStateListener()
         PebblesService.startService(this, "message")
 
     }
@@ -136,6 +137,29 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
         }
 
         Repo.user?.deviceSetId?.let { DatabaseHelper.databaseReference?.child("portData")?.child(it)?.addValueEventListener(messageListener) }
+
+    }
+
+    private fun initTempStateListener() {
+        val messageListener = object : ValueEventListener {
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    val portData = dataSnapshot.value as HashMap<String,Float>
+                    portData.forEach { (port, state) ->
+                       if(port == "D5") {
+                           progressText.text = state.toString()
+                       }
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Failed to read value
+            }
+        }
+
+        Repo.user?.deviceSetId?.let { DatabaseHelper.databaseReference?.child("tempData")?.child(it)?.addValueEventListener(messageListener) }
 
     }
 

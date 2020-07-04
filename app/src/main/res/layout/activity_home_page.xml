@@ -72,30 +72,30 @@
         android:id="@+id/progressText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/ic_temperature"
+        android:drawablePadding="10dp"
         android:gravity="center"
-        android:text="20%"
+        android:singleLine="true"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp"
         app:autoSizeTextType="none"
-        app:layout_constraintBottom_toBottomOf="@id/waterLevelProgressBar"
-        app:layout_constraintEnd_toEndOf="@id/waterLevelProgressBar"
-        app:layout_constraintTop_toTopOf="@+id/waterLevelProgressBarBack"
-        android:layout_marginEnd="12dp"
-        >
-    </TextView>
+        app:layout_constraintBottom_toBottomOf="@+id/waterLevelProgressBarBack"
+        app:layout_constraintEnd_toEndOf="@+id/waterLevelProgressBarBack"
+        app:layout_constraintStart_toStartOf="@+id/waterLevelProgressBarBack"
+        app:layout_constraintTop_toBottomOf="@+id/waterDropIconImageView"
+        app:layout_constraintVertical_bias="0.0"></TextView>
 
 
     <ImageView
         android:id="@+id/waterDropIconImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_water_drop"
+        android:background="@drawable/ic_thermometer"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="@id/waterLevelProgressBarBack"
         app:layout_constraintEnd_toEndOf="@id/waterLevelProgressBarBack"
         app:layout_constraintStart_toStartOf="@id/waterLevelProgressBarBack"
-        app:layout_constraintTop_toTopOf="@id/waterLevelProgressBarBack">
-    </ImageView>
+        app:layout_constraintTop_toTopOf="@id/waterLevelProgressBarBack"></ImageView>
 
     <ImageView
         android:id="@+id/lightIndicator"
@@ -128,8 +128,7 @@
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="@id/shortcut2Layout"
         app:layout_constraintStart_toStartOf="@id/shortcut2Layout"
-        app:layout_constraintTop_toBottomOf="@id/waterLevelProgressBarBack">
-    </com.pebbles.ui.Appwidgets.ShortCutView>
+        app:layout_constraintTop_toBottomOf="@+id/waterLevelProgressBarBack"></com.pebbles.ui.Appwidgets.ShortCutView>
 
 
 
