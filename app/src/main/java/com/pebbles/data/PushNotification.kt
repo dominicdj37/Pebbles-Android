@@ -21,8 +21,6 @@ class PushNotification {
             title = data["title"]
             subtitle = data["subtitle"]
             description = data["description"]
-
-            notificationId = data["notification_id"]?.toIntOrNull()
             notificationMode = data["notification_mode"]
             notificationGroupId = data["grouping_id"]?.toIntOrNull()
 
@@ -34,5 +32,4 @@ class PushNotification {
             teamSetID = data["team_set_id"]
             announcementID = data["announcement_id"]
         }
-
 }

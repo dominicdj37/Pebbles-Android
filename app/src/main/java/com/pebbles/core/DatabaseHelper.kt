@@ -2,12 +2,24 @@ package com.pebbles.core
 
 import android.util.Log
 import com.google.firebase.database.*
+import com.pebbles.Utils.NotificationUtils.TAG
 import com.pebbles.core.Constants.APP_TAG
-import com.pebbles.core.Repo.user
 import com.pebbles.data.Device
 import com.pebbles.data.EnvironmentSettings
 import com.pebbles.data.Shortcuts
 import com.pebbles.data.User
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONException
+import org.json.JSONObject
+import java.io.IOException
+import kotlin.collections.ArrayList
+
 
 object DatabaseHelper {
 
@@ -22,9 +34,11 @@ object DatabaseHelper {
     }
 
     fun updateFCMToken(token: String?, onSucess: () -> Unit) {
-        databaseReference?.child("fcmTokens")?.child(user?.id!!)?.setValue(token) { er, ref ->
-            if (er == null) {
-                onSucess.invoke()
+        token?.let {
+            databaseReference?.child("fcmTokens")?.child(it)?.setValue(token) { er, ref ->
+                if (er == null) {
+                    onSucess.invoke()
+                }
             }
         }
     }
@@ -159,8 +173,61 @@ object DatabaseHelper {
             databaseReference?.child("portData")?.child(Repo.user?.deviceSetId!!)?.child(port)?.setValue(newState) { er, ref ->
                 if (er == null) {
                     onSwitched.invoke()
+
+                    sendSwitchedNotification(newState,it)
+
                 } else {
                     onError.invoke()
+                }
+            }
+        }
+    }
+
+    fun sendSwitchedNotification(newState: Int, deviceId: Int) {
+        Repo.settings?.fcmServerKey?.let { serverKey ->
+            // create your json here
+            // create your json here
+
+            val onOff = if (newState == 1) "on" else "off"
+            val device =  if (deviceId == 1) "Filter" else "Light"
+
+            Repo.tokens.forEach { tokenMap->
+                GlobalScope.launch {
+                    withContext(Dispatchers.IO) {
+                        val jsonObject = JSONObject()
+                        try {
+                            val data = JSONObject()
+                            data.put("title", "Hi there!")
+                            data.put("description", "${Repo.user?.name} switched $onOff the $device")
+                            data.put("notification_mode", "new")
+                            jsonObject.put("to", tokenMap.value)
+                            jsonObject.put("data", data)
+                        } catch (e: JSONException) {
+                            e.printStackTrace()
+                        }
+
+                        val client = OkHttpClient()
+                        val json: MediaType? = "application/json; charset=utf-8".toMediaTypeOrNull()
+                        // put your json here
+                        // put your json here
+                        val body = jsonObject.toString().toRequestBody(json)
+                        val request: Request = Request.Builder()
+                            .url("https://fcm.googleapis.com/fcm/send")
+                            .addHeader("Authorization", "key=$serverKey")
+                            .addHeader("Content-Type", "application/json")
+                            .post(body)
+                            .build()
+
+                        var response: Response? = null
+                        try {
+                            response = client.newCall(request).execute()
+                            val resStr: String = response.body.toString()
+                            Log.d(TAG, "send notification success: $resStr")
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                            Log.d(TAG, "send notification failed: ${e.message}")
+                        }
+                    }
                 }
             }
         }

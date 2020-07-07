@@ -44,6 +44,14 @@
             motion:layout_constraintTop_toBottomOf="@+id/welcomeTextView">
         </Constraint>
         <Constraint android:id="@+id/lightIndicator" />
+        <Constraint
+            android:layout_height="100dp"
+            motion:layout_constraintStart_toStartOf="@id/shortcut2Layout"
+            motion:layout_constraintEnd_toEndOf="@id/shortcut2Layout"
+            android:layout_width="100dp"
+            android:id="@+id/shortcut1Layout"
+            motion:layout_constraintTop_toBottomOf="@+id/waterLevelProgressBarBack"
+            android:layout_marginTop="16dp" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">

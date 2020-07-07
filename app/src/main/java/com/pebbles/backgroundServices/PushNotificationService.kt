@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.media.RingtoneManager
 import android.os.Build
+import android.os.SystemClock
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -29,7 +30,7 @@ class PushNotificationService : FirebaseMessagingService() {
         // todo Handle messages here.
 
         Log.d(TAG, "From: ${remoteMessage.from}")
-        Log.d(TAG, "Notification payload: ${remoteMessage.notification}")
+        Log.d(TAG, "Notification data payload: ${remoteMessage.data}")
         remoteMessage.data.isNotEmpty().let {
             handleNow(remoteMessage.data) //this should be done within 10 seconds or else use scheduleJob
         }
@@ -37,6 +38,9 @@ class PushNotificationService : FirebaseMessagingService() {
 
     private fun handleNow(data: MutableMap<String, String>) {
         NotificationUtils.getPushNotificationFromData(data).let {
+
+            it.notificationId = SystemClock.uptimeMillis().toInt()
+
             when (it.notificationMode) {
                 NEW -> postNewNotification(it)
                 DELETE -> deleteNotification(it)

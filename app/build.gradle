@@ -12,7 +12,7 @@ android {
         applicationId "com.pebbles"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 32
+        versionCode 35
         versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -53,6 +53,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    implementation 'com.squareup.okhttp3:okhttp:4.4.0'
+
 
     implementation 'com.google.firebase:firebase-database:19.3.0'
     implementation 'com.google.firebase:firebase-analytics:17.2.2'
@@ -64,7 +66,6 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0'
 
     implementation 'com.bitvale:switcher:1.1.0'
-
     implementation 'com.github.ngallazzi:FancySwitch:master-SNAPSHOT'
 
 }

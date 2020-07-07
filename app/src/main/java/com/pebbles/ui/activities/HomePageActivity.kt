@@ -62,7 +62,6 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
     private fun fetchTokens() {
         val messageListener = object : ValueEventListener {
-
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     Repo.tokens = dataSnapshot.value as HashMap<String,String>
@@ -83,15 +82,11 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
     private fun initializeShortCutDevices() {
         DatabaseHelper.returnUserShortCuts({
-
             initShortcutViews()
-
             initDeviceStateListener()
-
         },{
             showDismissiveAlertDialog(getStringResource(R.string.error_title),getStringResource(R.string.error_api))
         })
-
     }
 
     private fun initShortcutViews() {
