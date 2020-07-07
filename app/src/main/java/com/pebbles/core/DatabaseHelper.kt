@@ -3,7 +3,9 @@ package com.pebbles.core
 import android.util.Log
 import com.google.firebase.database.*
 import com.pebbles.core.Constants.APP_TAG
+import com.pebbles.core.Repo.user
 import com.pebbles.data.Device
+import com.pebbles.data.EnvironmentSettings
 import com.pebbles.data.Shortcuts
 import com.pebbles.data.User
 
@@ -17,6 +19,32 @@ object DatabaseHelper {
 
     fun addUserForId(id: String, user: User?) {
         databaseReference?.child("users")?.child(id)?.setValue(user)
+    }
+
+    fun updateFCMToken(token: String?, onSucess: () -> Unit) {
+        databaseReference?.child("fcmTokens")?.child(user?.id!!)?.setValue(token) { er, ref ->
+            if (er == null) {
+                onSucess.invoke()
+            }
+        }
+    }
+
+
+    fun getEnvironmentSettings(onFetched: (EnvironmentSettings?) -> Unit) {
+        databaseReference?.child("settings")?.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    onFetched.invoke(null)
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    if (p0.exists()) {
+                        onFetched.invoke(p0.getValue(EnvironmentSettings::class.java))
+                    } else {
+                        onFetched.invoke(null)
+                    }
+                }
+
+            })
     }
 
     fun returnUserForUid(uid: String, onFetched: (User?) -> Unit, onError: () -> Unit) {

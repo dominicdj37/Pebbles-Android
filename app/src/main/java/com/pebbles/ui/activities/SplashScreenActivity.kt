@@ -86,9 +86,18 @@ class SplashScreenActivity : BaseActivity() {
 
         DatabaseHelper.initialize()
 
-        checkUserExistAndUpdate(response, user) {
-            navigateToHome()
-            finish()
+        getEnvironmentSettings {
+            checkUserExistAndUpdate(response, user) {
+                navigateToHome()
+                finish()
+            }
+        }
+    }
+
+    private fun getEnvironmentSettings(onFetch: () -> Unit) {
+        DatabaseHelper.getEnvironmentSettings {
+            Repo.settings = it
+            onFetch.invoke()
         }
     }
 

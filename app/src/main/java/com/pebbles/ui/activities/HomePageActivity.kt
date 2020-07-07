@@ -4,11 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.pebbles.R
+import com.pebbles.Utils.NotificationUtils
 import com.pebbles.Utils.ResourceUtils.getDrawableResource
 import com.pebbles.Utils.ResourceUtils.getStringResource
 import com.pebbles.backgroundServices.PebblesService
@@ -37,7 +39,43 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
         initTempStateListener()
         PebblesService.startService(this, "message")
 
+        askForPushNotificationPermission()
+        fetchTokens()
     }
+
+
+
+    private fun askForPushNotificationPermission() {
+        NotificationUtils.updateTokenLiveData.observe(this, Observer { token->
+            DatabaseHelper.updateFCMToken(token) {
+                Repo.myToken = token
+                NotificationUtils.setShouldRegenerateToken()
+            }
+        })
+
+        if(NotificationUtils.shouldRegenerateToken()) {
+            NotificationUtils.initFireBase(onTokenGenerated = { token ->
+                NotificationUtils.updateTokenLiveData.postValue(token)
+            })
+        }
+    }
+
+    private fun fetchTokens() {
+        val messageListener = object : ValueEventListener {
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Repo.tokens = dataSnapshot.value as HashMap<String,String>
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Failed to read value
+            }
+        }
+        Repo.user?.deviceSetId?.let { DatabaseHelper.databaseReference?.child("fcmTokens")?.addValueEventListener(messageListener) }
+    }
+
+
     private fun initializeDevicesFragments() {
         val fragment = DeviceFragment.newInstance(0)
         loadFragment(fragment)
