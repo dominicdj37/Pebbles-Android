@@ -48,10 +48,6 @@
             </intent-filter>
         </activity>
 
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
-
         <service
             android:name=".backgroundServices.MyFilterTileService"
             android:icon="@drawable/ic_water_filter"
