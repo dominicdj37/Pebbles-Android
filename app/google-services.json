@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "941536264673-phitn29umj6tie4sihp2b1dhs3fctbt1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pebbles",
+            "certificate_hash": "229fc0fc9d31c0cda19add1a0482daa9a47ae15e"
+          }
+        },
+        {
           "client_id": "941536264673-k63v6qjvq4irh59b36kmam03d7i14l6m.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

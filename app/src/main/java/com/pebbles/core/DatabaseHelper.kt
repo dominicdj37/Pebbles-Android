@@ -18,6 +18,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
+import java.lang.Exception
 import kotlin.collections.ArrayList
 
 
@@ -232,5 +233,39 @@ object DatabaseHelper {
             }
         }
     }
+
+
+    fun returnTempDataFor(day:String, month:String, year:String, onFetched: (ArrayList<Pair<String,Double>>) -> Unit) {
+        val ref = databaseReference?.child("sensorData")?.child(Repo.user?.deviceSetId!!)?.child("tempValue")?.child(year)?.child(month)?.child(day)
+        ref?.orderByKey()
+        ref?.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    onFetched.invoke(arrayListOf())
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    if (p0.exists()) {
+                        val list = arrayListOf<Pair<String,Double>>()
+                        p0.children.forEach{ tempData ->
+                            try {
+                                tempData.key?.let { key->
+                                    (tempData.value as Double).let { value->
+                                        list.add(Pair(key, value))
+                                    }
+                                }
+
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                        onFetched.invoke(list)
+                    } else {
+                        onFetched.invoke(arrayListOf())
+                    }
+                }
+
+            })
+    }
+
 
 }

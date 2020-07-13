@@ -24,6 +24,9 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.activity_home_page.*
 import kotlinx.android.synthetic.main.nav_layout.view.*
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionListener{
@@ -41,8 +44,33 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
         askForPushNotificationPermission()
         fetchTokens()
+
+
+        fetchTodayTempData()
     }
 
+    private fun fetchTodayTempData() {
+        val calender = Calendar.getInstance()
+        calender.time = Date()
+        getTemperatureDataFromDate(
+            calender.get(Calendar.DAY_OF_MONTH).toString(),
+            Repo.months[calender.get(Calendar.MONTH)],
+            calender.get(Calendar.YEAR).toString()
+        )
+    }
+
+    private fun getTemperatureDataFromDate(day: String, month: String, year: String) {
+        Repo.selectedDay = day
+        Repo.selectedMonth = month
+        Repo.selectedYear = year
+        DatabaseHelper.returnTempDataFor(day, month, year) {
+            Repo.currentTempGraphData = it
+            val fragment = supportFragmentManager.findFragmentById(R.id.bottomFragment)
+            if (fragment is DeviceFragment) {
+                fragment.reloadDeviceList()
+            }
+        }
+    }
 
 
     private fun askForPushNotificationPermission() {
@@ -275,6 +303,10 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
     override fun onSwitch(device: Device) {
         switchDevice(device)
+    }
+
+    override fun onGraphDataDateSelected(day: String, month: String, year: String) {
+        getTemperatureDataFromDate(day, month, year)
     }
 
 

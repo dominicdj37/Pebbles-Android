@@ -22,4 +22,11 @@ object Repo {
     val deviceShortCuts: ArrayList<Shortcuts> = arrayListOf()
     var selectedShortCutAddPosition: String? = "s1"
 
+
+    val months = arrayListOf<String>("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+    var currentTempGraphData: java.util.ArrayList<Pair<String, Double>> = arrayListOf()
+    var selectedDay = ""
+    var selectedMonth = ""
+    var selectedYear = ""
+
 }

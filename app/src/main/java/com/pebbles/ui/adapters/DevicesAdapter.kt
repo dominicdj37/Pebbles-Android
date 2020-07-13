@@ -3,6 +3,7 @@ package com.pebbles.ui.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.dynamite.DynamiteModule
 import com.pebbles.R
 import com.pebbles.data.Device
 
@@ -14,6 +15,7 @@ class DevicesAdapter(
         return when(list[position]) {
             is DeviceDataHolder -> R.layout.devices_item_layout
             is AddDeviceDataHolder -> R.layout.add_device_item_layout
+            is TempGraphComponentDataHolder -> R.layout.graph_item_layout
             else -> R.layout.add_device_item_layout
         }
     }
@@ -27,6 +29,10 @@ class DevicesAdapter(
             R.layout.add_device_item_layout -> AddDeviceViewHolder(
                 layoutView
             )
+            R.layout.graph_item_layout -> TempGraphComponentViewHolder(
+                layoutView
+            )
+
             else -> AddDeviceViewHolder(layoutView)
         }
     }
@@ -38,6 +44,7 @@ class DevicesAdapter(
         when(list[position]) {
             is DeviceDataHolder -> (holder as DeviceViewHolder).bindTo(list[position] as DeviceDataHolder, deviceListClickListener)
             is AddDeviceDataHolder -> (holder as AddDeviceViewHolder).bindTo(list[position] as AddDeviceDataHolder, deviceListClickListener)
+            is TempGraphComponentDataHolder -> (holder as TempGraphComponentViewHolder).bindTo(list[position] as TempGraphComponentDataHolder, deviceListClickListener)
         }
 
     }
@@ -46,6 +53,7 @@ class DevicesAdapter(
         fun onDeviceSwitchClicked(device: Device)
         fun onAddDeviceClicked()
         fun onDeviceAddShortcutClicked(device: Device)
+        fun onGraphDataDateSelected(day: String, month: String, year: String)
     }
 
 

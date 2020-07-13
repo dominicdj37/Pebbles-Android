@@ -16,6 +16,7 @@ import com.pebbles.ui.adapters.AddDeviceDataHolder
 import com.pebbles.ui.adapters.DeviceDataHolder
 import com.pebbles.ui.adapters.DevicesAdapter
 import com.pebbles.ui.adapters.DevicesAdapter.DeviceListClickListener
+import com.pebbles.ui.adapters.TempGraphComponentDataHolder
 
 /**
  * A fragment representing a list of Items.
@@ -85,6 +86,7 @@ class DeviceFragment : Fragment(), DeviceListClickListener {
             it.forEach { device->
                 deviceList.add(DeviceDataHolder(device))
             }
+            deviceList.add(TempGraphComponentDataHolder(Repo.currentTempGraphData))
             deviceList.add(AddDeviceDataHolder())
             deviceAdapter.notifyDataSetChanged()
         }
@@ -106,9 +108,14 @@ class DeviceFragment : Fragment(), DeviceListClickListener {
         })
     }
 
+    override fun onGraphDataDateSelected(day: String, month: String, year: String) {
+        listener?.onGraphDataDateSelected(day, month, year)
+    }
+
 
     interface OnDeviceTabInteractionListener {
         fun shortcutAdded()
         fun onSwitch(device: Device)
+        fun onGraphDataDateSelected(day: String, month: String, year: String)
     }
 }
