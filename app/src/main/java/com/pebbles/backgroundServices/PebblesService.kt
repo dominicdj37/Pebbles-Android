@@ -6,6 +6,8 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.media.AudioAttributes
+import android.net.Uri
 import android.os.Build
 import android.os.IBinder
 import android.widget.RemoteViews
@@ -39,7 +41,6 @@ class PebblesService: Service() {
         }
     }
 
-
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
@@ -59,7 +60,6 @@ class PebblesService: Service() {
         )
 
         val notificationLayout = RemoteViews(packageName, R.layout.notificaton_layout)
-        val notificationBigLayout = RemoteViews(packageName, R.layout.notification_expanded_layout)
 
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification_icon)
@@ -68,7 +68,7 @@ class PebblesService: Service() {
             .setCustomContentView(notificationLayout)
             .setContentIntent(pendingIntent)
             .build()
-        startForeground(1, notification)
+        startForeground(200, notification)
 
         initDeviceStateListener()
 
@@ -80,7 +80,13 @@ class PebblesService: Service() {
             val serviceChannel = NotificationChannel(CHANNEL_ID, "Pebbles Service",
                 NotificationManager.IMPORTANCE_DEFAULT)
             val manager = getSystemService(NotificationManager::class.java)
-            manager!!.createNotificationChannel(serviceChannel)
+            val uri: Uri = Uri.parse("android.resource://" + this.packageName + "/" + R.raw.drop)
+            val att = AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                .build()
+            serviceChannel.setSound(uri, att)
+            manager?.createNotificationChannel(serviceChannel)
         }
     }
 

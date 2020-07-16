@@ -201,6 +201,7 @@ object DatabaseHelper {
                             data.put("title", "Hi there!")
                             data.put("description", "${Repo.user?.name} switched $onOff the $device")
                             data.put("notification_mode", "new")
+                            data.put("notification_id",deviceId)
                             jsonObject.put("to", tokenMap.value)
                             jsonObject.put("data", data)
                         } catch (e: JSONException) {

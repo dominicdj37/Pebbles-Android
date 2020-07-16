@@ -3,9 +3,10 @@ package com.pebbles.backgroundServices
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.media.AudioAttributes
 import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
-import android.os.SystemClock
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -24,6 +25,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+
 class PushNotificationService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -38,9 +40,6 @@ class PushNotificationService : FirebaseMessagingService() {
 
     private fun handleNow(data: MutableMap<String, String>) {
         NotificationUtils.getPushNotificationFromData(data).let {
-
-            it.notificationId = SystemClock.uptimeMillis().toInt()
-
             when (it.notificationMode) {
                 NEW -> postNewNotification(it)
                 DELETE -> deleteNotification(it)
@@ -53,20 +52,14 @@ class PushNotificationService : FirebaseMessagingService() {
 
 
     private fun postNewNotification(data: PushNotification) {
-
-
-        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL)
             .setSmallIcon(R.drawable.ic_notification_icon)
             .setContentTitle(data.title)
-            .setSubText(data.subtitle)
             .setColor(getColor(R.color.colorPrimaryDark))
             .setColorized(true)
             .setContentText(data.description)
             .setStyle(NotificationCompat.BigTextStyle().bigText(data.description))
             .setAutoCancel(true)
-            .setSound(defaultSoundUri)
-            .setGroup(data.notificationGroupId.toString())
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -78,29 +71,18 @@ class PushNotificationService : FirebaseMessagingService() {
                 NOTIFICATION_CHANNEL_DESCRIPTION,
                 NotificationManager.IMPORTANCE_HIGH
             )
+            val uri: Uri = Uri.parse("android.resource://" + this.packageName + "/" + R.raw.water_message)
+            val att = AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                .build()
+            channel.setSound(uri, att)
             notificationManager.createNotificationChannel(channel)
         }
 
 
-
         data.notificationId?.let {
             notificationManager.notify(it, notificationBuilder.build())
-
-                val shouldCreateSummary = notificationManager.activeNotifications.filter { item-> item.id == data.notificationGroupId }.isNullOrEmpty() && data.notificationGroupId != null
-                val hasMoreThanOneForSameGroup = notificationManager.activeNotifications.filter { item-> item.notification.group == data.notificationGroupId.toString() ?: "-1" }.size > 1
-                if(hasMoreThanOneForSameGroup && shouldCreateSummary) {
-
-                    val summaryNotificationBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL)
-                        .setSmallIcon(R.drawable.ic_notification_icon)
-                        .setColor(getColor(R.color.colorPrimaryDark))
-                        .setColorized(true)
-                        .setStyle(NotificationCompat.BigTextStyle().bigText(data.description))
-                        .setAutoCancel(true)
-                        .setGroup(data.notificationGroupId.toString())
-                        .setGroupSummary(true)
-                    data.notificationGroupId?.let { groupId -> notificationManager.notify(groupId, summaryNotificationBuilder.build()) }
-                    Log.d(NotificationUtils.TAG, "Created summary for: ${data.notificationGroupId}")
-                }
         } ?: let { Log.d(TAG, "POST: Notification Id null") }
 
 

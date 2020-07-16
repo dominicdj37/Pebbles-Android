@@ -1,5 +1,7 @@
 package com.pebbles.ui.activities
 
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.view.GravityCompat
@@ -25,8 +27,6 @@ import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.activity_home_page.*
 import kotlinx.android.synthetic.main.nav_layout.view.*
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 
 class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionListener{
@@ -48,6 +48,8 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
         fetchTodayTempData()
     }
+
+
 
     private fun fetchTodayTempData() {
         val calender = Calendar.getInstance()

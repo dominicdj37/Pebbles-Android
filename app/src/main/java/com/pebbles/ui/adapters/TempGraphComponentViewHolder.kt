@@ -40,26 +40,10 @@ class TempGraphComponentViewHolder(itemView: View) : RecyclerView.ViewHolder(ite
         lineChart.setPinchZoom(true);
 
         val entries = ArrayList<Entry>()
-        val xLables = arrayListOf<String>()
         var xValues = 0f
         var upperLimit = 0f
         dataHolder.data.forEach {
-            val labels = it.first.split(":")
-
-            val amPm = if (labels[0].toInt() >= 12) {
-                "PM"
-            } else {
-                "AM"
-            }
-            val hour = if (labels[0].toInt() > 12) {
-                12 - labels[0].toInt()
-            } else {
-                labels[0].toInt()
-            }
-            xLables.add("$hour:${labels[0]} $amPm")
-
             val time = it.first.replace(":", "").toFloat()
-
             entries.add(Entry(time, it.second.toFloat()))
             upperLimit = time
         }
@@ -74,10 +58,13 @@ class TempGraphComponentViewHolder(itemView: View) : RecyclerView.ViewHolder(ite
         vl.lineWidth = 1f;
         vl.circleRadius = 1f;
         vl.setDrawCircleHole(false);
+        vl.setDrawCircles(false)
         vl.valueTextSize = 9f;
         vl.setDrawFilled(true);
         vl.formLineWidth = 1f;
         lineChart.xAxis.labelRotationAngle = 0f
+        vl.mode = LineDataSet.Mode.HORIZONTAL_BEZIER;
+
 
         lineChart.data = LineData(vl)
 
@@ -147,7 +134,7 @@ class MyValueFormatter : ValueFormatter() {
         if (valueString.length == 6) {
             hour = "${valueString[0]}${valueString[1]}"
             min = "${valueString[2]}${valueString[3]}"
-            second = "${valueString[4]}${valueString[4]}"
+            second = "${valueString[4]}${valueString[5]}"
         }
 
         if (valueString.length == 5) {
