@@ -1,17 +1,17 @@
 package com.pebbles.ui.activities
 
-import android.R
+import android.app.Dialog
 import android.content.Intent
-import android.content.res.TypedArray
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Message
 import android.view.View
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.pebbles.Utils.ResourceUtils.getStringResource
-import com.pebbles.data.Device
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.pebbles.R
 
 
 open class BaseActivity: AppCompatActivity() {
@@ -46,7 +46,6 @@ open class BaseActivity: AppCompatActivity() {
         startActivity(Intent(this, HomePageActivity::class.java))
     }
 
-
     fun showDismissiveAlertDialog(title: String, message: String, onDismiss: () -> Unit? = {}) {
             val mAlertDialog = AlertDialog.Builder(this).create()
             mAlertDialog.setTitle(title)
@@ -64,5 +63,35 @@ open class BaseActivity: AppCompatActivity() {
             }
             mAlertDialog.show()
     }
+
+    fun navigateToSettings() {
+        startActivity(Intent(this, SettingsActivity::class.java))
+    }
+
+    fun showEnableBioMetricDialog(onNo: () -> Unit? ,onYes: () -> Unit?) {
+        val dialog = Dialog(this, R.style.FullScreenDialogTheme)
+        dialog.setCancelable(false)
+        dialog.window?.decorView?.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        dialog.setContentView(R.layout.layout_enable_biometric)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        val takeMeThereTextView = dialog.findViewById(R.id.takeMeThereTextView) as TextView
+        val cancelTextView = dialog.findViewById(R.id.cancelTextView) as TextView
+
+        takeMeThereTextView.setOnClickListener {
+            onYes.invoke()
+            dialog.dismiss()
+        }
+        cancelTextView.setOnClickListener {
+            onNo.invoke()
+            dialog.dismiss()
+
+        }
+
+        dialog.show()
+
+    }
+
+
+
 
 }

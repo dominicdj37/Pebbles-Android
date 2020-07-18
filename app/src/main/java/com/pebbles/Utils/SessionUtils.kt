@@ -14,6 +14,9 @@ class SessionUtils(val context: Context) {
         //region SharedPreference Key
         private const val PEBBLES_PREFERENCE = "Pebbles_Preference"
         private const val SHOULD_ASK_NOTIFICATION = "SHOULD_ASK_NOTIFICATION"
+        private const val USER_ALERTS_PREFERENCE = "USER_ALERTS_PREFERENCE"
+        private const val BIOMETRIC_SHOWN_FLAG = "BIOMETRIC_SHOWN_FLAG"
+        private const val BIOMETRIC_ENABLED_FLAG = "BIOMETRIC_ENABLED_FLAG"
 
 
         //endregion
@@ -39,4 +42,32 @@ class SessionUtils(val context: Context) {
     fun getShouldRegenerateToken(): Boolean {
         return sessionPrefs?.getBoolean(SHOULD_ASK_NOTIFICATION, true) ?: true
     }
+
+    fun setUserAlertsOn(on: Boolean) {
+        sessionPrefs?.edit()?.putBoolean(USER_ALERTS_PREFERENCE,on)?.apply()
+    }
+
+    fun getUserAlertsOn(): Boolean {
+        return sessionPrefs?.getBoolean(USER_ALERTS_PREFERENCE, true) ?: true
+    }
+
+
+
+
+    fun setBiometricSetupShownFlag() {
+        sessionPrefs?.edit()?.putBoolean(BIOMETRIC_SHOWN_FLAG,true)?.apply()
+    }
+
+    fun getBiometricSetupShownFlag(): Boolean {
+        return sessionPrefs?.getBoolean(SHOULD_ASK_NOTIFICATION, false) ?: false
+    }
+
+    fun setBiometricEnabledFlag(set: Boolean) {
+        sessionPrefs?.edit()?.putBoolean(BIOMETRIC_ENABLED_FLAG,set)?.apply()
+    }
+
+    fun getBiometricEnabledFlag(): Boolean {
+        return sessionPrefs?.getBoolean(BIOMETRIC_ENABLED_FLAG, false) ?: false
+    }
+
 }

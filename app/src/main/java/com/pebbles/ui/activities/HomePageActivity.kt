@@ -12,19 +12,19 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.pebbles.R
+import com.pebbles.Utils.BiometricUtils
 import com.pebbles.Utils.NotificationUtils
 import com.pebbles.Utils.ResourceUtils.getDrawableResource
 import com.pebbles.Utils.ResourceUtils.getStringResource
 import com.pebbles.backgroundServices.PebblesService
-import com.pebbles.core.DatabaseHelper
-import com.pebbles.core.Repo
-import com.pebbles.core.assignImageFromUrl
+import com.pebbles.core.*
 import com.pebbles.data.Device
 import com.pebbles.ui.Appwidgets.ShortCutView
 import com.pebbles.ui.fragments.DeviceFragment
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.activity_home_page.*
+import kotlinx.android.synthetic.main.activity_home_page.view.*
 import kotlinx.android.synthetic.main.nav_layout.view.*
 import java.util.*
 
@@ -47,8 +47,28 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
 
         fetchTodayTempData()
+
+
+
+        Run.after(5000) {
+            showBiometricSetupIfNeeded()
+        }
+
     }
 
+    private fun showBiometricSetupIfNeeded() {
+        if(!sessionUtils.getBiometricSetupShownFlag() && BiometricUtils.checkBiometricsAvailable(this) && !sessionUtils.getBiometricEnabledFlag()) {
+            // show dialog and navigate to biometric setup
+            showEnableBioMetricDialog (
+                {
+                    sessionUtils.setBiometricSetupShownFlag()
+                }
+            ) {
+                sessionUtils.setBiometricSetupShownFlag()
+                navigateToSettings()
+            }
+        }
+    }
 
 
     private fun fetchTodayTempData() {
@@ -273,9 +293,16 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
             drawer_layout.openDrawer(GravityCompat.START)
         }
         nav_view.signOutTextView.setOnClickListener {
+            drawer_layout.closeDrawer(GravityCompat.START)
             logout()
         }
+        nav_view.SettingsTextView.setOnClickListener {
+            navigateToSettings()
+            drawer_layout.closeDrawer(GravityCompat.START)
+
+        }
     }
+
 
     private fun logout() {
         PebblesService.stopService(this)

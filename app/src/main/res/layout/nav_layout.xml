@@ -83,7 +83,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/SettingsTextView"
         app:layout_constraintVertical_bias="1.0" />
 
     <com.pebbles.core.NavBarSpacer
@@ -92,5 +92,19 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent">
     </com.pebbles.core.NavBarSpacer>
+
+    <TextView
+        android:id="@+id/SettingsTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableStart="@drawable/ic_settings"
+        android:drawablePadding="8dp"
+        android:text="Settings"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

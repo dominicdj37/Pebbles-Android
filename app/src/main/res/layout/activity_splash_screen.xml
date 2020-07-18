@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/spash_gradient"
     android:fitsSystemWindows="true"
+    android:animateLayoutChanges="true"
     tools:context=".ui.activities.SplashScreenActivity">
 
     <TextView
@@ -43,5 +44,16 @@
         app:layout_constraintEnd_toEndOf="@+id/profileEmailTextView"
         app:layout_constraintStart_toStartOf="@+id/profileEmailTextView"
         app:layout_constraintTop_toBottomOf="@+id/profileEmailTextView" />
+
+    <ImageView
+        android:id="@+id/fingerPrintIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/profileEmailTextView"
+        app:layout_constraintStart_toStartOf="@+id/profileEmailTextView"
+        app:layout_constraintTop_toBottomOf="@+id/profileEmailTextView"
+        app:srcCompat="@drawable/ic_fingerprint" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

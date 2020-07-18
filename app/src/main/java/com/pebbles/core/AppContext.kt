@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import com.pebbles.Utils.BiometricUtils
 import com.pebbles.Utils.ResourceUtils
 import com.pebbles.Utils.SessionUtils
 import com.pebbles.core.Constants.APP_TAG
@@ -23,6 +24,7 @@ class AppContext: Application() {
     override fun onCreate() {
         Log.d(APP_TAG,"Application started")
         super.onCreate()
+        BiometricUtils.initialize(this)
         ResourceUtils.initialize(this)
         sessionUtils = SessionUtils(applicationContext)
 

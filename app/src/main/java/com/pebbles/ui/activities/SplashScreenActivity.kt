@@ -10,11 +10,13 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.pebbles.R
+import com.pebbles.Utils.BiometricUtils
 import com.pebbles.core.Constants.APP_TAG
 import com.pebbles.core.Constants.RC_SIGN_IN
 import com.pebbles.core.DatabaseHelper
 import com.pebbles.core.Repo
 import com.pebbles.core.Run
+import com.pebbles.core.sessionUtils
 import com.pebbles.data.User
 import kotlinx.android.synthetic.main.activity_splash_screen.*
 
@@ -26,6 +28,7 @@ class SplashScreenActivity : BaseActivity() {
         startSplashTimer()
         progress_signIn.visibility = View.VISIBLE
         loginButton.visibility = View.GONE
+        fingerPrintIcon.visibility = View.GONE
     }
 
     private fun startSplashTimer() {
@@ -88,11 +91,43 @@ class SplashScreenActivity : BaseActivity() {
 
         getEnvironmentSettings {
             checkUserExistAndUpdate(response, user) {
-                navigateToHome()
-                finish()
+                initiateBiometricLogin()
             }
         }
     }
+
+    private fun initiateBiometricLogin() {
+        checkBiometricAuthentication {
+            navigateToHome()
+            finish()
+        }
+    }
+
+
+    private fun checkBiometricAuthentication(function: () -> Unit) =
+        if(sessionUtils.getBiometricEnabledFlag()) {
+            BiometricUtils.afterBiometricAuth(onAuth = {
+                Log.d(BiometricUtils.TAG, "Login after biometric auth")
+                function.invoke()
+            },onCancel = {
+                //show sensor again
+                fingerPrintIcon.visibility = View.VISIBLE
+                progress_signIn.visibility =  View.GONE
+                fingerPrintIcon.setOnClickListener {
+                    fingerPrintIcon.visibility = View.GONE
+                    progress_signIn.visibility =  View.VISIBLE
+                    initiateBiometricLogin()
+                }
+
+            }, onFailed = {
+                //todo show pin entry
+                function.invoke()
+            }, context = this )
+
+        } else {
+            function.invoke()
+        }
+
 
     private fun getEnvironmentSettings(onFetch: () -> Unit) {
         DatabaseHelper.getEnvironmentSettings {

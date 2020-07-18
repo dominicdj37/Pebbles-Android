@@ -19,6 +19,7 @@ import com.pebbles.core.Constants.PushNotificationMode.DELETE
 import com.pebbles.core.Constants.PushNotificationMode.NEW
 import com.pebbles.core.Constants.PushNotificationMode.UPDATE
 import com.pebbles.core.Repo
+import com.pebbles.core.sessionUtils
 import com.pebbles.data.PushNotification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -34,7 +35,9 @@ class PushNotificationService : FirebaseMessagingService() {
         Log.d(TAG, "From: ${remoteMessage.from}")
         Log.d(TAG, "Notification data payload: ${remoteMessage.data}")
         remoteMessage.data.isNotEmpty().let {
-            handleNow(remoteMessage.data) //this should be done within 10 seconds or else use scheduleJob
+            if(sessionUtils.getUserAlertsOn()) {
+                handleNow(remoteMessage.data) //this should be done within 10 seconds or else use scheduleJob
+            }
         }
     }
 
