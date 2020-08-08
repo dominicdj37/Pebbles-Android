@@ -7,7 +7,7 @@ import com.google.android.gms.dynamite.DynamiteModule
 import com.pebbles.R
 import com.pebbles.data.Device
 
-class DevicesAdapter(
+class CommonListAdapter(
     val list: ArrayList<Any>,
     private val deviceListClickListener: DeviceListClickListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

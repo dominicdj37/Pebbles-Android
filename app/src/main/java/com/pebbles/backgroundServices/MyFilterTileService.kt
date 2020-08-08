@@ -34,12 +34,8 @@ class MyFilterTileService: TileService() {
         qsTile.updateTile()
     }
     private fun switchDevice(device: Device) {
-        if(device.state != -1) {
-            DatabaseHelper.switchDevice(device, {
-
-            } ) {
-                //error
-            }
+        DatabaseHelper.switchDevice(device, {}) {
+            //error
         }
     }
     override fun onTileRemoved() {

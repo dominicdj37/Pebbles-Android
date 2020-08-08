@@ -24,7 +24,7 @@ class DeviceViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 
 
-    fun bindTo(dataHolder: DeviceDataHolder, onDeviceListClickListener: DevicesAdapter.DeviceListClickListener) {
+    fun bindTo(dataHolder: DeviceDataHolder, onDeviceListClickListener: CommonListAdapter.DeviceListClickListener) {
 
         deviceImageView.assignImageFromUrl(dataHolder.device.imageUrl, isCircleCrop = true)
 
@@ -36,6 +36,7 @@ class DeviceViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
             expandBackView.visibility = View.VISIBLE
         } else {
             deviceButton.setImageDrawable(getDrawableResource(R.drawable.ic_power_off))
+            expandBackView.visibility = View.INVISIBLE
         }
         deviceButton.setOnClickListener {
             onDeviceListClickListener.onDeviceSwitchClicked(dataHolder.device)

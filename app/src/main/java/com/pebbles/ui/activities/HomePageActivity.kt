@@ -1,11 +1,12 @@
 package com.pebbles.ui.activities
 
-import android.app.ActivityManager
-import android.content.Context
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.MotionEvent
+import android.view.View
 import androidx.core.view.GravityCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.database.DataSnapshot
@@ -20,24 +21,26 @@ import com.pebbles.backgroundServices.PebblesService
 import com.pebbles.core.*
 import com.pebbles.data.Device
 import com.pebbles.ui.Appwidgets.ShortCutView
+import com.pebbles.ui.PagerAdapter
 import com.pebbles.ui.fragments.DeviceFragment
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.activity_home_page.*
-import kotlinx.android.synthetic.main.activity_home_page.view.*
 import kotlinx.android.synthetic.main.nav_layout.view.*
 import java.util.*
 
 
-class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionListener{
+class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         initNavigationView()
 
+        initializeTabs()
 
-        initializeDevicesFragments()
+
+
         intiDevicesView()
         initTempStateListener()
         PebblesService.startService(this, "message")
@@ -46,9 +49,8 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
         fetchTokens()
 
 
-        fetchTodayTempData()
 
-
+        initClickListeners()
 
         Run.after(5000) {
             showBiometricSetupIfNeeded()
@@ -56,14 +58,25 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    private fun initClickListeners() {
+
+        myTanksIcon.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                Log.d("Pebbles_debug", "my tanks clicked")
+            }
+            false
+        }
+
+
+    }
+
     private fun showBiometricSetupIfNeeded() {
         if(!sessionUtils.getBiometricSetupShownFlag() && BiometricUtils.checkBiometricsAvailable(this) && !sessionUtils.getBiometricEnabledFlag()) {
             // show dialog and navigate to biometric setup
-            showEnableBioMetricDialog (
-                {
-                    sessionUtils.setBiometricSetupShownFlag()
-                }
-            ) {
+            showEnableBioMetricDialog ({
+                sessionUtils.setBiometricSetupShownFlag()
+            }) {
                 sessionUtils.setBiometricSetupShownFlag()
                 navigateToSettings()
             }
@@ -71,28 +84,9 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
     }
 
 
-    private fun fetchTodayTempData() {
-        val calender = Calendar.getInstance()
-        calender.time = Date()
-        getTemperatureDataFromDate(
-            calender.get(Calendar.DAY_OF_MONTH).toString(),
-            Repo.months[calender.get(Calendar.MONTH)],
-            calender.get(Calendar.YEAR).toString()
-        )
-    }
 
-    private fun getTemperatureDataFromDate(day: String, month: String, year: String) {
-        Repo.selectedDay = day
-        Repo.selectedMonth = month
-        Repo.selectedYear = year
-        DatabaseHelper.returnTempDataFor(day, month, year) {
-            Repo.currentTempGraphData = it
-            val fragment = supportFragmentManager.findFragmentById(R.id.bottomFragment)
-            if (fragment is DeviceFragment) {
-                fragment.reloadDeviceList()
-            }
-        }
-    }
+
+
 
 
     private fun askForPushNotificationPermission() {
@@ -125,9 +119,9 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
     }
 
 
-    private fun initializeDevicesFragments() {
-        val fragment = DeviceFragment.newInstance(0)
-        loadFragment(fragment)
+    private fun initializeTabs() {
+        val pagerAdapter = PagerAdapter(supportFragmentManager)
+        mainViewPager.adapter = pagerAdapter
     }
 
     private fun initializeShortCutDevices() {
@@ -152,18 +146,20 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
         shortcutViews.add(shortcut3Layout)
         shortcutViews.add(shortcut4Layout)
 
-        Repo.deviceShortCuts.forEach {sc->
-            shortcutViews.find { view-> view.tag.toString() == sc.tag }?.let {view ->
+        Repo.deviceShortCuts.forEach { sc ->
+            shortcutViews.find { view -> view.tag.toString() == sc.tag }?.let { view ->
                 Repo.devices.find { it.id?.toLong() == sc.deviceID }?.let {
                     view.setDevice(it)
                     viewsToRemove.add(view)
-                    view.onRemoveClicked = { device,tag ->
+                    view.onRemoveClicked = { device, tag ->
                         DatabaseHelper.removeShortcut(tag, device) {
                             initializeShortCutDevices()
                         }
                     }
-                    view.onSwitch = {device ->
-                        switchDevice(device)
+                    view.onSwitch = { device ->
+                        DatabaseHelper.switchDevice(device, { }) {
+                            //error
+                        }
                     }
                 }
             }
@@ -184,16 +180,6 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
     }
 
-        private fun switchDevice(device: Device) {
-            if(device.state != -1) {
-                DatabaseHelper.switchDevice(device, {
-
-                } ) {
-                    //error
-                }
-            }
-        }
-
     private fun initDeviceStateListener() {
         val messageListener = object : ValueEventListener {
 
@@ -203,12 +189,6 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
                     portData.forEach { (port, state) ->
                         Repo.devices.find { device -> device.port.toString() == port[1].toString()}?.state = state.toInt()
                     }
-                    val fragment = supportFragmentManager.findFragmentById(R.id.bottomFragment)
-                    if (fragment is DeviceFragment) {
-                        fragment.reloadDeviceList()
-
-                    }
-
                     initShortcutViews()
                     initIndicatorViews(portData)
                 }
@@ -220,7 +200,6 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
         }
 
         Repo.user?.deviceSetId?.let { DatabaseHelper.databaseReference?.child("portData")?.child(it)?.addValueEventListener(messageListener) }
-
     }
 
     private fun initTempStateListener() {
@@ -271,10 +250,6 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
     private fun intiDevicesView() {
         Repo.user?.deviceSetId?.let {
             DatabaseHelper.returnDevicesForUid(it, {
-                val fragment = supportFragmentManager.findFragmentById(R.id.bottomFragment)
-                if (fragment is DeviceFragment) {
-                    fragment.reloadDeviceList()
-                }
                 initializeShortCutDevices()
             }, {
                 showDismissiveAlertDialog(getStringResource(R.string.error_title),getStringResource(R.string.error_api))
@@ -320,22 +295,19 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
         finish()
     }
 
-    private fun loadFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.bottomFragment, fragment)
-        transaction.commitAllowingStateLoss()
-    }
-
     override fun shortcutAdded() {
         initializeShortCutDevices()
     }
 
-    override fun onSwitch(device: Device) {
-        switchDevice(device)
-    }
-
-    override fun onGraphDataDateSelected(day: String, month: String, year: String) {
-        getTemperatureDataFromDate(day, month, year)
+    fun handleAction(view: View) {
+        when(view.id) {
+            R.id.myTanksIcon -> {
+                Log.d("Pebbles_debug", "my tanks clicked")
+            }
+            R.id.otherDevicesIcon -> {
+                Log.d("Pebbles_debug", "other devices clicked")
+            }
+        }
     }
 
 

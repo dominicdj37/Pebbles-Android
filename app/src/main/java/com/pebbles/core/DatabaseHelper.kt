@@ -88,8 +88,8 @@ object DatabaseHelper {
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
-                    if (p0.exists()) {
-
+                    if (p0.exists() && p0.children.count() > 0) {
+                        Repo.user?.devices?.clear()
                         p0.children.forEach {dataSnap->
                             dataSnap.getValue(Device::class.java)?.let { device ->
                                 Repo.user?.devices?.add(device)
@@ -161,7 +161,7 @@ object DatabaseHelper {
     fun removeShortcut(key: String, device: Device, onFetched: () -> Unit) {
             databaseReference?.child("deviceShortcuts")?.child(Repo.user?.deviceSetId!!)?.child(key)?.removeValue { err, ref ->
                 if(err == null) {
-                        onFetched.invoke()
+                    onFetched.invoke()
                 }
             }
     }
@@ -169,18 +169,44 @@ object DatabaseHelper {
 
     fun switchDevice(device: Device, onSwitched: () -> Unit, onError: () -> Unit) {
         device.port.let {
-            val port = "D$it"
-            val newState = if(device.state == 1) 0 else 1
-            databaseReference?.child("portData")?.child(Repo.user?.deviceSetId!!)?.child(port)?.setValue(newState) { er, ref ->
-                if (er == null) {
-                    onSwitched.invoke()
+            databaseReference?.child("portData")?.child(Repo.user?.deviceSetId!!)
+                ?.child("D$it")
+                ?.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+                        onError.invoke()
+                    }
 
-                    sendSwitchedNotification(newState,it)
+                    override fun onDataChange(p0: DataSnapshot) {
+                        if (p0.exists()) {
+                            val oldState = p0.value  ?: -1
+                            if (oldState!= -1) {
 
-                } else {
-                    onError.invoke()
-                }
-            }
+                                val port = "D$it"
+                                val newState = if (oldState == 1L) 0 else 1
+                                databaseReference?.child("portData")
+                                    ?.child(Repo.user?.deviceSetId!!)?.child(port)
+                                    ?.setValue(newState) { er2, _ ->
+                                        if (er2 == null) {
+                                            databaseReference?.child("devices")
+                                                ?.child(Repo.user?.deviceSetId!!)?.child(device.id.toString())?.child("state")
+                                                ?.setValue(newState) { er3, _ ->
+                                                    if (er3 == null) {
+                                                        onSwitched.invoke()
+                                                        sendSwitchedNotification(newState, it)
+                                                    } else {
+                                                        onError.invoke()
+                                                    }
+                                                }
+                                        } else {
+                                            onError.invoke()
+                                        }
+                                    }
+                            }
+                        } else {
+                            onError.invoke()
+                        }
+                    }
+                })
         }
     }
 

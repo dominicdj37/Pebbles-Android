@@ -22,7 +22,7 @@ class SettingsActivity : BaseActivity() {
         notificationSwitch.setIconEnabled(sessionUtils.getUserAlertsOn())
         pushNotificationSwitchLayout.setOnClickListener {
             notificationSwitch.switchState(true)
-            sessionUtils.setUserAlertsOn(fingerPrintSwitch.isIconEnabled)
+            sessionUtils.setUserAlertsOn(notificationSwitch.isIconEnabled)
         }
 
     }

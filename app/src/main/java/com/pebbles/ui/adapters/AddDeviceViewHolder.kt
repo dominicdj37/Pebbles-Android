@@ -8,7 +8,7 @@ import com.pebbles.R
 class AddDeviceViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val addDeviceButton: ImageButton = itemView.findViewById(R.id.addDeviceButton)
 
-    fun bindTo(sectionTitleDataHolder: AddDeviceDataHolder, deviceListClickListener: DevicesAdapter.DeviceListClickListener) {
+    fun bindTo(sectionTitleDataHolder: AddDeviceDataHolder, deviceListClickListener: CommonListAdapter.DeviceListClickListener) {
         addDeviceButton.setOnClickListener {
             deviceListClickListener.onAddDeviceClicked()
         }

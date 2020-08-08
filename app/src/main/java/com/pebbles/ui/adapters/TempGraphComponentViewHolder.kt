@@ -9,11 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
-import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.pebbles.R
 import com.pebbles.core.Repo
@@ -29,7 +27,7 @@ class TempGraphComponentViewHolder(itemView: View) : RecyclerView.ViewHolder(ite
 
     fun bindTo(
         dataHolder: TempGraphComponentDataHolder,
-        onDeviceListClickListener: DevicesAdapter.DeviceListClickListener
+        onDeviceListClickListener: CommonListAdapter.DeviceListClickListener
     ) {
         initButtonAndView(onDeviceListClickListener)
         initChartWithData(dataHolder)
@@ -79,7 +77,7 @@ class TempGraphComponentViewHolder(itemView: View) : RecyclerView.ViewHolder(ite
         lineChart.animateX(1800, Easing.EaseInExpo)
     }
 
-    private fun initButtonAndView(onDeviceListClickListener: DevicesAdapter.DeviceListClickListener) {
+    private fun initButtonAndView(onDeviceListClickListener: CommonListAdapter.DeviceListClickListener) {
         chartCalender.visibility = View.GONE
         opaqueView.visibility = View.GONE
         calenderButton.setOnClickListener {

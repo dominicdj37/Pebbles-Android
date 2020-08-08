@@ -2,21 +2,25 @@ package com.pebbles.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.pebbles.R
 import com.pebbles.core.DatabaseHelper
 import com.pebbles.core.Repo
 import com.pebbles.data.Device
 import com.pebbles.ui.adapters.AddDeviceDataHolder
 import com.pebbles.ui.adapters.DeviceDataHolder
-import com.pebbles.ui.adapters.DevicesAdapter
-import com.pebbles.ui.adapters.DevicesAdapter.DeviceListClickListener
-import com.pebbles.ui.adapters.TempGraphComponentDataHolder
+import com.pebbles.ui.adapters.CommonListAdapter
+import com.pebbles.ui.adapters.CommonListAdapter.DeviceListClickListener
+import java.util.HashMap
 
 /**
  * A fragment representing a list of Items.
@@ -26,7 +30,7 @@ class DeviceFragment : Fragment(), DeviceListClickListener {
     private var columnCount = 1
 
     private val deviceList = arrayListOf<Any>(AddDeviceDataHolder())
-    private lateinit var deviceAdapter: DevicesAdapter
+    private lateinit var deviceAdapter: CommonListAdapter
     private var listener: OnDeviceTabInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,11 +61,13 @@ class DeviceFragment : Fragment(), DeviceListClickListener {
         if (view is RecyclerView) {
             with(view) {
                 layoutManager = LinearLayoutManager(context)
-                deviceAdapter = DevicesAdapter(deviceList, this@DeviceFragment)
+                deviceAdapter = CommonListAdapter(deviceList, this@DeviceFragment)
                 adapter = deviceAdapter
 
             }
+
         }
+        Log.d("Pebbles_debug", "on create view")
         return view
     }
 
@@ -72,28 +78,73 @@ class DeviceFragment : Fragment(), DeviceListClickListener {
 
         // TODO: Customize parameter initialization
         @JvmStatic
-        fun newInstance(columnCount: Int) =
-            DeviceFragment().apply {
+        fun newInstance(columnCount: Int): Fragment {
+            Log.d("Pebbles_debug", "on new instance")
+            return DeviceFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }
             }
+        }
+
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d("Pebbles_debug", "on view created")
+        initDeviceStateListener()
+        reloadDeviceList()
+    }
+
+
     fun reloadDeviceList() {
-        Repo.devices.takeIf { it.isNotEmpty() }?.let {
-            deviceList.clear()
-            it.forEach { device->
-                deviceList.add(DeviceDataHolder(device))
-            }
-            deviceList.add(TempGraphComponentDataHolder(Repo.currentTempGraphData))
-            deviceList.add(AddDeviceDataHolder())
-            deviceAdapter.notifyDataSetChanged()
+        Repo.user?.deviceSetId?.let {
+            DatabaseHelper.returnDevicesForUid(it, {
+                Repo.devices.takeIf { it.isNotEmpty() }?.let {
+                    deviceList.clear()
+                    it.forEach { device->
+                        deviceList.add(DeviceDataHolder(device))
+                    }
+                    deviceList.add(AddDeviceDataHolder())
+                    deviceAdapter.notifyDataSetChanged()
+                }
+
+            }, {
+               //error handel
+            })
         }
     }
 
     override fun onDeviceSwitchClicked(device: Device) {
-        listener?.onSwitch(device)
+        DatabaseHelper.switchDevice(device, {}) { }
+    }
+
+    private fun initDeviceStateListener() {
+        val messageListener = object : ValueEventListener {
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    val portData = dataSnapshot.value as HashMap<String, Long>
+                    portData.forEach { (port, state) ->
+                        Repo.devices.find { device -> device.port.toString() == port[1].toString()}?.state = state.toInt()
+                    }
+                    Repo.devices.takeIf { it.isNotEmpty() }?.let {
+                        deviceList.clear()
+                        it.forEach { device ->
+                            deviceList.add(DeviceDataHolder(device))
+                        }
+                        deviceList.add(AddDeviceDataHolder())
+                        deviceAdapter.notifyDataSetChanged()
+                        deviceAdapter.notifyDataSetChanged()
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Failed to read value
+            }
+        }
+        Repo.user?.deviceSetId?.let { DatabaseHelper.databaseReference?.child("portData")?.child(it)?.addValueEventListener(messageListener) }
+
     }
 
     override fun onAddDeviceClicked() {
@@ -102,20 +153,14 @@ class DeviceFragment : Fragment(), DeviceListClickListener {
 
     override fun onDeviceAddShortcutClicked(device: Device) {
         DatabaseHelper.addDeviceShortCut(device, {
-            listener?.shortcutAdded()
-        }, {
-
-        })
+            listener?.shortcutAdded() }, {
+                //error
+            })
     }
 
-    override fun onGraphDataDateSelected(day: String, month: String, year: String) {
-        listener?.onGraphDataDateSelected(day, month, year)
-    }
-
+    override fun onGraphDataDateSelected(day: String, month: String, year: String) { }
 
     interface OnDeviceTabInteractionListener {
         fun shortcutAdded()
-        fun onSwitch(device: Device)
-        fun onGraphDataDateSelected(day: String, month: String, year: String)
     }
 }
