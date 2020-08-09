@@ -176,7 +176,7 @@
         motion:constraintSetStart="@+id/start"
         motion:constraintSetEnd="@+id/startClickMyTanks"
         motion:duration="500">
-        <OnClick motion:targetId="@+id/myTanksIcon" motion:clickAction="transitionToEnd" />
+        motion:clickAction="transitionToEnd" />
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
@@ -187,7 +187,7 @@
         motion:constraintSetStart="@+id/end"
         motion:constraintSetEnd="@+id/startClickMyTanks"
         motion:duration="500">
-        <OnClick motion:targetId="@+id/myTanksIcon" motion:clickAction="transitionToEnd" />
+        motion:clickAction="transitionToEnd" />
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
@@ -198,7 +198,7 @@
         motion:constraintSetStart="@+id/startClickOtherDevices"
         motion:constraintSetEnd="@+id/startClickMyTanks"
         motion:duration="500">
-        <OnClick motion:targetId="@+id/myTanksIcon" motion:clickAction="transitionToEnd" />
+        motion:clickAction="transitionToEnd" />
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
@@ -209,7 +209,6 @@
         motion:constraintSetStart="@+id/startClickTasks"
         motion:constraintSetEnd="@+id/startClickMyTanks"
         motion:duration="500">
-        <OnClick motion:targetId="@+id/myTanksIcon" motion:clickAction="transitionToEnd" />
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
@@ -220,7 +219,6 @@
         motion:constraintSetStart="@+id/startClickSettings"
         motion:constraintSetEnd="@+id/startClickMyTanks"
         motion:duration="500">
-        <OnClick motion:targetId="@+id/myTanksIcon" motion:clickAction="transitionToEnd" />
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
@@ -239,7 +237,6 @@
         motion:constraintSetStart="@+id/start"
         motion:constraintSetEnd="@+id/startClickOtherDevices"
         motion:duration="500">
-        <OnClick motion:targetId="@+id/otherDevicesIcon"  motion:clickAction="transitionToEnd" />
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
@@ -250,7 +247,6 @@
         motion:constraintSetStart="@+id/end"
         motion:constraintSetEnd="@+id/startClickOtherDevices"
         motion:duration="500">
-        <OnClick motion:targetId="@+id/otherDevicesIcon"  motion:clickAction="transitionToEnd" />
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
@@ -261,7 +257,6 @@
         motion:constraintSetStart="@+id/startClickMyTanks"
         motion:constraintSetEnd="@+id/startClickOtherDevices"
         motion:duration="500">
-        <OnClick motion:targetId="@+id/otherDevicesIcon"  motion:clickAction="transitionToEnd" />
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
@@ -272,7 +267,6 @@
         motion:constraintSetStart="@+id/startClickTasks"
         motion:constraintSetEnd="@+id/startClickOtherDevices"
         motion:duration="500">
-        <OnClick motion:targetId="@+id/otherDevicesIcon"  motion:clickAction="transitionToEnd" />
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
@@ -283,7 +277,6 @@
         motion:constraintSetStart="@+id/startClickSettings"
         motion:constraintSetEnd="@+id/startClickOtherDevices"
         motion:duration="500">
-        <OnClick motion:targetId="@+id/otherDevicesIcon"  motion:clickAction="transitionToEnd" />
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
@@ -299,7 +292,6 @@
         motion:constraintSetStart="@+id/start"
         motion:constraintSetEnd="@+id/startClickTasks"
         motion:duration="500">
-        <OnClick motion:targetId="@+id/taskIcon"  motion:clickAction="transitionToEnd" />
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
@@ -310,7 +302,6 @@
         motion:constraintSetStart="@+id/end"
         motion:constraintSetEnd="@+id/startClickTasks"
         motion:duration="500">
-        <OnClick motion:targetId="@+id/taskIcon"  motion:clickAction="transitionToEnd" />
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
@@ -321,7 +312,6 @@
         motion:constraintSetStart="@+id/startClickMyTanks"
         motion:constraintSetEnd="@+id/startClickTasks"
         motion:duration="500">
-        <OnClick motion:targetId="@+id/taskIcon"  motion:clickAction="transitionToEnd" />
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
@@ -332,7 +322,6 @@
         motion:constraintSetStart="@+id/startClickOtherDevices"
         motion:constraintSetEnd="@+id/startClickTasks"
         motion:duration="500">
-        <OnClick motion:targetId="@+id/taskIcon"  motion:clickAction="transitionToEnd" />
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
@@ -343,7 +332,6 @@
         motion:constraintSetStart="@+id/startClickSettings"
         motion:constraintSetEnd="@+id/startClickTasks"
         motion:duration="500">
-        <OnClick motion:targetId="@+id/taskIcon"  motion:clickAction="transitionToEnd" />
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
@@ -360,7 +348,6 @@
         motion:constraintSetStart="@+id/start"
         motion:constraintSetEnd="@+id/startClickSettings"
         motion:duration="500">
-        <OnClick motion:targetId="@+id/settingsIcon"  motion:clickAction="transitionToEnd" />
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
@@ -371,7 +358,6 @@
         motion:constraintSetStart="@+id/end"
         motion:constraintSetEnd="@+id/startClickSettings"
         motion:duration="500">
-        <OnClick motion:targetId="@+id/settingsIcon"  motion:clickAction="transitionToEnd" />
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
@@ -382,7 +368,6 @@
         motion:constraintSetStart="@+id/startClickMyTanks"
         motion:constraintSetEnd="@+id/startClickSettings"
         motion:duration="500">
-        <OnClick motion:targetId="@+id/settingsIcon"  motion:clickAction="transitionToEnd" />
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
@@ -393,7 +378,6 @@
         motion:constraintSetStart="@+id/startClickOtherDevices"
         motion:constraintSetEnd="@+id/startClickSettings"
         motion:duration="500">
-        <OnClick motion:targetId="@+id/settingsIcon"  motion:clickAction="transitionToEnd" />
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
@@ -404,14 +388,11 @@
         motion:constraintSetStart="@+id/startClickTasks"
         motion:constraintSetEnd="@+id/startClickSettings"
         motion:duration="500">
-        <OnClick motion:targetId="@+id/settingsIcon"  motion:clickAction="transitionToEnd" />
         <OnSwipe
             motion:touchAnchorId="@+id/constraintLayout2"
             motion:touchAnchorSide="top"
             motion:dragDirection="dragUp" />
     </Transition>
-
-
 
 
     <ConstraintSet android:id="@+id/startClickMyTanks"

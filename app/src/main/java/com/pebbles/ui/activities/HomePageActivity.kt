@@ -59,38 +59,26 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
     @SuppressLint("ClickableViewAccessibility")
     private fun initClickListeners() {
 
-        myTanksIcon.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                Log.d("Pebbles_debug", "my tanks clicked")
-                mainViewPager.currentItem = 0
-            }
-            false
-        }
-        otherDevicesIcon.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                Log.d("Pebbles_debug", " otherDevicesIcon clicked")
-                mainViewPager.currentItem = 1
-            }
-            false
+        myTanksIcon.setOnClickListener {
+            Log.d("Pebbles_debug", "my tanks clicked")
+            mainViewPager.currentItem = 0
         }
 
-        taskIcon.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                Log.d("Pebbles_debug", " taskIcon clicked")
-                mainViewPager.currentItem = 2
-            }
-            false
+        otherDevicesIcon.setOnClickListener {
+            Log.d("Pebbles_debug", "my tanks clicked")
+            mainViewPager.currentItem = 1
+        }
+
+        taskIcon.setOnClickListener {
+            Log.d("Pebbles_debug", "my tanks clicked")
+            mainViewPager.currentItem = 2
         }
 
 
-        settingsIcon.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                Log.d("Pebbles_debug",  "settingsIcon clicked")
-                mainViewPager.currentItem = 3
-            }
-            false
+        settingsIcon.setOnClickListener {
+            Log.d("Pebbles_debug", "my tanks clicked")
+            mainViewPager.currentItem = 3
         }
-
 
     }
 
@@ -152,12 +140,25 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
             }
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int ) {
-
+                when(position) {
+                    0-> {
+                        parentLayout.transitionToState(R.id.startClickMyTanks)
+                    }
+                    1-> {
+                        parentLayout.transitionToState(R.id.startClickOtherDevices)
+                    }
+                    2-> {
+                        parentLayout.transitionToState(R.id.startClickTasks)
+                    }
+                    3-> {
+                        parentLayout.transitionToState(R.id.startClickSettings)
+                    }
+                }
             }
 
             override fun onPageSelected(position: Int) {
-
             }
+
 
         })
 
@@ -214,7 +215,6 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
             it.onAddClicked = {tag->
                 Repo.selectedShortCutAddPosition = tag
-                parentLayout.transitionToState(R.id.startClickMyTanks)
             }
         }
 
