@@ -12,10 +12,10 @@ class PagerAdapter(supportFragmentManager: FragmentManager) : FragmentStatePager
     override fun getItem(position: Int): Fragment {
         when(position) {
             0 -> {
-                return  DeviceFragment.newInstance(0)
+                return  GraphFragment.newInstance(0)
             }
             1-> {
-                return  GraphFragment.newInstance(0)
+                return  DeviceFragment.newInstance(0)
             }
             2-> {
                 return OthersDevicesFragment.newInstance(0)

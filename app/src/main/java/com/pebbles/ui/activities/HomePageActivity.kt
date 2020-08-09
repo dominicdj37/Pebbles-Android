@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
+import androidx.viewpager.widget.ViewPager
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -19,7 +20,6 @@ import com.pebbles.Utils.ResourceUtils.getDrawableResource
 import com.pebbles.Utils.ResourceUtils.getStringResource
 import com.pebbles.backgroundServices.PebblesService
 import com.pebbles.core.*
-import com.pebbles.data.Device
 import com.pebbles.ui.Appwidgets.ShortCutView
 import com.pebbles.ui.PagerAdapter
 import com.pebbles.ui.fragments.DeviceFragment
@@ -38,11 +38,9 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
         initNavigationView()
 
         initializeTabs()
-
-
-
-        intiDevicesView()
+        initDeviceShortcutViews()
         initTempStateListener()
+
         PebblesService.startService(this, "message")
 
         askForPushNotificationPermission()
@@ -64,6 +62,31 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
         myTanksIcon.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 Log.d("Pebbles_debug", "my tanks clicked")
+                mainViewPager.currentItem = 0
+            }
+            false
+        }
+        otherDevicesIcon.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                Log.d("Pebbles_debug", " otherDevicesIcon clicked")
+                mainViewPager.currentItem = 1
+            }
+            false
+        }
+
+        taskIcon.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                Log.d("Pebbles_debug", " taskIcon clicked")
+                mainViewPager.currentItem = 2
+            }
+            false
+        }
+
+
+        settingsIcon.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                Log.d("Pebbles_debug",  "settingsIcon clicked")
+                mainViewPager.currentItem = 3
             }
             false
         }
@@ -122,7 +145,24 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
     private fun initializeTabs() {
         val pagerAdapter = PagerAdapter(supportFragmentManager)
         mainViewPager.adapter = pagerAdapter
+
+        mainViewPager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener{
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int ) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+
+            }
+
+        })
+
     }
+
 
     private fun initializeShortCutDevices() {
         DatabaseHelper.returnUserShortCuts({
@@ -220,9 +260,7 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
                 // Failed to read value
             }
         }
-
         Repo.user?.deviceSetId?.let { DatabaseHelper.databaseReference?.child("tempData")?.child(it)?.addValueEventListener(messageListener) }
-
     }
 
     private fun initIndicatorViews(portData: HashMap<String, Long>) {
@@ -247,7 +285,7 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
     }
 
 
-    private fun intiDevicesView() {
+    private fun initDeviceShortcutViews() {
         Repo.user?.deviceSetId?.let {
             DatabaseHelper.returnDevicesForUid(it, {
                 initializeShortCutDevices()
@@ -257,7 +295,6 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
         }
 
     }
-
 
 
     private fun initNavigationView() {
@@ -298,17 +335,5 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
     override fun shortcutAdded() {
         initializeShortCutDevices()
     }
-
-    fun handleAction(view: View) {
-        when(view.id) {
-            R.id.myTanksIcon -> {
-                Log.d("Pebbles_debug", "my tanks clicked")
-            }
-            R.id.otherDevicesIcon -> {
-                Log.d("Pebbles_debug", "other devices clicked")
-            }
-        }
-    }
-
 
 }
