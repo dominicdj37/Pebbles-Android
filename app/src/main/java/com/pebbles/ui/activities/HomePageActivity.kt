@@ -1,11 +1,20 @@
 package com.pebbles.ui.activities
 
+import android.R.attr.animation
+import android.R.attr.fillAfter
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ValueAnimator
+import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
+import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
@@ -82,6 +91,7 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
     }
 
+
     private fun showBiometricSetupIfNeeded() {
         if(!sessionUtils.getBiometricSetupShownFlag() && BiometricUtils.checkBiometricsAvailable(this) && !sessionUtils.getBiometricEnabledFlag()) {
             // show dialog and navigate to biometric setup
@@ -136,24 +146,11 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
         mainViewPager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener{
             override fun onPageScrollStateChanged(state: Int) {
-
+                Log.d("Pebbles_debug", "scroll state $state")
             }
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int ) {
-                when(position) {
-                    0-> {
-                        parentLayout.transitionToState(R.id.startClickMyTanks)
-                    }
-                    1-> {
-                        parentLayout.transitionToState(R.id.startClickOtherDevices)
-                    }
-                    2-> {
-                        parentLayout.transitionToState(R.id.startClickTasks)
-                    }
-                    3-> {
-                        parentLayout.transitionToState(R.id.startClickSettings)
-                    }
-                }
+                Log.d("Pebbles_debug", "scroll position offset:$positionOffset , pixels:$positionOffsetPixels")
             }
 
             override fun onPageSelected(position: Int) {
