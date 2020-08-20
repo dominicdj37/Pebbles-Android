@@ -174,36 +174,31 @@
     </com.pebbles.ui.Appwidgets.ShortCutView>
 
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/cl"
-        android:elevation="6dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    <com.pebbles.ui.Custom.MyTabBar
+        android:id="@+id/myTabBar"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
         app:layout_constraintBottom_toTopOf="@id/guideline1"
-        android:layout_alignParentTop="true"
-        android:background="@android:color/transparent">
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+    </com.pebbles.ui.Custom.MyTabBar>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@drawable/bg_top_rounded"
         android:elevation="4dp"
         app:layout_constraintBottom_toTopOf="@+id/navBarSpacer2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline1">
+        app:layout_constraintTop_toBottomOf="@id/myTabBar">
 
         <FrameLayout
             android:id="@+id/bottomFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="48dp"
-            app:layout_constraintTop_toBottomOf="parent"
+            android:background="@android:color/white"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
@@ -238,18 +233,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:id="@+id/itemSelectedView"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/item_selected_bg"
-        android:elevation="4dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/myTanksIcon"
-        app:layout_constraintEnd_toEndOf="@id/myTanksIcon"
-        app:layout_constraintStart_toStartOf="@id/myTanksIcon"
-        app:layout_constraintTop_toTopOf="@id/myTanksIcon" />
-
     <ImageView
         android:id="@+id/sideMenuIcon"
         android:layout_width="40dp"
@@ -260,49 +243,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/statusBarSpacer"
         app:srcCompat="@drawable/side_menu_icon" />
-
-    <ImageView
-        android:id="@+id/settingsIcon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="16dp"
-        android:elevation="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/taskIcon"
-        app:layout_constraintTop_toBottomOf="@id/guideline1"
-        app:srcCompat="@drawable/settings_button" />
-
-    <ImageView
-        android:id="@+id/taskIcon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="16dp"
-        android:elevation="4dp"
-        app:layout_constraintEnd_toStartOf="@id/settingsIcon"
-        app:layout_constraintStart_toEndOf="@id/otherDevicesIcon"
-        app:layout_constraintTop_toBottomOf="@id/guideline1"
-        app:srcCompat="@drawable/tasks_button" />
-
-    <ImageView
-        android:id="@+id/otherDevicesIcon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="16dp"
-        android:elevation="4dp"
-        app:layout_constraintEnd_toStartOf="@id/taskIcon"
-        app:layout_constraintStart_toEndOf="@id/myTanksIcon"
-        app:layout_constraintTop_toBottomOf="@id/guideline1"
-        app:srcCompat="@drawable/other_devices_button" />
-
-    <ImageView
-        android:id="@+id/myTanksIcon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="16dp"
-        android:elevation="4dp"
-        app:layout_constraintEnd_toStartOf="@id/otherDevicesIcon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline1"
-        app:srcCompat="@drawable/my_tanks_button" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

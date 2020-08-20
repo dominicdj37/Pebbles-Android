@@ -30,6 +30,7 @@ import com.pebbles.Utils.ResourceUtils.getStringResource
 import com.pebbles.backgroundServices.PebblesService
 import com.pebbles.core.*
 import com.pebbles.ui.Appwidgets.ShortCutView
+import com.pebbles.ui.Custom.Tab
 import com.pebbles.ui.PagerAdapter
 import com.pebbles.ui.fragments.DeviceFragment
 import kotlinx.android.synthetic.main.activity_home.*
@@ -55,41 +56,13 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
         askForPushNotificationPermission()
         fetchTokens()
 
-
-
-        initClickListeners()
-
         Run.after(5000) {
             showBiometricSetupIfNeeded()
         }
 
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private fun initClickListeners() {
 
-        myTanksIcon.setOnClickListener {
-            Log.d("Pebbles_debug", "my tanks clicked")
-            mainViewPager.currentItem = 0
-        }
-
-        otherDevicesIcon.setOnClickListener {
-            Log.d("Pebbles_debug", "my tanks clicked")
-            mainViewPager.currentItem = 1
-        }
-
-        taskIcon.setOnClickListener {
-            Log.d("Pebbles_debug", "my tanks clicked")
-            mainViewPager.currentItem = 2
-        }
-
-
-        settingsIcon.setOnClickListener {
-            Log.d("Pebbles_debug", "my tanks clicked")
-            mainViewPager.currentItem = 3
-        }
-
-    }
 
 
     private fun showBiometricSetupIfNeeded() {
@@ -141,6 +114,16 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
 
     private fun initializeTabs() {
+
+        myTabBar.addTab(Tab(0, R.drawable.ic_my_tanks))
+        myTabBar.addTab(Tab(1, R.drawable.ic_other_devices))
+        myTabBar.addTab(Tab(2 ,R.drawable.ic_tasks))
+        myTabBar.addTab(Tab(3, R.drawable.ic_settings))
+
+        myTabBar.onTabClicked = { tab ->
+            mainViewPager.currentItem = tab.id
+        }
+
         val pagerAdapter = PagerAdapter(supportFragmentManager)
         mainViewPager.adapter = pagerAdapter
 
@@ -154,7 +137,9 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
             }
 
             override fun onPageSelected(position: Int) {
+                myTabBar.animateToTab(myTabBar.tabList[position])
             }
+
 
 
         })
