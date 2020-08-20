@@ -70,7 +70,7 @@
 
     <!-- region button style-->
     <style name="buttonStyleTransparent">
-        <item name="android:background">@drawable/bg_ripple_transparent</item>
+        <item name="android:background">@drawable/bg_ripple_bordered</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>

@@ -7,7 +7,7 @@
     <color name="colorPrimaryDark_light">#1DDF95DD</color>
     <color name="colorAccent">#52559D</color>
 
-    <color name="color_button_active">#F3F38F</color>
+    <color name="color_button_active">@color/colorAccent</color>
     <color name="black">#000000</color>
     <color name="light_on">#B10000</color>
 
