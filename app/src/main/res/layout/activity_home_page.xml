@@ -15,7 +15,7 @@
         android:layout_height="0dp"
         android:layout_marginBottom="-20dp"
         android:alpha="0"
-        android:background="@color/colorPrimary"
+        android:background="#2D2F57"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.85" />
+        app:layout_constraintGuide_percent="0.75" />
 
     <ProgressBar
         android:id="@+id/waterLevelProgressBarBack"
@@ -126,6 +126,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="16dp"
+        android:elevation="10dp"
         app:layout_constraintEnd_toEndOf="@id/shortcut2Layout"
         app:layout_constraintStart_toStartOf="@id/shortcut2Layout"
         app:layout_constraintTop_toBottomOf="@+id/waterLevelProgressBarBack"></com.pebbles.ui.Appwidgets.ShortCutView>
@@ -143,6 +144,7 @@
         android:layout_height="100dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
+        android:elevation="10dp"
         app:layout_constraintEnd_toStartOf="@id/shortcut3Layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/shortcut1Layout">
@@ -155,6 +157,7 @@
         android:layout_height="100dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:elevation="10dp"
         app:layout_constraintEnd_toStartOf="@id/shortcut4Layout"
         app:layout_constraintStart_toEndOf="@id/shortcut2Layout"
         app:layout_constraintTop_toBottomOf="@id/shortcut1Layout">
@@ -168,6 +171,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
+        android:elevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/shortcut3Layout"
         app:layout_constraintTop_toBottomOf="@id/shortcut1Layout">
@@ -178,7 +182,8 @@
         android:id="@+id/myTabBar"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        app:layout_constraintBottom_toTopOf="@id/guideline1"
+        android:elevation="20dp"
+        app:layout_constraintTop_toTopOf="@id/guideline1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
     </com.pebbles.ui.Custom.MyTabBar>
@@ -187,7 +192,7 @@
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:elevation="4dp"
+        android:elevation="24dp"
         app:layout_constraintBottom_toTopOf="@+id/navBarSpacer2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

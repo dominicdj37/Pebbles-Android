@@ -115,10 +115,10 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
     private fun initializeTabs() {
 
-        myTabBar.addTab(Tab(0, R.drawable.ic_my_tanks))
-        myTabBar.addTab(Tab(1, R.drawable.ic_other_devices))
-        myTabBar.addTab(Tab(2 ,R.drawable.ic_tasks))
-        myTabBar.addTab(Tab(3, R.drawable.ic_settings))
+        myTabBar.addTab(Tab(0, R.drawable.ic_my_tanks, "Tank"))
+        myTabBar.addTab(Tab(1, R.drawable.ic_other_devices, "Devices"))
+        myTabBar.addTab(Tab(2 ,R.drawable.ic_tasks, "Tasks"))
+        myTabBar.addTab(Tab(3, R.drawable.ic_settings, "Settings"))
 
         myTabBar.onTabClicked = { tab ->
             mainViewPager.currentItem = tab.id
@@ -138,6 +138,8 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
             override fun onPageSelected(position: Int) {
                 myTabBar.animateToTab(myTabBar.tabList[position])
+                myTabBar.animateTextPosition(myTabBar.tabList[position])
+                myTabBar.animateTextAlpha(myTabBar.tabList[position])
             }
 
 
