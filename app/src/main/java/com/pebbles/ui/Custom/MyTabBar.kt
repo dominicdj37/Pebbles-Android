@@ -91,7 +91,7 @@ class MyTabBar @JvmOverloads constructor(
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         mHeight = height
         mWidth = width
-        selectedTextY = height
+        selectedTextY = height - 30
 
         bitmapSelectionBack = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         tempSelectionCanvas = Canvas(bitmapSelectionBack)
@@ -184,10 +184,10 @@ class MyTabBar @JvmOverloads constructor(
                 }
                 animateToTab(clickedTab)
 
-                return super.onTouchEvent(event)
+                return true
             }
         }
-        return super.onTouchEvent(event)
+        return true
     }
 
     fun animateTextAlpha(clickedTab: Tab?) {
@@ -205,7 +205,7 @@ class MyTabBar @JvmOverloads constructor(
     fun animateTextPosition(clickedTab: Tab?) {
         val valueAnimator = ValueAnimator.ofFloat(0f, 15f )
         valueAnimator.addUpdateListener {
-            selectedTextY = height - (it.animatedValue as Float).toInt()
+            selectedTextY = height - 30 - (it.animatedValue as Float).toInt()
             invalidate()
         }
         valueAnimator.interpolator = BounceInterpolator()

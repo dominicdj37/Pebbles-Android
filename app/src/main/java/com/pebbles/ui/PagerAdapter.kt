@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.pebbles.ui.fragments.DeviceFragment
 import com.pebbles.ui.fragments.GraphFragment
+import com.pebbles.ui.fragments.HomeFragment
 import com.pebbles.ui.fragments.OthersDevicesFragment
 
 class PagerAdapter(supportFragmentManager: FragmentManager) : FragmentStatePagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -12,7 +13,7 @@ class PagerAdapter(supportFragmentManager: FragmentManager) : FragmentStatePager
     override fun getItem(position: Int): Fragment {
         when(position) {
             0 -> {
-                return  GraphFragment.newInstance(0)
+                return  HomeFragment.newInstance("sd","1")
             }
             1-> {
                 return  DeviceFragment.newInstance(0)

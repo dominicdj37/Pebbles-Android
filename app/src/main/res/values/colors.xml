@@ -15,6 +15,12 @@
 
     <color name="light_accent">#4A52559D</color>
     <color name="white_partial_transparent">#DFFFFFFF</color>
+    <color name="white_partial_transparent_2">#EDFFFFFF</color>
 
     <color name="transparent">#00000000</color>
+    <color name="another_color_primary_light">#FFFFFF</color>
+    <color name="another_color_primary_dark">#EBF6FF</color>
+
+
+
 </resources>

@@ -9,10 +9,10 @@
     tools:openDrawer="start">
 
     <include
-        layout="@layout/activity_home_page"
+        layout="@layout/home_page_ui"
         android:layout_width="match_parent"
-        android:fitsSystemWindows="true"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true" />
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
