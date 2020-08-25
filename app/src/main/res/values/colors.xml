@@ -21,6 +21,10 @@
     <color name="another_color_primary_light">#FFFFFF</color>
     <color name="another_color_primary_dark">#EBF6FF</color>
 
+    <color name="text_color_dark">#E44A4D8E</color>
+    <color name="sub_text_color_dark">#7F7F8E</color>
+
+
 
 
 </resources>

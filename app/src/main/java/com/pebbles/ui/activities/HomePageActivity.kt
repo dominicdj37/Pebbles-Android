@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.home_page_ui.*
 import kotlinx.android.synthetic.main.home_page_ui.mainViewPager
 import kotlinx.android.synthetic.main.home_page_ui.myTabBar
+import kotlinx.android.synthetic.main.home_tool_bar.*
 import kotlinx.android.synthetic.main.nav_layout.view.*
 import java.util.*
 
@@ -34,6 +35,7 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         initNavigationView()
+        initToolBar()
         initializeTabs()
 
         initDeviceShortcutViews()
@@ -50,7 +52,11 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
     }
 
-
+    private fun initToolBar() {
+        val title = "Hi There ${Repo.user?.name ?: "fish keeper"}!"
+        toolbar_title.text = title
+        toolbar_subtitle.text = "Planted tank in Hall room"
+    }
 
 
     private fun showBiometricSetupIfNeeded() {
