@@ -25,14 +25,14 @@ class MyTabBar @JvmOverloads constructor(
     var selectedX = 0
     var selectedTextY = 0
     var selectedTextAlpha = 255
-
+    var iconSize = 60
     var onTabClicked:((Tab) -> Unit)? = null
 
     private var tempSelectionCanvas: Canvas? = null
     private lateinit var paintSelection: Paint
-    private val noPaint = Paint()
     private lateinit var transparentPaint: Paint
     private lateinit var bitmapSelectionBack:Bitmap
+    private lateinit var textRect: Rect
 
     var mHeight = 0
     var mWidth = 0
@@ -42,35 +42,28 @@ class MyTabBar @JvmOverloads constructor(
     var mTop = 0f
     var mRight = 0f
 
-    val basePaint = Paint().apply {
-        color = Color.WHITE
+    private val basePaint = Paint().apply {
+        color = ResourceUtils.getColorResource(R.color.m_color_light_2)!!
         style = Paint.Style.FILL
-
         isAntiAlias = true
     }
 
-    val bitmaPaint = Paint().apply {
+    private val noPaint = Paint()
+
+    private val bitmapPaint = Paint().apply {
         color = Color.WHITE
         style = Paint.Style.FILL
         alpha = 10
         isAntiAlias = true
     }
 
-    val textPaint = Paint().apply {
-        color = ResourceUtils.getColorResource(R.color.colorAccent)!!
+    private val textPaint = Paint().apply {
+        color = ResourceUtils.getColorResource(R.color.m_color_high_contrast)!!
         style = Paint.Style.FILL
         isAntiAlias = true
-        textSize = 25f
+        textSize = 27f
         textAlign = Paint.Align.CENTER
-        typeface = Typeface.create(Typeface.DEFAULT,Typeface.BOLD)
-    }
-
-    lateinit var textRect: Rect
-
-
-    init {
-
-
+        typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
     }
 
 
@@ -91,12 +84,14 @@ class MyTabBar @JvmOverloads constructor(
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         mHeight = height
         mWidth = width
-        selectedTextY = height - 30
+        iconSize = height / 3
+
+        selectedTextY = height/2 + iconSize/2
 
         bitmapSelectionBack = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         tempSelectionCanvas = Canvas(bitmapSelectionBack)
         paintSelection = Paint()
-        paintSelection.color = Color.WHITE
+        paintSelection.color =  ResourceUtils.getColorResource(R.color.m_color_light_2)!!
         transparentPaint = Paint()
         transparentPaint.color = Color.TRANSPARENT
         transparentPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
@@ -116,9 +111,9 @@ class MyTabBar @JvmOverloads constructor(
         }
 
 
-        tempSelectionCanvas?.drawRoundRect(0f, 20f, tempSelectionCanvas?.width?.toFloat() ?: 0f, tempSelectionCanvas?.height?.toFloat() ?: 0f, 100f,100f, paintSelection);
+        tempSelectionCanvas?.drawRoundRect(0f, 30f, tempSelectionCanvas?.width?.toFloat() ?: 0f, tempSelectionCanvas?.height?.toFloat() ?: 0f, 100f,100f, paintSelection);
         tempSelectionCanvas?.drawRect(0f,height/2.toFloat(), width.toFloat(), height.toFloat(),basePaint)
-        tempSelectionCanvas?.drawCircle(selectedX.toFloat(), 12f,50f, transparentPaint)
+        tempSelectionCanvas?.drawCircle(selectedX.toFloat(), 12f,iconSize.toFloat(), transparentPaint)
         canvas?.drawBitmap(bitmapSelectionBack, 0f, 0f, noPaint)
 
         drawTabs(canvas)
@@ -135,8 +130,8 @@ class MyTabBar @JvmOverloads constructor(
 
         val splitWidth = mWidth/tabList.size
         //calculate offset
-        val topOffset = 50
-        val leftOffset = (splitWidth - 50) / 2
+        val topOffset = mHeight/2 - iconSize/2
+        val leftOffset = (splitWidth - iconSize) / 2
         var leftPointer = 0
 
         tabList.forEach {tab->
@@ -144,25 +139,25 @@ class MyTabBar @JvmOverloads constructor(
             tab.centery = mHeight/2
             val iconLeft = leftPointer + leftOffset
             tab.startX = iconLeft
-            tab.endX = iconLeft + 50
+            tab.endX = iconLeft + iconSize
 
             var top = topOffset.toFloat()
             var text = ""
             if(tab == selectedTab) {
-                bitmaPaint.alpha = 255
+                bitmapPaint.alpha = 255
                 top = 0f
                 text = tab.name
                 textRect = Rect()
                 textPaint.getTextBounds(tab.name,0, tab.name.length, textRect)
             } else {
-                bitmaPaint.alpha = 100
+                bitmapPaint.alpha = 100
                 textPaint.getTextBounds("",0, 0, textRect)
             }
 
             textPaint.alpha = selectedTextAlpha
 
-            val bitmap = ContextCompat.getDrawable(context, tab.iconID)!!.toBitmap(50, 50)
-            canvas?.drawBitmap(bitmap, iconLeft.toFloat(), top, bitmaPaint)
+            val bitmap = ContextCompat.getDrawable(context, tab.iconID)!!.toBitmap(iconSize, iconSize)
+            canvas?.drawBitmap(bitmap, iconLeft.toFloat(), top, bitmapPaint)
             canvas?.drawText(text,tab.centerx.toFloat(), selectedTextY.toFloat(), textPaint)
             leftPointer += splitWidth
         }
@@ -203,9 +198,9 @@ class MyTabBar @JvmOverloads constructor(
     }
 
     fun animateTextPosition(clickedTab: Tab?) {
-        val valueAnimator = ValueAnimator.ofFloat(0f, 15f )
+        val valueAnimator = ValueAnimator.ofFloat(0f, height/2.toFloat() - iconSize/2 )
         valueAnimator.addUpdateListener {
-            selectedTextY = height - 30 - (it.animatedValue as Float).toInt()
+            selectedTextY = height - (it.animatedValue as Float).toInt()
             invalidate()
         }
         valueAnimator.interpolator = BounceInterpolator()

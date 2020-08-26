@@ -18,10 +18,9 @@
     </style>
 
     <style name="homeTheme" parent="AppTheme">
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:fitsSystemWindows">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-
+        <item name="android:statusBarColor">@color/m_color_primary_1</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/m_color_high_contrast</item>
     </style>
 
     <style name="FullScreenDialogTheme" parent="FullscreenTheme">

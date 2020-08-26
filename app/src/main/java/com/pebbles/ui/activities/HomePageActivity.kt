@@ -280,15 +280,15 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
         nav_view.childLayout.profileEmailTextView.text = Repo.user?.email
         nav_view.childLayout.profileImageView.assignImageFromUrl(Repo.user?.profilePhotoUrl.toString(),true, isCircleCrop = true)
         sideMenuIcon.setOnClickListener {
-            drawer_layout.openDrawer(GravityCompat.START)
+            drawer_layout.openDrawer(GravityCompat.END)
         }
         nav_view.signOutTextView.setOnClickListener {
-            drawer_layout.closeDrawer(GravityCompat.START)
+            drawer_layout.closeDrawer(GravityCompat.END)
             logout()
         }
         nav_view.SettingsTextView.setOnClickListener {
             navigateToSettings()
-            drawer_layout.closeDrawer(GravityCompat.START)
+            drawer_layout.closeDrawer(GravityCompat.END)
 
         }
     }

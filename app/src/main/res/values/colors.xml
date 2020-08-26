@@ -20,6 +20,20 @@
     <color name="transparent">#00000000</color>
     <color name="another_color_primary_light">#FFFFFF</color>
     <color name="another_color_primary_dark">#EBF6FF</color>
+    <color name="another_color_secondary_light">#00FFFF</color>
+    <color name="another_color_secondary_dark">#52559D</color>
+
+
+    <color name="m_color_primary_1">#E0E8EE</color>
+    <color name="m_color_primary_2">#B7C6CE</color>
+    <color name="m_color_secondary_1">#618DB0</color>
+    <color name="m_color_secondary_2">#2056B2</color>
+    <color name="m_color_high_contrast">#444A5E</color>
+    <color name="m_color_light">#EAA3BB</color>
+    <color name="m_color_light_2">#FFFFFF</color>
+
+
+
 
     <color name="text_color_dark">#E44A4D8E</color>
     <color name="sub_text_color_dark">#7F7F8E</color>
