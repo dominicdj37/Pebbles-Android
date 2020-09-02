@@ -53,7 +53,7 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
     }
 
     private fun initToolBar() {
-        val title = "Hi There ${Repo.user?.name ?: "fish keeper"}!"
+        val title = "Hi there ${Repo.user?.name?.split(" ")?.component1() ?: "fish keeper"} !"
         toolbar_title.text = title
         toolbar_subtitle.text = "Planted tank in Hall room"
     }
@@ -62,16 +62,14 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
     private fun showBiometricSetupIfNeeded() {
         if(!sessionUtils.getBiometricSetupShownFlag() && BiometricUtils.checkBiometricsAvailable(this) && !sessionUtils.getBiometricEnabledFlag()) {
             // show dialog and navigate to biometric setup
-            showEnableBioMetricDialog ({
-                sessionUtils.setBiometricSetupShownFlag()
-            }) {
-                sessionUtils.setBiometricSetupShownFlag()
-                navigateToSettings()
-            }
+//            showEnableBioMetricDialog ({
+//                sessionUtils.setBiometricSetupShownFlag()
+//            }) {
+//                sessionUtils.setBiometricSetupShownFlag()
+//                navigateToSettings()
+//            }
         }
     }
-
-
 
 
 

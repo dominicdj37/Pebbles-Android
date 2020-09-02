@@ -69,9 +69,9 @@ class WaterLevelMeter @JvmOverloads constructor(
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         meterLeft = getXPercentageOfY(60, w).toFloat()
-        meterTop = getXPercentageOfY(15, h).toFloat()
+        meterTop = getXPercentageOfY(10, h).toFloat()
         meterWidth = getXPercentageOfY(15, w).toFloat()
-        meterHeight = getXPercentageOfY(70, h).toFloat()
+        meterHeight = getXPercentageOfY(75, h).toFloat()
         super.onSizeChanged(w, h, oldw, oldh)
 
     }
