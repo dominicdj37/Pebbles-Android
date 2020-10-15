@@ -20,6 +20,7 @@ import com.pebbles.ui.adapters.AddDeviceDataHolder
 import com.pebbles.ui.adapters.DeviceDataHolder
 import com.pebbles.ui.adapters.CommonListAdapter
 import com.pebbles.ui.adapters.CommonListAdapter.DeviceListClickListener
+import com.pebbles.ui.adapters.MotionDataHolder
 import java.util.HashMap
 
 /**
@@ -105,6 +106,11 @@ class DeviceFragment : Fragment(), DeviceListClickListener {
                         deviceList.add(DeviceDataHolder(device))
                     }
                     deviceList.add(AddDeviceDataHolder())
+
+                    Repo.users.forEach { user ->
+                        deviceList.add(MotionDataHolder(user))
+                    }
+
                     deviceAdapter.notifyDataSetChanged()
                 }
 
@@ -133,6 +139,9 @@ class DeviceFragment : Fragment(), DeviceListClickListener {
                             deviceList.add(DeviceDataHolder(device))
                         }
                         deviceList.add(AddDeviceDataHolder())
+                        Repo.users.forEach { user ->
+                            deviceList.add(MotionDataHolder(user))
+                        }
                         deviceAdapter.notifyDataSetChanged()
                         deviceAdapter.notifyDataSetChanged()
                     }

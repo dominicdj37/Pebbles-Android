@@ -16,6 +16,7 @@ class CommonListAdapter(
             is DeviceDataHolder -> R.layout.devices_item_layout
             is AddDeviceDataHolder -> R.layout.add_device_item_layout
             is TempGraphComponentDataHolder -> R.layout.graph_item_layout
+            is MotionDataHolder -> R.layout.motion_item_layout
             else -> R.layout.add_device_item_layout
         }
     }
@@ -32,6 +33,7 @@ class CommonListAdapter(
             R.layout.graph_item_layout -> TempGraphComponentViewHolder(
                 layoutView
             )
+            R.layout.motion_item_layout -> MotionViewHolder(layoutView)
 
             else -> AddDeviceViewHolder(layoutView)
         }
@@ -45,6 +47,7 @@ class CommonListAdapter(
             is DeviceDataHolder -> (holder as DeviceViewHolder).bindTo(list[position] as DeviceDataHolder, deviceListClickListener)
             is AddDeviceDataHolder -> (holder as AddDeviceViewHolder).bindTo(list[position] as AddDeviceDataHolder, deviceListClickListener)
             is TempGraphComponentDataHolder -> (holder as TempGraphComponentViewHolder).bindTo(list[position] as TempGraphComponentDataHolder, deviceListClickListener)
+            is MotionDataHolder -> (holder as MotionViewHolder).bindTo(list[position] as MotionDataHolder, deviceListClickListener)
         }
 
     }

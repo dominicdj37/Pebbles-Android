@@ -63,15 +63,22 @@ object DatabaseHelper {
     }
 
     fun returnUserForUid(uid: String, onFetched: (User?) -> Unit, onError: () -> Unit) {
-        databaseReference?.child("users")?.child(uid)
-            ?.addListenerForSingleValueEvent(object : ValueEventListener {
+        databaseReference?.child("users")?.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                     onError.invoke()
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
-                    if (p0.exists()) {
-                        onFetched.invoke(p0.getValue(User::class.java))
+                    if (p0.exists() && p0.children.count() > 0) {
+                        Repo.users.clear()
+
+                        p0.children.forEach { child ->
+                            child.getValue(User::class.java)?.let { user ->
+                                Repo.users.add(user)
+                            }
+                        }
+
+                        onFetched.invoke(Repo.users.first { user -> user.id == uid })
                     } else {
                         onFetched.invoke(null)
                     }
@@ -79,6 +86,7 @@ object DatabaseHelper {
 
             })
     }
+
 
     fun returnDevicesForUid(uid: String, onFetched: (ArrayList<Device>?) -> Unit, onError: () -> Unit) {
         databaseReference?.child("devices")?.child(uid)

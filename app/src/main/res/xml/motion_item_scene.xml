@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        android:id="@+id/likeTransition"
+        app:constraintSetEnd="@id/end"
+        app:constraintSetStart="@id/start"
+        app:duration="1000">
+<!--        <OnClick app:clickAction="transitionToEnd"-->
+<!--            app:targetId="@+id/profileImageView"/>-->
+        <KeyFrameSet >
+            <KeyAttribute
+                app:motionTarget="@+id/likeImageView"
+                app:framePosition="0"
+                android:translationY="0px"
+                android:alpha="0" />
+            <KeyAttribute
+                app:motionTarget="@+id/likeImageView"
+                app:framePosition="25"
+                android:translationY="-50px"
+                android:alpha="1" />
+            <KeyAttribute
+                app:motionTarget="@+id/likeImageView"
+                app:framePosition="50"
+                android:translationY="-50px"
+                android:alpha="1" />
+            <KeyAttribute
+                app:motionTarget="@+id/likeImageView"
+                app:framePosition="100"
+                android:translationY="-100px"
+                android:alpha="0" />
+        </KeyFrameSet>
+
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint android:id="@+id/likeImageView"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:elevation="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/profileImageView"
+            app:layout_constraintStart_toStartOf="@+id/profileImageView"
+            app:layout_constraintTop_toTopOf="parent">
+        </Constraint>
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end"
+        app:deriveConstraintsFrom="@id/start">
+        <Constraint android:id="@+id/likeImageView"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:elevation="5dp"
+            android:alpha="0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/profileImageView"
+            app:layout_constraintStart_toStartOf="@+id/profileImageView"
+            app:layout_constraintTop_toTopOf="parent">
+        </Constraint>
+    </ConstraintSet>
+
+</MotionScene>

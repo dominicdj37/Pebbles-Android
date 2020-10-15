@@ -19,6 +19,8 @@ object Repo {
     val devices: ArrayList<Device>
         get() = user?.devices ?: arrayListOf()
 
+    val users: ArrayList<User> = arrayListOf()
+
     val deviceShortCuts: ArrayList<Shortcuts> = arrayListOf()
     var selectedShortCutAddPosition: String? = "s1"
 
