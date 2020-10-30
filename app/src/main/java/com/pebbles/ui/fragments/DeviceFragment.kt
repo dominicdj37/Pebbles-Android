@@ -111,6 +111,9 @@ class DeviceFragment : Fragment(), DeviceListClickListener {
                         deviceList.add(MotionDataHolder(user))
                     }
 
+                    Repo.users.forEach { user ->
+                        deviceList.add(MotionDataHolder(user))
+                    }
                     deviceAdapter.notifyDataSetChanged()
                 }
 
@@ -139,6 +142,9 @@ class DeviceFragment : Fragment(), DeviceListClickListener {
                             deviceList.add(DeviceDataHolder(device))
                         }
                         deviceList.add(AddDeviceDataHolder())
+                        Repo.users.forEach { user ->
+                            deviceList.add(MotionDataHolder(user))
+                        }
                         Repo.users.forEach { user ->
                             deviceList.add(MotionDataHolder(user))
                         }

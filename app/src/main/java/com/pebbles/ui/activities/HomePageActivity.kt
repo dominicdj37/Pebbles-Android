@@ -10,6 +10,7 @@ import com.firebase.ui.auth.AuthUI
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.pebbles.BuildConfig
 import com.pebbles.R
 import com.pebbles.Utils.BiometricUtils
 import com.pebbles.Utils.NotificationUtils
@@ -49,6 +50,9 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
         Run.after(5000) {
             showBiometricSetupIfNeeded()
         }
+
+
+        throw RuntimeException("Test Crash in build mode: ${BuildConfig.BUILD_TYPE}")
 
     }
 
