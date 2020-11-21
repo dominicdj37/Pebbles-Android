@@ -9,12 +9,21 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import com.pebbles.R
 import com.pebbles.core.DatabaseHelper
 import com.pebbles.core.Repo
+import com.pebbles.core.awaitTransitionComplete
 import com.pebbles.data.Device
 import com.pebbles.ui.adapters.CommonListAdapter
 import com.pebbles.ui.adapters.ChatDataHolder
+import kotlinx.android.synthetic.main.fragment_chat.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class ChatFragment : Fragment(), CommonListAdapter.ListInteractionsListener {
@@ -71,7 +80,7 @@ class ChatFragment : Fragment(), CommonListAdapter.ListInteractionsListener {
         @JvmStatic
         fun newInstance(columnCount: Int): Fragment {
             Log.d("Pebbles_debug", "Chat Fragment on new instance")
-            return DeviceFragment().apply {
+            return ChatFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }
@@ -83,19 +92,67 @@ class ChatFragment : Fragment(), CommonListAdapter.ListInteractionsListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("Pebbles_debug", "Chat Fragment on view created")
         loadChats()
+        initAddChat()
+    }
+
+    private fun initAddChat() {
+
+        chatMotionLayout.addTransitionListener(object: MotionLayout.TransitionListener {
+            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
+
+            }
+
+            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
+            }
+
+            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {
+            }
+
+            override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
+                if(p1 == R.id.bringUpFabButton) {
+                    chatMotionLayout.setTransition(R.id.expandPeopleListHorizontal)
+                    chatMotionLayout.transitionToEnd()
+                }
+            }
+
+        })
+
+
+        addChatFabButton.setOnClickListener {
+            if (chatMotionLayout.currentState == R.id.fabButtonUp) {
+                closePeopleList()
+            } else {
+                openPeopleList()
+            }
+        }
+
+    }
+
+    private fun openPeopleList() {
+        chatMotionLayout.setTransition(R.id.bringUpFabButton)
+        chatMotionLayout.transitionToEnd()
+    }
+
+
+    private fun closePeopleList() {
+        chatMotionLayout.setTransition(R.id.bringDownFabButton)
+        chatMotionLayout.transitionToEnd()
     }
 
     private fun loadChats() {
         Repo.user?.deviceSetId?.let {
-            DatabaseHelper.returnDevicesForUid(it, {
-                Repo.chats.takeIf { it.isNotEmpty() }?.let {
-                    chatList.clear()
-                    Repo.users.forEach { user ->
-                        chatList.add(ChatDataHolder(user))
-                    }
-                    chatListAdapter.notifyDataSetChanged()
-                }
+            DatabaseHelper.returnChatsForUid(it, {
+                Repo.chats.let { availableChats ->
+                    if(availableChats.isNotEmpty()) {
+                        chatList.clear()
+                        availableChats.forEach { user ->
+                            chatList.add(ChatDataHolder(user))
+                        }
+                        chatListAdapter.notifyDataSetChanged()
+                    } else {
 
+                    }
+                }
             }, {
                 //error handel
             })

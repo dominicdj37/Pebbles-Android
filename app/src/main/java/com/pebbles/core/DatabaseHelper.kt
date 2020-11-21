@@ -4,10 +4,7 @@ import android.util.Log
 import com.google.firebase.database.*
 import com.pebbles.Utils.NotificationUtils.TAG
 import com.pebbles.core.Constants.APP_TAG
-import com.pebbles.data.Device
-import com.pebbles.data.EnvironmentSettings
-import com.pebbles.data.Shortcuts
-import com.pebbles.data.User
+import com.pebbles.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -105,6 +102,32 @@ object DatabaseHelper {
                             }
                         }
                         onFetched.invoke(Repo.user?.devices)
+
+                    } else {
+                        onFetched.invoke(null)
+                    }
+                }
+
+            })
+    }
+
+    fun returnChatsForUid(uid: String, onFetched: (ArrayList<ChatItem>?) -> Unit, onError: () -> Unit) {
+        databaseReference?.child("chats")?.child(uid)
+            ?.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    onError.invoke()
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    if (p0.exists() && p0.children.count() > 0) {
+                        Repo.chats.clear()
+                        p0.children.forEach {dataSnap->
+                            dataSnap.getValue(ChatItem::class.java)?.let { chat ->
+                                Repo.chats.add(chat)
+                                Log.d(APP_TAG,chat.toString())
+                            }
+                        }
+                        onFetched.invoke(Repo.chats)
 
                     } else {
                         onFetched.invoke(null)

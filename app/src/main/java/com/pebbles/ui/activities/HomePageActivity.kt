@@ -118,6 +118,7 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
             mainViewPager.currentItem = tab.id
         }
 
+
         val pagerAdapter = PagerAdapter(supportFragmentManager)
         mainViewPager.adapter = pagerAdapter
 

@@ -13,7 +13,7 @@ class ChatViewHolder  (itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bindTo(dataHolder: ChatDataHolder, ListInteractionsListener: CommonListAdapter.ListInteractionsListener) {
 
-        profileImageView.assignImageFromUrl(dataHolder.user.profilePhotoUrl, isCircleCrop = true)
+        profileImageView.assignImageFromUrl(dataHolder.chat.user?.profilePhotoUrl, isCircleCrop = true)
 
         profileImageView.setOnClickListener {
             motionLayout.progress = 0f
