@@ -1,18 +1,17 @@
 package com.pebbles.ui.adapters
 
 import android.view.View
-import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.pebbles.R
 import com.pebbles.core.assignImageFromUrl
 
-class MotionViewHolder  (itemView: View) : RecyclerView.ViewHolder(itemView) {
+class ChatViewHolder  (itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val motionLayout: MotionLayout = itemView.findViewById(R.id.motionLayout)
     private val profileImageView: ImageView = itemView.findViewById(R.id.profileImageView)
 
-    fun bindTo(dataHolder: MotionDataHolder, deviceListClickListener: CommonListAdapter.DeviceListClickListener) {
+    fun bindTo(dataHolder: ChatDataHolder, ListInteractionsListener: CommonListAdapter.ListInteractionsListener) {
 
         profileImageView.assignImageFromUrl(dataHolder.user.profilePhotoUrl, isCircleCrop = true)
 

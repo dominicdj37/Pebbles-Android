@@ -3,10 +3,7 @@ package com.pebbles.ui
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import com.pebbles.ui.fragments.DeviceFragment
-import com.pebbles.ui.fragments.GraphFragment
-import com.pebbles.ui.fragments.HomeFragment
-import com.pebbles.ui.fragments.OthersDevicesFragment
+import com.pebbles.ui.fragments.*
 
 class PagerAdapter(supportFragmentManager: FragmentManager) : FragmentStatePagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
@@ -19,7 +16,7 @@ class PagerAdapter(supportFragmentManager: FragmentManager) : FragmentStatePager
                 return  DeviceFragment.newInstance(0)
             }
             2-> {
-                return OthersDevicesFragment.newInstance(0)
+                return ChatFragment.newInstance(0)
             }
             3-> {
                 return  OthersDevicesFragment.newInstance(0)

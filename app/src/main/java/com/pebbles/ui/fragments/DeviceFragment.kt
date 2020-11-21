@@ -19,14 +19,14 @@ import com.pebbles.data.Device
 import com.pebbles.ui.adapters.AddDeviceDataHolder
 import com.pebbles.ui.adapters.DeviceDataHolder
 import com.pebbles.ui.adapters.CommonListAdapter
-import com.pebbles.ui.adapters.CommonListAdapter.DeviceListClickListener
-import com.pebbles.ui.adapters.MotionDataHolder
+import com.pebbles.ui.adapters.CommonListAdapter.ListInteractionsListener
+import com.pebbles.ui.adapters.ChatDataHolder
 import java.util.HashMap
 
 /**
  * A fragment representing a list of Items.
  */
-class DeviceFragment : Fragment(), DeviceListClickListener {
+class DeviceFragment : Fragment(), ListInteractionsListener {
 
     private var columnCount = 1
 
@@ -106,14 +106,6 @@ class DeviceFragment : Fragment(), DeviceListClickListener {
                         deviceList.add(DeviceDataHolder(device))
                     }
                     deviceList.add(AddDeviceDataHolder())
-
-                    Repo.users.forEach { user ->
-                        deviceList.add(MotionDataHolder(user))
-                    }
-
-                    Repo.users.forEach { user ->
-                        deviceList.add(MotionDataHolder(user))
-                    }
                     deviceAdapter.notifyDataSetChanged()
                 }
 
@@ -142,13 +134,6 @@ class DeviceFragment : Fragment(), DeviceListClickListener {
                             deviceList.add(DeviceDataHolder(device))
                         }
                         deviceList.add(AddDeviceDataHolder())
-                        Repo.users.forEach { user ->
-                            deviceList.add(MotionDataHolder(user))
-                        }
-                        Repo.users.forEach { user ->
-                            deviceList.add(MotionDataHolder(user))
-                        }
-                        deviceAdapter.notifyDataSetChanged()
                         deviceAdapter.notifyDataSetChanged()
                     }
                 }

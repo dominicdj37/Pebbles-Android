@@ -3,20 +3,19 @@ package com.pebbles.ui.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.dynamite.DynamiteModule
 import com.pebbles.R
 import com.pebbles.data.Device
 
 class CommonListAdapter(
     val list: ArrayList<Any>,
-    private val deviceListClickListener: DeviceListClickListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val listInteractionListener: ListInteractionsListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
         return when(list[position]) {
             is DeviceDataHolder -> R.layout.devices_item_layout
             is AddDeviceDataHolder -> R.layout.add_device_item_layout
             is TempGraphComponentDataHolder -> R.layout.graph_item_layout
-            is MotionDataHolder -> R.layout.motion_item_layout
+            is ChatDataHolder -> R.layout.chat_item_layout
             else -> R.layout.add_device_item_layout
         }
     }
@@ -33,7 +32,7 @@ class CommonListAdapter(
             R.layout.graph_item_layout -> TempGraphComponentViewHolder(
                 layoutView
             )
-            R.layout.motion_item_layout -> MotionViewHolder(layoutView)
+            R.layout.chat_item_layout -> ChatViewHolder(layoutView)
 
             else -> AddDeviceViewHolder(layoutView)
         }
@@ -44,15 +43,15 @@ class CommonListAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         when(list[position]) {
-            is DeviceDataHolder -> (holder as DeviceViewHolder).bindTo(list[position] as DeviceDataHolder, deviceListClickListener)
-            is AddDeviceDataHolder -> (holder as AddDeviceViewHolder).bindTo(list[position] as AddDeviceDataHolder, deviceListClickListener)
-            is TempGraphComponentDataHolder -> (holder as TempGraphComponentViewHolder).bindTo(list[position] as TempGraphComponentDataHolder, deviceListClickListener)
-            is MotionDataHolder -> (holder as MotionViewHolder).bindTo(list[position] as MotionDataHolder, deviceListClickListener)
+            is DeviceDataHolder -> (holder as DeviceViewHolder).bindTo(list[position] as DeviceDataHolder, listInteractionListener)
+            is AddDeviceDataHolder -> (holder as AddDeviceViewHolder).bindTo(list[position] as AddDeviceDataHolder, listInteractionListener)
+            is TempGraphComponentDataHolder -> (holder as TempGraphComponentViewHolder).bindTo(list[position] as TempGraphComponentDataHolder, listInteractionListener)
+            is ChatDataHolder -> (holder as ChatViewHolder).bindTo(list[position] as ChatDataHolder, listInteractionListener)
         }
 
     }
 
-    interface DeviceListClickListener {
+    interface ListInteractionsListener {
         fun onDeviceSwitchClicked(device: Device)
         fun onAddDeviceClicked()
         fun onDeviceAddShortcutClicked(device: Device)

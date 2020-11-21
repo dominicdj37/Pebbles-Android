@@ -1,10 +1,7 @@
 package com.pebbles.core
 
 import com.firebase.ui.auth.IdpResponse
-import com.pebbles.data.Device
-import com.pebbles.data.EnvironmentSettings
-import com.pebbles.data.Shortcuts
-import com.pebbles.data.User
+import com.pebbles.data.*
 import java.util.HashMap
 
 object Repo {
@@ -30,5 +27,10 @@ object Repo {
     var selectedDay = ""
     var selectedMonth = ""
     var selectedYear = ""
+
+
+    //region chat
+    val chats:ArrayList<ChatItem> = arrayListOf()
+    //endregion
 
 }

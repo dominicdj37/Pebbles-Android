@@ -19,6 +19,7 @@ import com.pebbles.backgroundServices.PebblesService
 import com.pebbles.core.*
 import com.pebbles.ui.Custom.Tab
 import com.pebbles.ui.PagerAdapter
+import com.pebbles.ui.fragments.ChatFragment
 import com.pebbles.ui.fragments.DeviceFragment
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_home.view.*
@@ -30,7 +31,7 @@ import kotlinx.android.synthetic.main.nav_layout.view.*
 import java.util.*
 
 
-class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionListener {
+class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionListener, ChatFragment.OnChatTabInteractionListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,9 +51,6 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
         Run.after(5000) {
             showBiometricSetupIfNeeded()
         }
-
-
-        throw RuntimeException("Test Crash in build mode: ${BuildConfig.BUILD_TYPE}")
 
     }
 
@@ -113,7 +111,7 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
         myTabBar.addTab(Tab(0, R.drawable.ic_my_tanks, "Tank"))
         myTabBar.addTab(Tab(1, R.drawable.ic_other_devices, "Devices"))
-        myTabBar.addTab(Tab(2 ,R.drawable.ic_tasks, "Tasks"))
+        myTabBar.addTab(Tab(2 ,R.drawable.ic_tasks, "Chats"))
         myTabBar.addTab(Tab(3, R.drawable.ic_settings, "Settings"))
 
         myTabBar.onTabClicked = { tab ->
@@ -314,6 +312,10 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
     override fun shortcutAdded() {
         initializeShortCutDevices()
+    }
+
+    override fun onChatClicked() {
+        //open chat
     }
 
 }

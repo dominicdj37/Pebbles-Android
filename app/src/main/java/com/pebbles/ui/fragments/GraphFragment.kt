@@ -13,14 +13,14 @@ import com.pebbles.core.DatabaseHelper
 import com.pebbles.core.Repo
 import com.pebbles.data.Device
 import com.pebbles.ui.adapters.CommonListAdapter
-import com.pebbles.ui.adapters.CommonListAdapter.DeviceListClickListener
+import com.pebbles.ui.adapters.CommonListAdapter.ListInteractionsListener
 import com.pebbles.ui.adapters.TempGraphComponentDataHolder
 import java.util.*
 
 /**
  * A fragment representing a list of Items.
  */
-class GraphFragment : Fragment(), DeviceListClickListener {
+class GraphFragment : Fragment(), ListInteractionsListener {
 
     private var columnCount = 1
 

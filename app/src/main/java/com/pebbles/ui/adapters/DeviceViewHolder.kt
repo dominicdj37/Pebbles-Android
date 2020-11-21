@@ -24,7 +24,7 @@ class DeviceViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 
 
-    fun bindTo(dataHolder: DeviceDataHolder, onDeviceListClickListener: CommonListAdapter.DeviceListClickListener) {
+    fun bindTo(dataHolder: DeviceDataHolder, onListInteractionsListener: CommonListAdapter.ListInteractionsListener) {
 
         deviceImageView.assignImageFromUrl(dataHolder.device.imageUrl, isCircleCrop = true)
 
@@ -39,7 +39,7 @@ class DeviceViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
             expandBackView.visibility = View.INVISIBLE
         }
         deviceButton.setOnClickListener {
-            onDeviceListClickListener.onDeviceSwitchClicked(dataHolder.device)
+            onListInteractionsListener.onDeviceSwitchClicked(dataHolder.device)
             if(dataHolder.device.state == 1) {
                 animateOut()
             } else {
@@ -48,7 +48,7 @@ class DeviceViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         }
         deviceSettingsImageView.setOnClickListener {
-            onDeviceListClickListener.onDeviceAddShortcutClicked(dataHolder.device)
+            onListInteractionsListener.onDeviceAddShortcutClicked(dataHolder.device)
         }
 
     }

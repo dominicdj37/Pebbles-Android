@@ -27,9 +27,9 @@ class TempGraphComponentViewHolder(itemView: View) : RecyclerView.ViewHolder(ite
 
     fun bindTo(
         dataHolder: TempGraphComponentDataHolder,
-        onDeviceListClickListener: CommonListAdapter.DeviceListClickListener
+        onListInteractionsListener: CommonListAdapter.ListInteractionsListener
     ) {
-        initButtonAndView(onDeviceListClickListener)
+        initButtonAndView(onListInteractionsListener)
         initChartWithData(dataHolder)
     }
 
@@ -77,7 +77,7 @@ class TempGraphComponentViewHolder(itemView: View) : RecyclerView.ViewHolder(ite
         lineChart.animateX(1800, Easing.EaseInExpo)
     }
 
-    private fun initButtonAndView(onDeviceListClickListener: CommonListAdapter.DeviceListClickListener) {
+    private fun initButtonAndView(onListInteractionsListener: CommonListAdapter.ListInteractionsListener) {
         chartCalender.visibility = View.GONE
         opaqueView.visibility = View.GONE
         calenderButton.setOnClickListener {
@@ -107,7 +107,7 @@ class TempGraphComponentViewHolder(itemView: View) : RecyclerView.ViewHolder(ite
             Toast.makeText(chartCalender.context, msg, Toast.LENGTH_SHORT).show()
             chartCalender.visibility = View.GONE
             opaqueView.visibility = View.GONE
-            onDeviceListClickListener.onGraphDataDateSelected(
+            onListInteractionsListener.onGraphDataDateSelected(
                 dayOfMonth.toString(),
                 Repo.months[month],
                 year.toString()
