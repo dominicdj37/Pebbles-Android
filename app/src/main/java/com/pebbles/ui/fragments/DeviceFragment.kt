@@ -20,7 +20,6 @@ import com.pebbles.ui.adapters.AddDeviceDataHolder
 import com.pebbles.ui.adapters.DeviceDataHolder
 import com.pebbles.ui.adapters.CommonListAdapter
 import com.pebbles.ui.adapters.CommonListAdapter.ListInteractionsListener
-import com.pebbles.ui.adapters.ChatDataHolder
 import java.util.HashMap
 
 /**

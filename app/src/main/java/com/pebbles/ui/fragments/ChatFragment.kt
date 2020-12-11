@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
+import android.view.ViewTreeObserver
+import android.view.animation.AnimationUtils
 import com.pebbles.R
 import com.pebbles.core.DatabaseHelper
 import com.pebbles.core.Repo
@@ -19,18 +19,21 @@ import com.pebbles.core.awaitTransitionComplete
 import com.pebbles.data.Device
 import com.pebbles.ui.adapters.CommonListAdapter
 import com.pebbles.ui.adapters.ChatDataHolder
+import com.pebbles.ui.adapters.FriendDataHolder
 import kotlinx.android.synthetic.main.fragment_chat.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.android.synthetic.main.peoples_list_layout.*
+import kotlinx.coroutines.*
 
 
 class ChatFragment : Fragment(), CommonListAdapter.ListInteractionsListener {
 
+    private lateinit var peoplesListAdapter: CommonListAdapter
+    private var isPeoplesLayoutVisible: Boolean = false
+    private var job: Job? = null
     private var columnCount = 1
 
     private val chatList = arrayListOf<Any>()
+    private val peoplesArrayList = arrayListOf<Any>()
     private lateinit var chatListAdapter: CommonListAdapter
     private var listener: OnChatTabInteractionListener? = null
 
@@ -95,48 +98,106 @@ class ChatFragment : Fragment(), CommonListAdapter.ListInteractionsListener {
         initAddChat()
     }
 
+
     private fun initAddChat() {
-
-        chatMotionLayout.addTransitionListener(object: MotionLayout.TransitionListener {
-            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
-
-            }
-
-            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
-            }
-
-            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {
-            }
-
-            override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
-                if(p1 == R.id.bringUpFabButton) {
-                    chatMotionLayout.setTransition(R.id.expandPeopleListHorizontal)
-                    chatMotionLayout.transitionToEnd()
+        addChatFabButton.setOnClickListener {
+            if(job?.isActive != true) {
+                if (isPeoplesLayoutVisible) {
+                    closePeopleList()
+                } else {
+                    openPeopleList()
                 }
             }
+        }
+
+
+
+        peoplesList.layoutManager = LinearLayoutManager(context)
+        peoplesListAdapter = CommonListAdapter(peoplesArrayList, object: CommonListAdapter.ListInteractionsListener{
+            override fun onDeviceSwitchClicked(device: Device) {}
+
+            override fun onAddDeviceClicked() {}
+
+            override fun onDeviceAddShortcutClicked(device: Device) {}
+
+            override fun onGraphDataDateSelected(day: String, month: String, year: String) { }
 
         })
+        peoplesList.adapter = peoplesListAdapter
+        peoplesListAdapter.notifyDataSetChanged()
 
 
-        addChatFabButton.setOnClickListener {
-            if (chatMotionLayout.currentState == R.id.fabButtonUp) {
-                closePeopleList()
+    }
+
+    private fun reloadPeoplesList() {
+        DatabaseHelper.returnUsers({
+            if(it) {
+                peoplesArrayList.clear()
+                Repo.users.forEach { friend ->
+                    peoplesArrayList.add(FriendDataHolder(friend))
+                }
+                Repo.users.forEach { friend ->
+                    peoplesArrayList.add(FriendDataHolder(friend))
+                }
+                Repo.users.forEach { friend ->
+                    peoplesArrayList.add(FriendDataHolder(friend))
+                }
+
+                val controller =
+                    AnimationUtils.loadLayoutAnimation(context, R.anim.layout_fall_down);
+                peoplesList.layoutAnimation = controller;
+                peoplesListAdapter.notifyDataSetChanged()
+                peoplesList.scheduleLayoutAnimation()
             } else {
-                openPeopleList()
+                //todo empty condition
+            }
+
+        }) {
+            //todo error
+        }
+    }
+
+    private fun openPeopleList() {
+        job?.cancel()
+        job = GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                chatMotionLayout.setTransition(R.id.bringUpFabButton)
+                chatMotionLayout.transitionToEnd()
+                chatMotionLayout.awaitTransitionComplete(R.id.fabButtonUp)
+
+                chatMotionLayout.setTransition(R.id.expandPeopleListHorizontal)
+                chatMotionLayout.transitionToEnd()
+                chatMotionLayout.awaitTransitionComplete(R.id.peopleListHorizontalExpanded)
+
+                chatMotionLayout.setTransition(R.id.expandPeopleListWhole)
+                chatMotionLayout.transitionToEnd()
+                chatMotionLayout.awaitTransitionComplete(R.id.peopleListFullExpanded)
+                isPeoplesLayoutVisible = true
+                reloadPeoplesList()
             }
         }
 
     }
 
-    private fun openPeopleList() {
-        chatMotionLayout.setTransition(R.id.bringUpFabButton)
-        chatMotionLayout.transitionToEnd()
-    }
-
 
     private fun closePeopleList() {
-        chatMotionLayout.setTransition(R.id.bringDownFabButton)
-        chatMotionLayout.transitionToEnd()
+       job = GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                chatMotionLayout.setTransition(R.id.collapsePeopleListVertical)
+                chatMotionLayout.transitionToEnd()
+                chatMotionLayout.awaitTransitionComplete(R.id.peopleListHorizontalExpanded)
+
+                chatMotionLayout.setTransition(R.id.collapsePeopleListWhole)
+                chatMotionLayout.transitionToEnd()
+                chatMotionLayout.awaitTransitionComplete(R.id.peopleListCollapsed)
+
+                chatMotionLayout.setTransition(R.id.bringDownFabButton)
+                chatMotionLayout.transitionToEnd()
+                isPeoplesLayoutVisible = false
+                peoplesArrayList.clear()
+                peoplesListAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     private fun loadChats() {

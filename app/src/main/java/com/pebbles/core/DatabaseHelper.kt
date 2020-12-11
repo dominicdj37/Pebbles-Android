@@ -137,6 +137,31 @@ object DatabaseHelper {
             })
     }
 
+    fun returnUsers(onFetched: (Boolean) -> Unit, onError: () -> Unit) {
+        databaseReference?.child("users")?.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                onError.invoke()
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.exists() && p0.children.count() > 0) {
+                    Repo.users.clear()
+
+                    p0.children.forEach { child ->
+                        child.getValue(User::class.java)?.let { user ->
+                            Repo.users.add(user)
+                        }
+                    }
+
+                    onFetched.invoke(true)
+                } else {
+                    onFetched.invoke(false)
+                }
+            }
+
+        })
+    }
+
     fun returnUserShortCuts(onFetched: () -> Unit, onError: () -> Unit) {
         databaseReference?.child("deviceShortcuts")?.child(Repo.user?.deviceSetId!!)
             ?.addListenerForSingleValueEvent(object : ValueEventListener {

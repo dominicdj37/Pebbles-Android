@@ -63,7 +63,7 @@ fun ImageView?.assignImageFromUrl(
 
 suspend fun MultiListenerMotionLayout.awaitTransitionComplete(transitionId: Int, timeout: Long = 5000L) {
     // If we're already at the specified state, return now
-    if (currentState == transitionId) return
+//    if (currentState == transitionId) return
 
     var listener: MotionLayout.TransitionListener? = null
 
