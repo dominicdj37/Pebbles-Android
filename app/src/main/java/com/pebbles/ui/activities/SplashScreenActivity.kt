@@ -11,6 +11,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.pebbles.R
 import com.pebbles.Utils.BiometricUtils
+import com.pebbles.api.core.APIGlobal
+import com.pebbles.api.repository.SettingRepository
 import com.pebbles.core.Constants.APP_TAG
 import com.pebbles.core.Constants.RC_SIGN_IN
 import com.pebbles.core.DatabaseHelper
@@ -29,6 +31,12 @@ class SplashScreenActivity : BaseActivity() {
         progress_signIn.visibility = View.VISIBLE
         loginButton.visibility = View.GONE
         fingerPrintIcon.visibility = View.GONE
+
+        getSettings()
+    }
+
+    private fun getSettings() {
+        SettingRepository.getEnvironmentSetting()
     }
 
     private fun startSplashTimer() {
