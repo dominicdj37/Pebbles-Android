@@ -95,7 +95,7 @@ object APIGlobal {
     }
 
     fun getBaseURL(): String {
-        return "https://pebblesapi.herokuapp.com/v1/"
-        //return "http://192.168.1.9:3000/v1/"
+        //return "https://pebblesapi.herokuapp.com/v1/"
+        return "http://10.0.2.2:3000/v1/"
     }
 }

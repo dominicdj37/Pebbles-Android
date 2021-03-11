@@ -16,7 +16,7 @@ interface ApiInterface {
         "Accept: application/json",
         "Content-Type: application/json"
     )
-    @GET("settingss.json")
+    @GET("settings.json")
     fun getSettings(): Observable<ResponseModel>
 
 }

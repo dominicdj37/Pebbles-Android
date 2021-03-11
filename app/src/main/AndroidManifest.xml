@@ -13,9 +13,18 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_app_icon_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".ui.activities.SettingsActivity"></activity>
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".ui.activities.LoginActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/splashScreenTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.activities.SettingsActivity" />
 
         <service android:name=".backgroundServices.PebblesService" />
 
@@ -40,11 +49,6 @@
         <activity
             android:name=".ui.activities.SplashScreenActivity"
             android:theme="@style/splashScreenTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service
