@@ -14,7 +14,7 @@ class ErrorBody {
 class Error {
 
     @SerializedName("code") @Expose
-    var code: String? = null
+    var mCode: String? = null
 
     @SerializedName("message") @Expose
     var message: String? = null

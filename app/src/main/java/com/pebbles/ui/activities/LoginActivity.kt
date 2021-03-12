@@ -1,22 +1,33 @@
 package com.pebbles.ui.activities
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.pebbles.R
+import com.pebbles.api.model.ApiResponse
+import com.pebbles.ui.viewModels.LoginViewModel
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
+
+
+    lateinit var viewModel: LoginViewModel
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+
 
         initMotionLayout()
     }
 
     private fun initMotionLayout() {
+
         userNameTextInputField?.isEnabled = false
         emailTextInputField?.isEnabled = false
         passwordTextInputField?.isEnabled = false
@@ -33,6 +44,7 @@ class LoginActivity : AppCompatActivity() {
             loginMotionLayout?.setTransition(R.id.transitionSignIn)
             loginMotionLayout?.transitionToEnd()
         }
+
         newUserLabel?.setOnClickListener {
             loginButton?.isEnabled = false
             userNameTextInputField?.isEnabled = true
@@ -41,6 +53,7 @@ class LoginActivity : AppCompatActivity() {
             loginMotionLayout?.setTransition(R.id.transitionRegistration)
             loginMotionLayout?.transitionToEnd()
         }
+
         backToLogin?.setOnClickListener {
             loginButton?.isEnabled = true
             userNameTextInputField?.isEnabled = true
@@ -52,7 +65,17 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun login() {
+        val password = "daniel"
+        val username = "nissi"
 
+
+        viewModel.login(username, password).observe(this, Observer {
+            if(checkSucessAndAlert(it, ){}) {
+                //successful login
+            } else {
+                //handle custom error
+            }
+        })
     }
 
     //region Lifecycle

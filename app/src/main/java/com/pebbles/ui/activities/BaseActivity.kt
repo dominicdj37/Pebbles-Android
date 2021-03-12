@@ -2,17 +2,19 @@ package com.pebbles.ui.activities
 
 import android.app.Dialog
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Message
 import android.view.View
-import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.pebbles.R
+import com.pebbles.api.model.ApiResponse
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 open class BaseActivity: AppCompatActivity() {
@@ -82,6 +84,64 @@ open class BaseActivity: AppCompatActivity() {
 
     }
 
+
+    fun checkSucessAndAlert(response: ApiResponse?, handleError:Boolean =  mRetryClosure: () -> Unit): Boolean {
+        if (response != null) {
+            when {
+                response.sucess == true -> {
+                    return true
+                }
+
+                response.error?.mCode == HttpStatusCode.timeout -> {
+                    showTimeOutAlert(retryClosure)
+                    return false
+                }
+
+                response.error?.mCode == HttpStatusCode.notFound -> {
+                    return false
+                }
+
+                response.error?.mCode == HttpStatusCode.forbidden -> {
+                        return false
+                    }
+                }
+
+                response.error?.mCode == HttpStatusCode.quizExpired -> {
+                    return false
+                }
+
+                response.error?.mCode == HttpStatusCode.noInternet -> {
+                    offlineBannerLayout?.visibility = View.VISIBLE
+
+                    return false
+                }
+
+                response.error?.mCode == HttpStatusCode.passwordErrorCode -> {
+                    if (response.error?.mNumberOfAttempt != null) {
+                        mNumberOfAttempt = response.error?.mNumberOfAttempt!!
+                        mRetryClosure = null
+                        return false
+                    }
+                }
+
+                /**
+                 * added for team formation error handling: the retry closure is invoked for showing team error messages
+                 **/
+                response.error?.mCode == HttpStatusCode.unProcessableEntity -> {
+                    response.error?.mMessage?.let {
+                        showDismissiveAlert(it, getString(R.string.alert_oops_title)) {
+                            mRetryClosure = retryClosure
+                            handleRetryRequest() //for refresh
+                        }
+                    }
+                    return false
+                }
+            }
+        }
+
+        return false
+    }
+    }
 
 
 

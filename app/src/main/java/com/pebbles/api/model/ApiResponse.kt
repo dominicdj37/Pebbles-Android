@@ -3,11 +3,11 @@ package com.pebbles.api.model
 import io.reactivex.internal.util.ErrorMode
 
 class ApiResponse() {
-    var data: Any? = null
+    var sucess: Boolean? = false
     var error: Error? = null
 
-    constructor(data: Any) : this() {
-        this.data = data
+    constructor(success: Boolean) : this() {
+        this.sucess = success
     }
 
     constructor(t: Throwable): this() {

@@ -5,12 +5,6 @@ import java.util.*
 
 object ApiConstants {
 
-    object MethodName{
-        val GET ="GET"
-        val POST ="POST"
-        val DELETE ="DELETE"
-        val PUT ="PUT"
-    }
 
     /**
      * get complete url string including the base url
@@ -19,13 +13,13 @@ object ApiConstants {
 
     fun String?.formatUrl(vararg args: Any?): String {
         if (!this.isNullOrEmpty()) {
-            return this.format(Locale.ENGLISH, *args)
+            return this.format(*args)
         }
         return ""
     }
 
 
-    const val sdfsdgsg = "%s/posts.json?report_id=%s&page_size=%s&between_id=%s"
+    const val LOGIN = "authenticate.json?username=%s&password=%s"
 
 }
 
