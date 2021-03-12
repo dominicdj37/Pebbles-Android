@@ -7,7 +7,6 @@ import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.pebbles.R
-import com.pebbles.api.model.ApiResponse
 import com.pebbles.ui.viewModels.LoginViewModel
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -66,15 +65,15 @@ class LoginActivity : BaseActivity() {
 
     private fun login() {
         val password = "daniel"
-        val username = "nissi"
+        val username = "nissis"
 
 
         viewModel.login(username, password).observe(this, Observer {
-            if(checkSucessAndAlert(it, ){}) {
-                //successful login
-            } else {
-                //handle custom error
-            }
+            checkResponse(response = it, onSuccess = { data ->
+
+            }, errorCodeParams= {
+
+            })
         })
     }
 

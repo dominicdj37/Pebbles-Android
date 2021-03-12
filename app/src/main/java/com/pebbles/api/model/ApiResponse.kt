@@ -1,6 +1,7 @@
 package com.pebbles.api.model
 
 import io.reactivex.internal.util.ErrorMode
+import retrofit2.HttpException
 
 class ApiResponse() {
     var sucess: Boolean? = false
@@ -12,6 +13,7 @@ class ApiResponse() {
 
     constructor(t: Throwable): this() {
         this.error = Error().apply {
+            mCode = (t as HttpException).code()
             message = t.message
         }
     }

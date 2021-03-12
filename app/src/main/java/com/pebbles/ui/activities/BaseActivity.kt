@@ -11,10 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.pebbles.R
 import com.pebbles.api.model.ApiResponse
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.pebbles.api.model.Error
+import com.pebbles.api.model.ErrorCodeParams
+import com.pebbles.api.model.HttpStatusCode
 
 
 open class BaseActivity: AppCompatActivity() {
@@ -85,64 +84,105 @@ open class BaseActivity: AppCompatActivity() {
     }
 
 
-    fun checkSucessAndAlert(response: ApiResponse?, handleError:Boolean =  mRetryClosure: () -> Unit): Boolean {
-        if (response != null) {
+    fun checkResponse(response: ApiResponse,
+                      showError:Boolean = true,
+                      onSuccess: ((Any) -> Unit) ? = null,
+                      errorCodeParams:((ArrayList<ErrorCodeParams>?) -> Unit) ? = null,
+                      onFailure: ((Error?) -> Unit) ? = null,
+                      onEnd: (() -> Unit) ? = null)
+    {
             when {
                 response.sucess == true -> {
-                    return true
+                    onSuccess?.invoke(true)
+                    return
                 }
 
-                response.error?.mCode == HttpStatusCode.timeout -> {
-                    showTimeOutAlert(retryClosure)
-                    return false
+                !response.error?.params.isNullOrEmpty() -> {
+                    onFailure?.invoke(response.error)
+                    errorCodeParams?.invoke(response.error?.params)
+                    onEnd?.invoke()
+                    return
                 }
 
                 response.error?.mCode == HttpStatusCode.notFound -> {
-                    return false
-                }
-
-                response.error?.mCode == HttpStatusCode.forbidden -> {
-                        return false
+                    onFailure?.invoke(response.error)
+                    if(showError) {
+                        showDismissiveAlertDialog("Oops","We could not find what you are looking for!") {
+                            onEnd?.invoke()
+                        }
+                    } else {
+                        onEnd?.invoke()
                     }
-                }
-
-                response.error?.mCode == HttpStatusCode.quizExpired -> {
-                    return false
                 }
 
                 response.error?.mCode == HttpStatusCode.noInternet -> {
-                    offlineBannerLayout?.visibility = View.VISIBLE
-
-                    return false
-                }
-
-                response.error?.mCode == HttpStatusCode.passwordErrorCode -> {
-                    if (response.error?.mNumberOfAttempt != null) {
-                        mNumberOfAttempt = response.error?.mNumberOfAttempt!!
-                        mRetryClosure = null
-                        return false
-                    }
-                }
-
-                /**
-                 * added for team formation error handling: the retry closure is invoked for showing team error messages
-                 **/
-                response.error?.mCode == HttpStatusCode.unProcessableEntity -> {
-                    response.error?.mMessage?.let {
-                        showDismissiveAlert(it, getString(R.string.alert_oops_title)) {
-                            mRetryClosure = retryClosure
-                            handleRetryRequest() //for refresh
+                    onFailure?.invoke(response.error)
+                    if(showError) {
+                        showDismissiveAlertDialog("Oops","Please check you connection and try again") {
+                            onEnd?.invoke()
                         }
+                    } else {
+                        onEnd?.invoke()
                     }
-                    return false
+                }
+
+
+                response.error?.mCode == HttpStatusCode.timeout -> {
+                    onFailure?.invoke(response.error)
+                    if(showError) {
+                        showDismissiveAlertDialog("Oops","The request could not be fulfilled!") {
+                            onEnd?.invoke()
+                        }
+                    } else {
+                        onEnd?.invoke()
+                    }
                 }
             }
-        }
 
-        return false
+//                response.error?.mCode == HttpStatusCode.timeout -> {
+//                    showTimeOutAlert(retryClosure)
+//                    return false
+//                }
+//
+//                response.error?.mCode == HttpStatusCode.notFound -> {
+//                    return false
+//                }
+//
+//                response.error?.mCode == HttpStatusCode.forbidden -> {
+//                        return false
+//                    }
+//                }
+//
+//                response.error?.mCode == HttpStatusCode.quizExpired -> {
+//                    return false
+//                }
+//
+//                response.error?.mCode == HttpStatusCode.noInternet -> {
+//                    offlineBannerLayout?.visibility = View.VISIBLE
+//
+//                    return false
+//                }
+//
+//                response.error?.mCode == HttpStatusCode.passwordErrorCode -> {
+//                    if (response.error?.mNumberOfAttempt != null) {
+//                        mNumberOfAttempt = response.error?.mNumberOfAttempt!!
+//                        mRetryClosure = null
+//                        return false
+//                    }
+//                }
+//
+//                /**
+//                 * added for team formation error handling: the retry closure is invoked for showing team error messages
+//                 **/
+//                response.error?.mCode == HttpStatusCode.unProcessableEntity -> {
+//                    response.error?.mMessage?.let {
+//                        showDismissiveAlert(it, getString(R.string.alert_oops_title)) {
+//                            mRetryClosure = retryClosure
+//                            handleRetryRequest() //for refresh
+//                        }
+//                    }
+//                    return false
+//                }
+//            }
     }
-    }
-
-
-
 }

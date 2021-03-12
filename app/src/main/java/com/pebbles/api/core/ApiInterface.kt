@@ -23,6 +23,6 @@ interface ApiInterface {
         "Accept: application/json",
         "Content-Type: application/json"
     )
-    @GET
+    @POST
     fun login(@Url url: String): Observable<ResponseModel>
 }

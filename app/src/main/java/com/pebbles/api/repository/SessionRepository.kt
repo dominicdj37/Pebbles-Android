@@ -8,15 +8,9 @@ import com.pebbles.api.core.ApiConstants
 import com.pebbles.api.core.ApiConstants.LOGIN
 import com.pebbles.api.core.ApiConstants.formatUrl
 import com.pebbles.api.model.ApiResponse
-import com.pebbles.api.model.Settings
 import com.pebbles.api.model.UserModel
-import com.pebbles.data.User
-import com.pebbles.interfaces.NetworkResponseCallback
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class SessionRepository private constructor() {
 
@@ -49,6 +43,5 @@ class SessionRepository private constructor() {
                     responseData.postValue(ApiResponse((error)))
                 })
         return responseData
-    }
     }
 }

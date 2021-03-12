@@ -32,7 +32,7 @@ class SettingRepository {
                         val gson = Gson()
                         val environmentSetting =
                             gson.fromJson(gson.toJson(responseModel.result), Settings::class.java)
-                        responseData.postValue(ApiResponse(environmentSetting))
+                        responseData.postValue(ApiResponse(true))
                     }, { error ->
                         responseData.postValue(ApiResponse((error)))
                     })
