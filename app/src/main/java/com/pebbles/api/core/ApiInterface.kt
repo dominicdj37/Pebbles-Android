@@ -25,4 +25,11 @@ interface ApiInterface {
     )
     @POST
     fun login(@Url url: String): Observable<ResponseModel>
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @POST
+    fun signUp(@Url url: String): Observable<ResponseModel>
 }

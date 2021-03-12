@@ -12,4 +12,8 @@ class LoginViewModel: ViewModel() {
         return SessionRepository.getInstance().login(username, password)
     }
 
+    fun signUp(username:String, password:String, email:String): MutableLiveData<ApiResponse> {
+        return SessionRepository.getInstance().signUp(username, password, email)
+    }
+
 }

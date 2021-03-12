@@ -20,6 +20,7 @@ object ApiConstants {
 
 
     const val LOGIN = "authenticate.json?username=%s&password=%s"
+    const val SIGN_UP = "sign_up.json?username=%s&password=%s&email=%s"
 
 }
 

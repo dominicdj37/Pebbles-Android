@@ -27,11 +27,6 @@
         motion:constraintSetEnd="@+id/signIn"
         motion:constraintSetStart="@id/registration"
         motion:duration="500">
-        <OnClick motion:clickAction="transitionToEnd"
-            motion:targetId="@+id/backToLogin"/>
-
-        <KeyFrameSet>
-        </KeyFrameSet>
     </Transition>
 
     <ConstraintSet android:id="@+id/start">

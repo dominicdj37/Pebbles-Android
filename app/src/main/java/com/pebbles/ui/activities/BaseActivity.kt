@@ -87,7 +87,7 @@ open class BaseActivity: AppCompatActivity() {
     fun checkResponse(response: ApiResponse,
                       showError:Boolean = true,
                       onSuccess: ((Any) -> Unit) ? = null,
-                      errorCodeParams:((ArrayList<ErrorCodeParams>?) -> Unit) ? = null,
+                      errorCodeParams:((ErrorCodeParams?) -> Unit) ? = null,
                       onFailure: ((Error?) -> Unit) ? = null,
                       onEnd: (() -> Unit) ? = null)
     {
@@ -97,7 +97,7 @@ open class BaseActivity: AppCompatActivity() {
                     return
                 }
 
-                !response.error?.params.isNullOrEmpty() -> {
+                response.error?.params != null -> {
                     onFailure?.invoke(response.error)
                     errorCodeParams?.invoke(response.error?.params)
                     onEnd?.invoke()
@@ -118,7 +118,7 @@ open class BaseActivity: AppCompatActivity() {
                 response.error?.mCode == HttpStatusCode.noInternet -> {
                     onFailure?.invoke(response.error)
                     if(showError) {
-                        showDismissiveAlertDialog("Oops","Please check you connection and try again") {
+                        showDismissiveAlertDialog("Oops","Failed to connect to server. Please try again later.") {
                             onEnd?.invoke()
                         }
                     } else {
@@ -137,52 +137,17 @@ open class BaseActivity: AppCompatActivity() {
                         onEnd?.invoke()
                     }
                 }
-            }
 
-//                response.error?.mCode == HttpStatusCode.timeout -> {
-//                    showTimeOutAlert(retryClosure)
-//                    return false
-//                }
-//
-//                response.error?.mCode == HttpStatusCode.notFound -> {
-//                    return false
-//                }
-//
-//                response.error?.mCode == HttpStatusCode.forbidden -> {
-//                        return false
-//                    }
-//                }
-//
-//                response.error?.mCode == HttpStatusCode.quizExpired -> {
-//                    return false
-//                }
-//
-//                response.error?.mCode == HttpStatusCode.noInternet -> {
-//                    offlineBannerLayout?.visibility = View.VISIBLE
-//
-//                    return false
-//                }
-//
-//                response.error?.mCode == HttpStatusCode.passwordErrorCode -> {
-//                    if (response.error?.mNumberOfAttempt != null) {
-//                        mNumberOfAttempt = response.error?.mNumberOfAttempt!!
-//                        mRetryClosure = null
-//                        return false
-//                    }
-//                }
-//
-//                /**
-//                 * added for team formation error handling: the retry closure is invoked for showing team error messages
-//                 **/
-//                response.error?.mCode == HttpStatusCode.unProcessableEntity -> {
-//                    response.error?.mMessage?.let {
-//                        showDismissiveAlert(it, getString(R.string.alert_oops_title)) {
-//                            mRetryClosure = retryClosure
-//                            handleRetryRequest() //for refresh
-//                        }
-//                    }
-//                    return false
-//                }
-//            }
+                else -> {
+                    onFailure?.invoke(response.error)
+                    if(showError) {
+                        showDismissiveAlertDialog("Oops","Something went wrong!") {
+                            onEnd?.invoke()
+                        }
+                    } else {
+                        onEnd?.invoke()
+                    }
+                }
+            }
     }
 }

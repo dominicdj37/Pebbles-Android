@@ -43,10 +43,10 @@ class Error {
     var message: String? = null
 
     @SerializedName("error_code_params") @Expose
-    var params: ArrayList<ErrorCodeParams>? = null
+    var params: ErrorCodeParams? = null
 }
 
 class ErrorCodeParams {
     @SerializedName("error_type") @Expose
-    var error_type: String? = null
+    var errorType: String? = null
 }

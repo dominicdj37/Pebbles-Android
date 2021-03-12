@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import com.pebbles.api.core.APIGlobal
 import com.pebbles.api.core.ApiConstants
 import com.pebbles.api.core.ApiConstants.LOGIN
+import com.pebbles.api.core.ApiConstants.SIGN_UP
 import com.pebbles.api.core.ApiConstants.formatUrl
 import com.pebbles.api.model.ApiResponse
 import com.pebbles.api.model.UserModel
@@ -42,6 +43,23 @@ class SessionRepository private constructor() {
                 }, { error ->
                     responseData.postValue(ApiResponse((error)))
                 })
+        return responseData
+    }
+
+    @SuppressLint("CheckResult")
+    fun signUp(username:String, password:String, email:String): MutableLiveData<ApiResponse> {
+        val responseData = MutableLiveData<ApiResponse>()
+        val url = ApiConstants.getRequestUrlFor(SIGN_UP).formatUrl(username, password, email)
+        APIGlobal.create().login(url)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ responseModel ->
+                val gson = Gson()
+                user = gson.fromJson(gson.toJson(responseModel.result), UserModel::class.java)
+                responseData.postValue(ApiResponse(true))
+            }, { error ->
+                responseData.postValue(ApiResponse((error)))
+            })
         return responseData
     }
 }
