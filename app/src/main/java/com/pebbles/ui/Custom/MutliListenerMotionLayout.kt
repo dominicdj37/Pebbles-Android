@@ -35,15 +35,15 @@ class MultiListenerMotionLayout @JvmOverloads constructor(
     /**
      * Add a [TransitionListener] which will be called as appropriate.
      */
-    fun addTransitionListener(listener: TransitionListener) {
+    override fun addTransitionListener(listener: TransitionListener) {
         listeners.addIfAbsent(listener)
     }
 
     /**
      * Remove a previously added [TransitionListener].
      */
-    fun removeTransitionListener(listener: TransitionListener) {
-        listeners.remove(listener)
+    override fun removeTransitionListener(listener: TransitionListener): Boolean {
+        return listeners.remove(listener)
     }
 
     init {

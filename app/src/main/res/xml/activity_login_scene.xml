@@ -7,27 +7,32 @@
 
 
     <Transition
-        motion:constraintSetEnd="@+id/end"
+        android:id="@+id/transitionSignIn"
+        motion:constraintSetEnd="@+id/signIn"
         motion:constraintSetStart="@id/start"
-        motion:duration="1000">
-        <OnClick motion:clickAction="transitionToEnd"
-            motion:targetId="@+id/loginButton"/>
-
+        motion:duration="500">
        <KeyFrameSet>
        </KeyFrameSet>
     </Transition>
 
     <Transition
-        motion:constraintSetEnd="@+id/end"
-        motion:constraintSetStart="@id/start"
-        motion:duration="1000">
-        <OnClick motion:clickAction="transitionToStart"
-            motion:targetId="@+id/signUpButton"/>
+        android:id="@+id/transitionRegistration"
+        motion:constraintSetEnd="@+id/registration"
+        motion:constraintSetStart="@id/signIn"
+        motion:duration="500">
+    </Transition>
+
+    <Transition
+        android:id="@+id/transitionBackToSignIn"
+        motion:constraintSetEnd="@+id/signIn"
+        motion:constraintSetStart="@id/registration"
+        motion:duration="500">
+        <OnClick motion:clickAction="transitionToEnd"
+            motion:targetId="@+id/backToLogin"/>
 
         <KeyFrameSet>
         </KeyFrameSet>
     </Transition>
-
 
     <ConstraintSet android:id="@+id/start">
         <Constraint
@@ -38,6 +43,7 @@
             android:scaleType="centerCrop"
             android:scaleX="1.2"
             android:scaleY="1.2"
+            android:elevation="5dp"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintRight_toRightOf="parent"
@@ -47,20 +53,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="100dp"
+            android:elevation="10dp"
             motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintRight_toRightOf="parent"
             motion:layout_constraintBottom_toBottomOf="parent" />
+        <Constraint
+            android:id="@+id/userNameTextInputField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="45dp"
+            android:layout_marginEnd="45dp"
+            android:elevation="1dp"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintRight_toRightOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:alpha="0" />
+
         <Constraint
             android:id="@+id/emailTextInputField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="45dp"
             android:layout_marginEnd="45dp"
-            motion:layout_constraintTop_toBottomOf="@id/LogoTextView"
+            android:elevation="1dp"
+            motion:layout_constraintTop_toBottomOf="@id/userNameTextInputField"
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintRight_toRightOf="parent"
             android:alpha="0" />
+
         <Constraint
             android:id="@+id/passwordTextInputField"
             android:layout_width="match_parent"
@@ -68,6 +90,7 @@
             android:layout_marginStart="45dp"
             android:layout_marginEnd="45dp"
             android:layout_marginTop="10dp"
+            android:elevation="1dp"
             motion:layout_constraintTop_toBottomOf="@id/emailTextInputField"
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintRight_toRightOf="parent"
@@ -78,6 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="visible"
+            android:elevation="10dp"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintEnd_toEndOf="@+id/LogoTextView"
             motion:layout_constraintStart_toStartOf="@+id/LogoTextView"
@@ -85,18 +109,43 @@
             />
 
         <Constraint
-            android:id="@id/signUpButton"
+            android:id="@id/newUserLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="invisible"
+            android:elevation="1dp"
             motion:layout_constraintBottom_toBottomOf="@id/loginButton"
             motion:layout_constraintEnd_toEndOf="@+id/loginButton"
             motion:layout_constraintTop_toTopOf="@id/loginButton"
             motion:layout_constraintStart_toStartOf="@+id/loginButton"
             />
+
+        <Constraint
+            android:id="@id/backToLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:elevation="1dp"
+            motion:layout_constraintBottom_toBottomOf="@id/loginButton"
+            motion:layout_constraintEnd_toEndOf="@+id/loginButton"
+            motion:layout_constraintTop_toTopOf="@id/loginButton"
+            motion:layout_constraintStart_toStartOf="@+id/loginButton"
+            />
+
+        <Constraint
+            android:id="@+id/completeSignUpButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:elevation="1dp"
+            motion:layout_constraintTop_toBottomOf="@id/newUserLabel"
+            motion:layout_constraintEnd_toEndOf="@+id/newUserLabel"
+            motion:layout_constraintStart_toStartOf="@id/newUserLabel"
+            />
+
     </ConstraintSet>
 
-    <ConstraintSet android:id="@+id/end">
+    <ConstraintSet android:id="@+id/signIn">
 
         <Constraint
             android:id="@+id/view3"
@@ -106,6 +155,7 @@
             android:scaleType="centerCrop"
             android:scaleX="1"
             android:scaleY="1"
+            android:elevation="5dp"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintRight_toRightOf="parent"
@@ -115,11 +165,25 @@
             android:id="@+id/LogoTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:elevation="10dp"
             motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintLeft_toLeftOf="parent"
-            motion:layout_constraintBottom_toTopOf="@id/emailTextInputField"
+            motion:layout_constraintBottom_toTopOf="@id/userNameTextInputField"
             motion:layout_constraintRight_toRightOf="parent"
             android:layout_marginTop="32dp" />
+
+        <Constraint
+            android:id="@+id/userNameTextInputField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="45dp"
+            android:layout_marginEnd="45dp"
+            android:elevation="10dp"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintRight_toRightOf="parent"
+            android:alpha="1" />
 
         <Constraint
             android:id="@+id/emailTextInputField"
@@ -127,11 +191,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="45dp"
             android:layout_marginEnd="45dp"
-            motion:layout_constraintTop_toTopOf="parent"
-            motion:layout_constraintLeft_toLeftOf="parent"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            motion:layout_constraintRight_toRightOf="parent"
-            android:alpha="1" />
+            android:elevation="1dp"
+            motion:layout_constraintTop_toTopOf="@id/userNameTextInputField"
+            motion:layout_constraintStart_toEndOf="@id/userNameTextInputField"
+            android:alpha="0" />
 
         <Constraint
             android:id="@+id/passwordTextInputField"
@@ -140,6 +203,97 @@
             android:layout_marginStart="45dp"
             android:layout_marginEnd="45dp"
             android:layout_marginTop="10dp"
+            android:elevation="10dp"
+            motion:layout_constraintTop_toBottomOf="@id/userNameTextInputField"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintRight_toRightOf="parent"
+            android:alpha="1" />
+
+        <Constraint
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="20dp"
+            android:elevation="10dp"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/passwordTextInputField"
+            android:id="@+id/loginButton" />
+
+        <Constraint
+            android:id="@+id/newUserLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="1"
+            android:elevation="10dp"
+            motion:layout_constraintTop_toBottomOf="@id/loginButton"
+            motion:layout_constraintEnd_toEndOf="@+id/loginButton"
+            motion:layout_constraintStart_toStartOf="@id/loginButton"
+            />
+
+        <Constraint
+            android:id="@+id/backToLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:elevation="1dp"
+            motion:layout_constraintTop_toBottomOf="@id/loginButton"
+            motion:layout_constraintEnd_toEndOf="@+id/loginButton"
+            motion:layout_constraintStart_toStartOf="@id/loginButton"
+            />
+
+
+        <Constraint
+            android:id="@+id/completeSignUpButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:elevation="1dp"
+            motion:layout_constraintTop_toBottomOf="@id/newUserLabel"
+            motion:layout_constraintEnd_toEndOf="@+id/newUserLabel"
+            motion:layout_constraintStart_toStartOf="@id/newUserLabel"
+            />
+
+
+    </ConstraintSet>
+
+
+    <ConstraintSet android:id="@+id/registration"
+        motion:deriveConstraintsFrom="@id/signIn">
+
+        <Constraint
+            android:id="@+id/view3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha=".05"
+            android:scaleType="centerCrop"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            android:elevation="5dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintRight_toRightOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"  />
+
+        <Constraint
+            android:id="@+id/emailTextInputField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginEnd="45dp"
+            android:elevation="10dp"
+            motion:layout_constraintTop_toBottomOf="@id/userNameTextInputField"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintRight_toRightOf="parent"
+            android:alpha="1" />
+        <Constraint
+            android:id="@+id/passwordTextInputField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="45dp"
+            android:layout_marginEnd="45dp"
+            android:layout_marginTop="10dp"
+            android:elevation="10dp"
             motion:layout_constraintTop_toBottomOf="@id/emailTextInputField"
             motion:layout_constraintLeft_toLeftOf="parent"
             motion:layout_constraintRight_toRightOf="parent"
@@ -148,31 +302,47 @@
         <Constraint
             android:layout_height="wrap_content"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toBottomOf="@+id/passwordTextInputField"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
+            android:alpha="0"
+            android:elevation="1dp"
             android:id="@+id/loginButton" />
-        <Constraint
-            motion:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            android:visibility="visible"
-            motion:layout_constraintTop_toBottomOf="@+id/passwordTextInputField"
-            motion:layout_constraintStart_toStartOf="parent"
-            android:id="@+id/loginButton"
-            motion:layout_constraintVertical_bias="0.13" />
 
         <Constraint
-            android:id="@+id/signUpButton"
+            android:id="@id/newUserLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:elevation="1dp"
+            motion:layout_constraintTop_toBottomOf="@id/completeSignUpButton"
+            motion:layout_constraintEnd_toEndOf="@+id/completeSignUpButton"
+            motion:layout_constraintStart_toStartOf="@+id/completeSignUpButton"
+            />
+
+        <Constraint
+            android:id="@id/backToLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="1"
+            android:elevation="10dp"
+            android:visibility="visible"
+            android:text="back to login"
+            motion:layout_constraintTop_toBottomOf="@id/completeSignUpButton"
+            motion:layout_constraintEnd_toEndOf="@+id/completeSignUpButton"
+            motion:layout_constraintStart_toStartOf="@+id/completeSignUpButton"
+            />
+
+        <Constraint
+            android:id="@+id/completeSignUpButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="visible"
-            motion:layout_constraintTop_toBottomOf="@id/loginButton"
-            motion:layout_constraintEnd_toEndOf="@+id/loginButton"
-            motion:layout_constraintStart_toStartOf="@id/loginButton"
+            android:elevation="10dp"
+            android:layout_marginTop="20dp"
+            motion:layout_constraintTop_toBottomOf="@id/passwordTextInputField"
+            motion:layout_constraintEnd_toEndOf="@+id/passwordTextInputField"
+            motion:layout_constraintStart_toStartOf="@id/passwordTextInputField"
             />
 
     </ConstraintSet>
+
 </MotionScene>
