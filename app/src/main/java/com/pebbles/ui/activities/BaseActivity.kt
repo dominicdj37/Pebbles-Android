@@ -138,6 +138,18 @@ open class BaseActivity: AppCompatActivity() {
                     }
                 }
 
+                response.error?.mCode == HttpStatusCode.timeout -> {
+                    handleSessionOut()
+                    onFailure?.invoke(response.error)
+                    if(showError) {
+                        showDismissiveAlertDialog("Oops","You do not have permission to access this.") {
+                            onEnd?.invoke()
+                        }
+                    } else {
+                        onEnd?.invoke()
+                    }
+                }
+
                 else -> {
                     onFailure?.invoke(response.error)
                     if(showError) {
@@ -149,5 +161,9 @@ open class BaseActivity: AppCompatActivity() {
                     }
                 }
             }
+    }
+
+    private fun handleSessionOut() {
+        //todo
     }
 }

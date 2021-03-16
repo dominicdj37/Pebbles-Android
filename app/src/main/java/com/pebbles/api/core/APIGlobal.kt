@@ -1,8 +1,11 @@
 package com.pebbles.api.core
 
 
+import android.util.Log
 import com.google.gson.GsonBuilder
 import com.pebbles.BuildConfig
+import com.pebbles.core.sessionUtils
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -36,8 +39,8 @@ object APIGlobal {
     }
 
     private fun getOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
-        //val addCookiesInterceptor = createAddCookiesInterceptor()
-        //val receivedCookiesInterceptor = createReceivedCookiesInterceptor()
+        val addCookiesInterceptor = createAddCookiesInterceptor()
+        val receivedCookiesInterceptor = createReceivedCookiesInterceptor()
         val client = OkHttpClient.Builder()
             .retryOnConnectionFailure(true)
             .followRedirects(true)
@@ -45,8 +48,8 @@ object APIGlobal {
             .readTimeout(1, TimeUnit.MINUTES)
             .writeTimeout(5, TimeUnit.MINUTES)
             .connectTimeout(1, TimeUnit.MINUTES)
-            //.addInterceptor(addCookiesInterceptor)
-            //.addInterceptor(receivedCookiesInterceptor)
+            .addInterceptor(addCookiesInterceptor)
+            .addInterceptor(receivedCookiesInterceptor)
 
         //need to enable http logging for development environment
         if (BuildConfig.DEBUG) {
@@ -56,37 +59,45 @@ object APIGlobal {
         return client.build()
     }
 
-//    /**
-//     * Add header cookie to request.
-//     */
-//    private fun createAddCookiesInterceptor(): Interceptor {
-//        return Interceptor {
-//            val requestBuilder = it.request().newBuilder()
-//            if (sessionUtils.hasCookies()) {
-//                for (cookie in sessionUtils.getCookies()) {
-//                    requestBuilder.addHeader("Cookie", cookie)
-//                }
-//            }
-//            it.proceed(requestBuilder.build())
-//        }
-//    }
-//
-//    /**
-//     * Get cookies from response.
-//     */
-//    private fun createReceivedCookiesInterceptor(): Interceptor {
-//        return Interceptor {
-//            val originalRequest = it.proceed(it.request())
-//            if (originalRequest.headers("Set-Cookie").isNotEmpty()) {
-//                val cookies = HashSet<String>()
-//                for (header in originalRequest.headers("Set-Cookie")) {
-//                    cookies.add(header)
-//                }
-//                sessionUtils.updateCookies(cookies)
-//            }
-//            originalRequest
-//        }
-//    }
+    /**
+     * Add header cookie to request.
+     */
+    private fun createAddCookiesInterceptor(): Interceptor {
+        return Interceptor {
+            val requestBuilder = it.request().newBuilder()
+            Log.d("CookieLog","------------------- Setting Cookies -------------------- ")
+            if (sessionUtils.hasCookies()) {
+                Log.d("CookieLog","Setting the following cookies")
+                for (cookie in sessionUtils.getCookies()) {
+                    Log.d("CookieLog","Cookie: $cookie")
+                    requestBuilder.addHeader("Cookie", cookie)
+                }
+            }
+            Log.d("CookieLog","------------------- Setting Cookies End -----------------")
+            it.proceed(requestBuilder.build())
+        }
+    }
+
+    /**
+     * Get cookies from response.
+     */
+    private fun createReceivedCookiesInterceptor(): Interceptor {
+        return Interceptor {
+            val originalRequest = it.proceed(it.request())
+            Log.d("CookieLog","------------------- Received Cookies --------------------")
+            if (originalRequest.headers("Set-Cookie").isNotEmpty()) {
+                Log.d("CookieLog","Cookies received are: ")
+                val cookies = HashSet<String>()
+                for (header in originalRequest.headers("Set-Cookie")) {
+                    Log.d("CookieLog", "Cookie: $header")
+                    cookies.add(header)
+                }
+                sessionUtils.updateCookies(cookies)
+            }
+            Log.d("CookieLog","------------------- Received Cookies End ----------------")
+            originalRequest
+        }
+    }
 
     private fun getHttpLoggingInterceptor(): HttpLoggingInterceptor {
         val httpLoggingInterceptor = HttpLoggingInterceptor()

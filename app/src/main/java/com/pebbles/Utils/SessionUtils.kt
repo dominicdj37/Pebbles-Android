@@ -17,6 +17,7 @@ class SessionUtils(val context: Context) {
         private const val USER_ALERTS_PREFERENCE = "USER_ALERTS_PREFERENCE"
         private const val BIOMETRIC_SHOWN_FLAG = "BIOMETRIC_SHOWN_FLAG"
         private const val BIOMETRIC_ENABLED_FLAG = "BIOMETRIC_ENABLED_FLAG"
+        private const val COOKIES = "cookies"
 
 
         //endregion
@@ -33,6 +34,36 @@ class SessionUtils(val context: Context) {
         }
         return false
     }
+
+
+    //region cookies
+    fun updateCookies(newCookies: HashSet<String>) {
+        val appCookies =  getCookies()  //retrieve stored cookies if any
+
+        //removing all existing cookies with the same key
+        newCookies.forEach { newCookie ->
+            appCookies.filter { appCookie -> appCookie.substringBefore("=") == newCookie.substringBefore("=") }.let {
+                appCookies.removeAll(it)
+            }
+        }
+
+        //adding all new cookies
+        appCookies.addAll(newCookies)
+        sessionPrefs?.edit()?.putStringSet(COOKIES, appCookies)?.apply()
+    }
+
+    fun getCookies(): MutableSet<String> {
+        return sessionPrefs?.getStringSet(COOKIES, HashSet()) ?: HashSet()
+    }
+
+    fun clearCookies() {
+        sessionPrefs?.edit()?.remove(COOKIES)?.apply()
+    }
+
+    fun hasCookies(): Boolean {
+        return getCookies().isNotEmpty()
+    }
+    //endregion
 
 
     fun setShouldRegenerateToken(shouldAsk: Boolean) {
@@ -69,5 +100,8 @@ class SessionUtils(val context: Context) {
     fun getBiometricEnabledFlag(): Boolean {
         return sessionPrefs?.getBoolean(BIOMETRIC_ENABLED_FLAG, false) ?: false
     }
+
+
+
 
 }

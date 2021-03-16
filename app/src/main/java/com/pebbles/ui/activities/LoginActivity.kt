@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.pebbles.R
 import com.pebbles.Utils.StringUtils
 import com.pebbles.api.model.ErrorCodeParams
+import com.pebbles.api.repository.SettingRepository
 import com.pebbles.ui.viewModels.LoginViewModel
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -26,6 +27,12 @@ class LoginActivity : BaseActivity() {
 
 
         initMotionLayout()
+    }
+
+    private fun getSettings() {
+        SettingRepository.getEnvironmentSetting().observe(this, Observer {
+            checkResponse(it)
+        })
     }
 
     private fun initMotionLayout() {
@@ -121,6 +128,7 @@ class LoginActivity : BaseActivity() {
             checkResponse(response = it, onSuccess = { data ->
                 progress_signIn?.visibility = View.INVISIBLE
                 showDismissiveAlertDialog("wonderful","thanks for testing")
+                getSettings()
             }, errorCodeParams= {params->
                 showErrors(params)
             }, onEnd = {

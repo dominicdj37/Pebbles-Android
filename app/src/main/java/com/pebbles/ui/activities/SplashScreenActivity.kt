@@ -32,12 +32,9 @@ class SplashScreenActivity : BaseActivity() {
         loginButton.visibility = View.GONE
         fingerPrintIcon.visibility = View.GONE
 
-        getSettings()
     }
 
-    private fun getSettings() {
-        SettingRepository.getEnvironmentSetting()
-    }
+
 
     private fun startSplashTimer() {
         Run.after(2000) {
