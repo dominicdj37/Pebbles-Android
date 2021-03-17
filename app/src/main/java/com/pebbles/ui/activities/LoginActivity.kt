@@ -11,8 +11,17 @@ import com.pebbles.R
 import com.pebbles.Utils.StringUtils
 import com.pebbles.api.model.ErrorCodeParams
 import com.pebbles.api.repository.SettingRepository
+import com.pebbles.core.sessionUtils
 import com.pebbles.ui.viewModels.LoginViewModel
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_login_new.*
+import kotlinx.android.synthetic.main.activity_login_new.loginButton
+import kotlinx.android.synthetic.main.activity_login_new.newUserLabel
+import kotlinx.android.synthetic.main.activity_login_new.passwordEditText
+import kotlinx.android.synthetic.main.activity_login_new.passwordTextInputField
+import kotlinx.android.synthetic.main.activity_login_new.userNameEditText
+import kotlinx.android.synthetic.main.activity_login_new.userNameTextInputField
+import kotlinx.coroutines.*
 
 class LoginActivity : BaseActivity() {
 
@@ -22,69 +31,78 @@ class LoginActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_login_new)
         viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
 
 
-        initMotionLayout()
+       tryAutoLogin() {
+           setLoginUi()
+       }
+
     }
 
-    private fun getSettings() {
-        SettingRepository.getEnvironmentSetting().observe(this, Observer {
-            checkResponse(it)
-        })
+    private fun tryAutoLogin(function: () -> Unit) {
+        progress_bar?.visibility = View.VISIBLE
+        GlobalScope.launch {
+            delay(3000)
+
+            //todo check session available
+
+
+            withContext(Dispatchers.Main) {
+
+                if(sessionUtils.getCookies().any { cookie -> cookie.substringBefore("=") == "_shared_token_cookie" && cookie.substringAfter("=").isNotBlank() }) {
+                    navigateToHome()
+                    finish()
+                } else {
+                    loginNewMotionLayout?.setTransition(R.id.startToSignInTransition)
+                    loginNewMotionLayout?.transitionToEnd()
+                    progress_bar?.visibility = View.INVISIBLE
+                    function.invoke()
+                }
+            }
+        }
     }
 
     private fun initMotionLayout() {
-        progress_signIn?.visibility = View.INVISIBLE
-        userNameTextInputField?.isEnabled = false
-        emailTextInputField?.isEnabled = false
-        passwordTextInputField?.isEnabled = false
-        loginButton?.isEnabled = true
+    }
+
+    private fun setLoginUi() {
 
         loginButton?.setOnClickListener {
-
-            if(userNameTextInputField?.isEnabled == true) {
-                login()
-            }
-
-            userNameTextInputField?.isEnabled = true
-            passwordTextInputField?.isEnabled = true
-            loginMotionLayout?.setTransition(R.id.transitionSignIn)
-            loginMotionLayout?.transitionToEnd()
+            login()
         }
 
         newUserLabel?.setOnClickListener {
-            loginButton?.isEnabled = false
-            userNameTextInputField?.isEnabled = true
-            emailTextInputField?.isEnabled = true
-            passwordTextInputField?.isEnabled = true
+            progress_bar?.visibility = View.INVISIBLE
+
+            emailSignUpTextInputField?.error = null
+            userNameSignUpEditText?.error = null
+            passwordSignUpTextInputField?.error = null
+
+            emailSignUpEditText?.setText("")
+            userNameSignUpEditText?.setText("")
+            passwordSignUpEditText?.setText("")
+
+            loginNewMotionLayout?.setTransition(R.id.signIntoSignUpTransition)
+            loginNewMotionLayout?.transitionToEnd()
+
+        }
+
+        backToLoginLabel?.setOnClickListener {
+            progress_bar?.visibility = View.INVISIBLE
 
             userNameTextInputField?.error = null
             passwordTextInputField?.error = null
+            loginNewMotionLayout?.setTransition(R.id.signIntoSignUpTransition)
+            loginNewMotionLayout?.transitionToStart()
 
-            loginMotionLayout?.setTransition(R.id.transitionRegistration)
-            loginMotionLayout?.transitionToEnd()
         }
 
-        backToLogin?.setOnClickListener {
-            loginButton?.isEnabled = true
-            userNameTextInputField?.isEnabled = true
-            emailTextInputField?.isEnabled = false
-            passwordTextInputField?.isEnabled = true
-
-
-            userNameTextInputField?.error = null
-            passwordTextInputField?.error = null
-            emailTextInputField?.error = null
-
-            loginMotionLayout?.setTransition(R.id.transitionBackToSignIn)
-            loginMotionLayout?.transitionToEnd()
-        }
-
-        completeSignUpButton?.setOnClickListener {
+        signUpButton?.setOnClickListener {
             signUp()
         }
+
     }
 
     private fun signUp() {
@@ -92,27 +110,45 @@ class LoginActivity : BaseActivity() {
 
         userNameTextInputField?.error = null
         passwordTextInputField?.error = null
-        emailTextInputField?.error = null
 
-        val password = passwordEditText.text.toString()
-        val username = userNameEditText.text.toString()
-        var email = emailEditText.text.toString()
+
+        emailSignUpTextInputField?.error = null
+        userNameSignUpTextInputField?.error = null
+        passwordSignUpTextInputField?.error = null
+
+        val email = emailSignUpEditText?.text.toString()
+        val username = userNameSignUpEditText?.text.toString()
+        val password = passwordSignUpEditText?.text.toString()
 
         if(!StringUtils.isValidEmail(email)) {
-            emailTextInputField.error = "Not a valid email"
+            emailSignUpTextInputField.error = "Not a valid email"
             return
         }
-        progress_signIn?.visibility = View.VISIBLE
+
+        signUpButton?.isEnabled = false
+
+        progress_bar?.visibility = View.VISIBLE
+
         viewModel.signUp(username, password, email).observe(this, Observer {
             checkResponse(response = it, onSuccess = { data ->
-                progress_signIn?.visibility = View.INVISIBLE
                 showDismissiveAlertDialog("Sucess","Please Sign in to continue")
-                emailEditText.setText("")
-                backToLogin.callOnClick()
+
+                //set username and email for ease
+                userNameSignUpEditText?.text?.toString()?.let {username ->
+                    userNameEditText?.setText(username)
+                }
+                passwordSignUpEditText?.text?.toString()?.let {password->
+                    passwordEditText?.setText(password)
+                }
+
+
+                backToLoginLabel.callOnClick()
+
             }, errorCodeParams= {params->
-                showErrors(params)
+                showErrorsForSignUp(params)
             }, onEnd = {
-                progress_signIn?.visibility = View.INVISIBLE
+                progress_bar?.visibility = View.INVISIBLE
+                signUpButton?.isEnabled = true
             })
         })
 
@@ -120,46 +156,84 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun login() {
+
+        userNameTextInputField?.error = null
+        passwordTextInputField?.error = null
+
         val password = passwordEditText.text.toString()
         val username = userNameEditText.text.toString()
 
-        progress_signIn?.visibility = View.VISIBLE
+        progress_bar?.visibility = View.VISIBLE
+
+        loginButton?.isEnabled = false
         viewModel.login(username, password).observe(this, Observer {
             checkResponse(response = it, onSuccess = { data ->
-                progress_signIn?.visibility = View.INVISIBLE
-                showDismissiveAlertDialog("wonderful","thanks for testing")
-                getSettings()
+                navigateToHome()
+                //getSettings()
             }, errorCodeParams= {params->
-                showErrors(params)
+                showErrorsForLogin(params)
             }, onEnd = {
-                progress_signIn?.visibility = View.INVISIBLE
+                progress_bar?.visibility = View.INVISIBLE
+                loginButton?.isEnabled = true
             })
         })
     }
 
-    private fun showErrors(it: ErrorCodeParams?) {
+    private fun showErrorsForSignUp(it: ErrorCodeParams?) {
         when (it?.errorType) {
             "invalid_password" -> {
-                passwordTextInputField.error = "Password do not match"
+                passwordSignUpTextInputField?.error = "Password do not match"
             }
             "empty_username" -> {
-                userNameTextInputField.error = "Username cannot be empty"
+                userNameSignUpTextInputField?.error = "Username cannot be empty"
             }
             "invalid_username" -> {
-                userNameTextInputField.error = "User not found"
+                userNameSignUpTextInputField?.error = "User not found"
             }
             "empty_password" -> {
-                passwordTextInputField.error = "Password cannot be empty"
+                passwordSignUpTextInputField?.error = "Password cannot be empty"
             }
 
             "empty_email" -> {
-                emailTextInputField.error = "Email cannot be empty"
+                emailSignUpTextInputField?.error = "Email cannot be empty"
             }
             "username_taken" -> {
-                userNameTextInputField.error = "Username already taken"
+                userNameSignUpTextInputField?.error = "Username already taken"
             }
         }
     }
+
+    private fun showErrorsForLogin(it: ErrorCodeParams?) {
+        when (it?.errorType) {
+            "invalid_password" -> {
+                passwordTextInputField?.error = "Password do not match"
+            }
+            "empty_username" -> {
+                userNameTextInputField?.error = "Username cannot be empty"
+            }
+            "invalid_username" -> {
+                userNameTextInputField?.error = "User not found"
+            }
+            "empty_password" -> {
+                passwordTextInputField?.error = "Password cannot be empty"
+            }
+
+            "empty_email" -> {
+                emailTextInputField?.error = "Email cannot be empty"
+            }
+            "username_taken" -> {
+                userNameTextInputField?.error = "Username already taken"
+            }
+        }
+    }
+
+
+    private fun getSettings() {
+        SettingRepository.getEnvironmentSetting().observe(this, Observer {
+            checkResponse(it)
+        })
+    }
+
 
     //region Lifecycle
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {

@@ -6,15 +6,14 @@ import android.util.Log
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
-import com.firebase.ui.auth.AuthUI
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.pebbles.BuildConfig
 import com.pebbles.R
 import com.pebbles.Utils.BiometricUtils
 import com.pebbles.Utils.NotificationUtils
 import com.pebbles.Utils.ResourceUtils.getStringResource
+import com.pebbles.api.repository.SessionRepository
 import com.pebbles.backgroundServices.PebblesService
 import com.pebbles.core.*
 import com.pebbles.ui.Custom.Tab
@@ -23,7 +22,6 @@ import com.pebbles.ui.fragments.ChatFragment
 import com.pebbles.ui.fragments.DeviceFragment
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_home.view.*
-import kotlinx.android.synthetic.main.home_page_ui.*
 import kotlinx.android.synthetic.main.home_page_ui.mainViewPager
 import kotlinx.android.synthetic.main.home_page_ui.myTabBar
 import kotlinx.android.synthetic.main.home_tool_bar.*
@@ -55,7 +53,7 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
     }
 
     private fun initToolBar() {
-        val title = "Hi there ${Repo.user?.name?.split(" ")?.component1() ?: "fish keeper"} !"
+        val title = "Hi there ${ SessionRepository.getInstance().user?.username ?: "fish keeper"} !"
         toolbar_title.text = title
         toolbar_subtitle.text = "Planted tank in Hall room"
     }
@@ -277,8 +275,8 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
 
     private fun initNavigationView() {
-        nav_view.childLayout.profileNameTextView.text = Repo.user?.name
-        nav_view.childLayout.profileEmailTextView.text = Repo.user?.email
+        nav_view.childLayout.profileNameTextView.text = SessionRepository.getInstance().user?.username ?: "User"
+        nav_view.childLayout.profileEmailTextView.text =  SessionRepository.getInstance().user?.email
         nav_view.childLayout.profileImageView.assignImageFromUrl(Repo.user?.profilePhotoUrl.toString(),true, isCircleCrop = true)
         sideMenuIcon.setOnClickListener {
             drawer_layout.openDrawer(GravityCompat.END)
@@ -296,18 +294,24 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
 
     private fun logout() {
-        PebblesService.stopService(this)
-        AuthUI.getInstance()
-                .signOut(this)
-                .addOnCompleteListener {
-                    navigateToSplashScreen()
-                }
+//        PebblesService.stopService(this)
+//        AuthUI.getInstance()
+//                .signOut(this)
+//                .addOnCompleteListener {
+//                    navigateToSplashScreen()
+//                }
+
+
+
+        sessionUtils.clearCookies()
+        navigateToLoginScreen()
+
     }
 
-    private fun navigateToSplashScreen() {
-        Repo.user = null
-        Repo.firebaseLoginResponse = null
-        startActivity(Intent(this, SplashScreenActivity::class.java))
+    private fun navigateToLoginScreen() {
+//        Repo.user = null
+//        Repo.firebaseLoginResponse = null
+        startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }
 

@@ -31,19 +31,6 @@
 
     <ConstraintSet android:id="@+id/start">
         <Constraint
-            android:id="@+id/view3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:alpha="0"
-            android:scaleType="centerCrop"
-            android:scaleX="1.2"
-            android:scaleY="1.2"
-            android:elevation="5dp"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            motion:layout_constraintLeft_toLeftOf="parent"
-            motion:layout_constraintRight_toRightOf="parent"
-            motion:layout_constraintTop_toTopOf="parent"  />
-        <Constraint
             android:id="@+id/LogoTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -143,20 +130,6 @@
     <ConstraintSet android:id="@+id/signIn">
 
         <Constraint
-            android:id="@+id/view3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:alpha=".05"
-            android:scaleType="centerCrop"
-            android:scaleX="1"
-            android:scaleY="1"
-            android:elevation="5dp"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            motion:layout_constraintLeft_toLeftOf="parent"
-            motion:layout_constraintRight_toRightOf="parent"
-            motion:layout_constraintTop_toTopOf="parent"  />
-
-        <Constraint
             android:id="@+id/LogoTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -254,21 +227,6 @@
 
     <ConstraintSet android:id="@+id/registration"
         motion:deriveConstraintsFrom="@id/signIn">
-
-        <Constraint
-            android:id="@+id/view3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:alpha=".05"
-            android:scaleType="centerCrop"
-            android:scaleX="1.2"
-            android:scaleY="1.2"
-            android:elevation="5dp"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            motion:layout_constraintLeft_toLeftOf="parent"
-            motion:layout_constraintRight_toRightOf="parent"
-            motion:layout_constraintTop_toTopOf="parent"  />
-
         <Constraint
             android:id="@+id/emailTextInputField"
             android:layout_width="match_parent"
