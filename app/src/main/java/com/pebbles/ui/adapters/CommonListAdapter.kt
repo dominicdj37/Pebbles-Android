@@ -23,6 +23,7 @@ class CommonListAdapter(
             is TempGraphComponentDataHolder -> R.layout.graph_item_layout
             is ChatDataHolder -> R.layout.chat_item_layout
             is FriendDataHolder -> R.layout.friend_item_layout
+            is PebbleDataHolder -> R.layout.pebble_list_item
             else -> R.layout.add_device_item_layout
         }
     }
@@ -41,6 +42,7 @@ class CommonListAdapter(
             )
             R.layout.chat_item_layout -> ChatViewHolder(layoutView)
             R.layout.friend_item_layout -> FriendViewHolder(layoutView)
+            R.layout.pebble_list_item -> PebbleViewHolder(layoutView)
 
             else -> AddDeviceViewHolder(layoutView)
         }
@@ -56,6 +58,7 @@ class CommonListAdapter(
             is TempGraphComponentDataHolder -> (holder as TempGraphComponentViewHolder).bindTo(list[position] as TempGraphComponentDataHolder, listInteractionListener)
             is ChatDataHolder -> (holder as ChatViewHolder).bindTo(list[position] as ChatDataHolder, listInteractionListener)
             is FriendDataHolder -> (holder as FriendViewHolder).bindTo(list[position] as FriendDataHolder, listInteractionListener)
+            is PebbleDataHolder -> (holder as PebbleViewHolder).bindTo(list[position] as PebbleDataHolder, listInteractionListener)
 
         }
 

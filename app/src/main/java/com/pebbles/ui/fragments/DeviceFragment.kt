@@ -3,12 +3,13 @@ package com.pebbles.ui.fragments
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -17,15 +18,20 @@ import com.pebbles.core.DatabaseHelper
 import com.pebbles.core.Repo
 import com.pebbles.data.Device
 import com.pebbles.ui.adapters.AddDeviceDataHolder
-import com.pebbles.ui.adapters.DeviceDataHolder
 import com.pebbles.ui.adapters.CommonListAdapter
 import com.pebbles.ui.adapters.CommonListAdapter.ListInteractionsListener
-import java.util.HashMap
+import com.pebbles.ui.adapters.DeviceDataHolder
+import com.pebbles.ui.adapters.PebbleDataHolder
+import com.pebbles.ui.viewModels.HomeViewModel
+import java.util.*
+
 
 /**
  * A fragment representing a list of Items.
  */
-class DeviceFragment : Fragment(), ListInteractionsListener {
+class DeviceFragment : BaseFragment(), ListInteractionsListener {
+
+    private lateinit var pageViewModel: HomeViewModel
 
     private var columnCount = 1
 
@@ -36,6 +42,7 @@ class DeviceFragment : Fragment(), ListInteractionsListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        pageViewModel = ViewModelProviders.of(requireActivity()).get(HomeViewModel::class.java)
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
@@ -91,8 +98,35 @@ class DeviceFragment : Fragment(), ListInteractionsListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("Pebbles_debug", "on view created")
-        initDeviceStateListener()
-        reloadDeviceList()
+
+
+        getPebblesList()
+
+//        initDeviceStateListener()
+//        reloadDeviceList()
+    }
+
+
+    private fun getPebblesList() {
+        pageViewModel.pebblesLiveData.observe(this, androidx.lifecycle.Observer {
+            checkResponse(it, onSuccess = {
+                reloadPebbelsList()
+            }, onRetry = {
+                //todo not needed. change to swipe refresh
+            })
+        })
+        pageViewModel.getPebbles()
+    }
+
+    private fun reloadPebbelsList() {
+        pageViewModel.pebbles?.my_pebbles?.let {arrayList ->
+            arrayList.forEach { pebble ->
+                deviceList.clear()
+                deviceList.add(PebbleDataHolder(pebble))
+            }
+            deviceList.add(AddDeviceDataHolder())
+            deviceAdapter.notifyDataSetChanged()
+        }
     }
 
 
@@ -117,6 +151,7 @@ class DeviceFragment : Fragment(), ListInteractionsListener {
     override fun onDeviceSwitchClicked(device: Device) {
         DatabaseHelper.switchDevice(device, {}) { }
     }
+
 
     private fun initDeviceStateListener() {
         val messageListener = object : ValueEventListener {
@@ -162,4 +197,7 @@ class DeviceFragment : Fragment(), ListInteractionsListener {
     interface OnDeviceTabInteractionListener {
         fun shortcutAdded()
     }
+
+
+
 }

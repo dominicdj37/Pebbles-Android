@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -20,6 +21,8 @@ import com.pebbles.ui.Custom.Tab
 import com.pebbles.ui.PagerAdapter
 import com.pebbles.ui.fragments.ChatFragment
 import com.pebbles.ui.fragments.DeviceFragment
+import com.pebbles.ui.viewModels.HomeViewModel
+import com.pebbles.ui.viewModels.LoginViewModel
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.home_page_ui.mainViewPager
@@ -31,9 +34,15 @@ import java.util.*
 
 class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionListener, ChatFragment.OnChatTabInteractionListener {
 
+
+    lateinit var viewModel: HomeViewModel
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+
         initNavigationView()
         initToolBar()
         initializeTabs()
@@ -55,7 +64,7 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
     private fun initToolBar() {
         val title = "Hi there ${ SessionRepository.getInstance().user?.username ?: "fish keeper"} !"
         toolbar_title.text = title
-        toolbar_subtitle.text = "Planted tank in Hall room"
+        //toolbar_subtitle.text = "Planted tank in Hall room"
     }
 
 

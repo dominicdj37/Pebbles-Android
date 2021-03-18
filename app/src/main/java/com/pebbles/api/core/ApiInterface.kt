@@ -42,4 +42,13 @@ interface ApiInterface {
     )
     @POST
     fun signUp(@Url url: String): Observable<ResponseModel>
+
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @GET()
+    fun getpebbles(@Url url: String): Observable<ResponseModel>
+
 }

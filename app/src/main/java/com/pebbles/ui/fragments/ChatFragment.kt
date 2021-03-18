@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.peoples_list_layout.*
 import kotlinx.coroutines.*
 
 
-class ChatFragment : Fragment(), CommonListAdapter.ListInteractionsListener {
+class ChatFragment : BaseFragment(), CommonListAdapter.ListInteractionsListener {
 
     private lateinit var peoplesListAdapter: CommonListAdapter
     private var isPeoplesLayoutVisible: Boolean = false
