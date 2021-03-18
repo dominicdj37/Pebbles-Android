@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.pebbles.api.core.APIGlobal
 import com.pebbles.api.core.ApiConstants
+import com.pebbles.api.core.ApiConstants.AUTO_LOGIN
 import com.pebbles.api.core.ApiConstants.LOGIN
 import com.pebbles.api.core.ApiConstants.SIGN_UP
 import com.pebbles.api.core.ApiConstants.formatUrl
@@ -28,6 +29,24 @@ class SessionRepository private constructor() {
     }
 
     var user:UserModel? = null
+
+
+    @SuppressLint("CheckResult")
+    fun autoLogin(): MutableLiveData<ApiResponse> {
+        val responseData = MutableLiveData<ApiResponse>()
+        val url = ApiConstants.getRequestUrlFor(AUTO_LOGIN)
+        APIGlobal.create().autoLogin(url)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ responseModel ->
+                val gson = Gson()
+                user = gson.fromJson(gson.toJson(responseModel.result), UserModel::class.java)
+                responseData.postValue(ApiResponse(true))
+            }, { error ->
+                responseData.postValue(ApiResponse((error)))
+            })
+        return responseData
+    }
 
     @SuppressLint("CheckResult")
     fun login(username:String, password:String): MutableLiveData<ApiResponse> {
@@ -62,4 +81,6 @@ class SessionRepository private constructor() {
             })
         return responseData
     }
+
+
 }

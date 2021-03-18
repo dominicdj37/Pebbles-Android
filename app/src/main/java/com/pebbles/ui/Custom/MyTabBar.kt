@@ -28,27 +28,17 @@ class MyTabBar @JvmOverloads constructor(
     var iconSize = 60
     var onTabClicked:((Tab) -> Unit)? = null
 
-    private var tempSelectionCanvas: Canvas? = null
-    private lateinit var paintSelection: Paint
-    private lateinit var transparentPaint: Paint
     private lateinit var bitmapSelectionBack:Bitmap
     private lateinit var textRect: Rect
 
     var mHeight = 0
     var mWidth = 0
 
-    var mLeft = 0f
-    var mBottom = 0f
-    var mTop = 0f
-    var mRight = 0f
-
     private val basePaint = Paint().apply {
-        color = ResourceUtils.getColorResource(R.color.m_color_light_2)!!
+        color = ResourceUtils.getColorResource(R.color.colorPrimary)!!
         style = Paint.Style.FILL
         isAntiAlias = true
     }
-
-    private val noPaint = Paint()
 
     private val bitmapPaint = Paint().apply {
         color = Color.WHITE
@@ -58,7 +48,7 @@ class MyTabBar @JvmOverloads constructor(
     }
 
     private val textPaint = Paint().apply {
-        color = ResourceUtils.getColorResource(R.color.m_color_high_contrast)!!
+        color = ResourceUtils.getColorResource(R.color.colorAccent)!!
         style = Paint.Style.FILL
         isAntiAlias = true
         textSize = 27f
@@ -89,12 +79,6 @@ class MyTabBar @JvmOverloads constructor(
         selectedTextY = height/2 + iconSize/2
 
         bitmapSelectionBack = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        tempSelectionCanvas = Canvas(bitmapSelectionBack)
-        paintSelection = Paint()
-        paintSelection.color =  ResourceUtils.getColorResource(R.color.m_color_light_2)!!
-        transparentPaint = Paint()
-        transparentPaint.color = Color.TRANSPARENT
-        transparentPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
 
         super.onSizeChanged(w, h, oldw, oldh)
     }
@@ -111,10 +95,8 @@ class MyTabBar @JvmOverloads constructor(
         }
 
 
-        tempSelectionCanvas?.drawRoundRect(0f, 30f, tempSelectionCanvas?.width?.toFloat() ?: 0f, tempSelectionCanvas?.height?.toFloat() ?: 0f, 100f,100f, paintSelection);
-        tempSelectionCanvas?.drawRect(0f,height/2.toFloat(), width.toFloat(), height.toFloat(),basePaint)
-        tempSelectionCanvas?.drawCircle(selectedX.toFloat(), 12f,iconSize.toFloat(), transparentPaint)
-        canvas?.drawBitmap(bitmapSelectionBack, 0f, 0f, noPaint)
+        //canvas?.drawRect(0f, 0f, width.toFloat(), height.toFloat(),  paintShadow);
+        canvas?.drawRect(0f, 1f, width.toFloat(), height.toFloat(),  basePaint);
 
         drawTabs(canvas)
     }
@@ -130,13 +112,13 @@ class MyTabBar @JvmOverloads constructor(
 
         val splitWidth = mWidth/tabList.size
         //calculate offset
-        val topOffset = mHeight/2 - iconSize/2
+        val topOffset = (mHeight/2 - iconSize/2).toFloat()
         val leftOffset = (splitWidth - iconSize) / 2
         var leftPointer = 0
 
         tabList.forEach {tab->
             tab.centerx = (leftPointer + (leftPointer + splitWidth) )/2
-            tab.centery = mHeight/2
+            tab.centery = mHeight - mHeight/3
             val iconLeft = leftPointer + leftOffset
             tab.startX = iconLeft
             tab.endX = iconLeft + iconSize
@@ -145,7 +127,7 @@ class MyTabBar @JvmOverloads constructor(
             var text = ""
             if(tab == selectedTab) {
                 bitmapPaint.alpha = 255
-                top = 0f
+                top = iconSize/2.toFloat()
                 text = tab.name
                 textRect = Rect()
                 textPaint.getTextBounds(tab.name,0, tab.name.length, textRect)
@@ -158,7 +140,7 @@ class MyTabBar @JvmOverloads constructor(
 
             val bitmap = ContextCompat.getDrawable(context, tab.iconID)!!.toBitmap(iconSize, iconSize)
             canvas?.drawBitmap(bitmap, iconLeft.toFloat(), top, bitmapPaint)
-            canvas?.drawText(text,tab.centerx.toFloat(), selectedTextY.toFloat(), textPaint)
+            canvas?.drawText(text,tab.centerx.toFloat(), selectedTextY.toFloat() + 10, textPaint)
             leftPointer += splitWidth
         }
 

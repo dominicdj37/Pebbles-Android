@@ -19,12 +19,22 @@ interface ApiInterface {
     @GET("settings.json")
     fun getSettings(): Observable<ResponseModel>
 
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @POST
+    fun autoLogin(@Url url: String): Observable<ResponseModel>
+
     @Headers(
         "Accept: application/json",
         "Content-Type: application/json"
     )
     @POST
     fun login(@Url url: String): Observable<ResponseModel>
+
+
 
     @Headers(
         "Accept: application/json",

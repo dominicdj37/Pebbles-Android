@@ -8,6 +8,10 @@ import com.pebbles.api.repository.SessionRepository
 
 class LoginViewModel: ViewModel() {
 
+    fun autoLogin(): MutableLiveData<ApiResponse> {
+        return SessionRepository.getInstance().autoLogin()
+    }
+
     fun login(username:String, password:String): MutableLiveData<ApiResponse> {
         return SessionRepository.getInstance().login(username, password)
     }

@@ -39,14 +39,26 @@
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/mainViewPager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></androidx.viewpager.widget.ViewPager>
+                android:layout_height="match_parent">
+
+            </androidx.viewpager.widget.ViewPager>
 
         </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            app:layout_constraintBottom_toTopOf="@id/myTabBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/bottom_bar_shadow"/>
 
         <com.pebbles.ui.Custom.MyTabBar
             android:id="@+id/myTabBar"
             android:layout_width="0dp"
             android:layout_height="60dp"
+            android:elevation="10dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

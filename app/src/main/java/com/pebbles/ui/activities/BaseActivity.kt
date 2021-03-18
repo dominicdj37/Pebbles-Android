@@ -24,10 +24,10 @@ open class BaseActivity: AppCompatActivity() {
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO); //For night mode theme
 
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
+//        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+//                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+//                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+//        setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
 
     }
 
@@ -96,21 +96,19 @@ open class BaseActivity: AppCompatActivity() {
     fun checkResponse(response: ApiResponse,
                       showError:Boolean = true,
                       onSuccess: ((Any) -> Unit) ? = null,
-                      errorCodeParams:((ErrorCodeParams?) -> Unit) ? = null,
+                      customErrors:((ErrorCodeParams?) -> Unit) ? = null,
                       onFailure: ((Error?) -> Unit) ? = null,
-                      onEnd: (() -> Unit) ? = null)
+                      onRetry: (() -> Unit) ? = null)
     {
             when {
                 response.sucess == true -> {
                     onSuccess?.invoke(true)
-                    onEnd?.invoke()
                     return
                 }
 
                 response.error?.params != null -> {
                     onFailure?.invoke(response.error)
-                    errorCodeParams?.invoke(response.error?.params)
-                    onEnd?.invoke()
+                    customErrors?.invoke(response.error?.params)
                     return
                 }
 
@@ -118,10 +116,10 @@ open class BaseActivity: AppCompatActivity() {
                     onFailure?.invoke(response.error)
                     if(showError) {
                         showDismissiveAlertDialog("Oops","We could not find what you are looking for!") {
-                            onEnd?.invoke()
+                            onRetry?.invoke()
                         }
                     } else {
-                        onEnd?.invoke()
+                        onRetry?.invoke()
                     }
                 }
 
@@ -129,10 +127,10 @@ open class BaseActivity: AppCompatActivity() {
                     onFailure?.invoke(response.error)
                     if(showError) {
                         showDismissiveAlertDialog("Oops","Failed to connect to server. Please try again later.") {
-                            onEnd?.invoke()
+                            onRetry?.invoke()
                         }
                     } else {
-                        onEnd?.invoke()
+                        onRetry?.invoke()
                     }
                 }
 
@@ -141,22 +139,22 @@ open class BaseActivity: AppCompatActivity() {
                     onFailure?.invoke(response.error)
                     if(showError) {
                         showDismissiveAlertDialog("Oops","The request could not be fulfilled!") {
-                            onEnd?.invoke()
+                            onRetry?.invoke()
                         }
                     } else {
-                        onEnd?.invoke()
+                        onRetry?.invoke()
                     }
                 }
 
-                response.error?.mCode == HttpStatusCode.timeout -> {
+                response.error?.mCode == HttpStatusCode.unauthorized -> {
                     handleSessionOut()
                     onFailure?.invoke(response.error)
                     if(showError) {
                         showDismissiveAlertDialog("Oops","You do not have permission to access this.") {
-                            onEnd?.invoke()
+                            onRetry?.invoke()
                         }
                     } else {
-                        onEnd?.invoke()
+                        onRetry?.invoke()
                     }
                 }
 
@@ -164,10 +162,10 @@ open class BaseActivity: AppCompatActivity() {
                     onFailure?.invoke(response.error)
                     if(showError) {
                         showDismissiveAlertDialog("Oops","Something went wrong!") {
-                            onEnd?.invoke()
+                            onRetry?.invoke()
                         }
                     } else {
-                        onEnd?.invoke()
+                        onRetry?.invoke()
                     }
                 }
             }

@@ -12,9 +12,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="splashScreenTheme" parent="homeTheme">
+    <style name="splashScreenTheme" parent="AppTheme">
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:windowLightStatusBar">true</item>
         <item name="android:navigationBarColor">@color/black</item>
     </style>
 
@@ -30,9 +31,11 @@
     </style>
 
     <style name="homeTheme" parent="AppTheme">
-        <item name="android:statusBarColor">@color/m_color_primary_1</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:navigationBarColor">@color/m_color_high_contrast</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+
     </style>
 
     <style name="FullScreenDialogTheme" parent="FullscreenTheme">

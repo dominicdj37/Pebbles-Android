@@ -34,40 +34,38 @@ class LoginActivity : BaseActivity() {
         setContentView(R.layout.activity_login_new)
         viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
 
-
-       tryAutoLogin() {
-           setLoginUi()
-       }
+        progress_bar?.visibility = View.VISIBLE
+        tryAutoLogin() {
+            setLoginUi()
+        }
 
     }
 
-    private fun tryAutoLogin(function: () -> Unit) {
-        progress_bar?.visibility = View.VISIBLE
-        GlobalScope.launch {
-            delay(3000)
+    private fun tryAutoLogin(askLogin: () -> Unit) {
 
-            //todo check session available
-
-
-            withContext(Dispatchers.Main) {
-
-                if(sessionUtils.getCookies().any { cookie -> cookie.substringBefore("=") == "_shared_token_cookie" && cookie.substringAfter("=").isNotBlank() }) {
+        viewModel.autoLogin().observe(this, Observer {response ->
+            checkResponse(response = response,
+                customErrors = { params->
+                    params?.errorType?.takeIf{ it == "unauthorized_user"}?.let {
+                        askLogin.invoke()
+                    }
+                }, onSuccess = {
                     navigateToHome()
                     finish()
-                } else {
-                    loginNewMotionLayout?.setTransition(R.id.startToSignInTransition)
-                    loginNewMotionLayout?.transitionToEnd()
-                    progress_bar?.visibility = View.INVISIBLE
-                    function.invoke()
-                }
-            }
-        }
+                }, onRetry = {
+                    tryAutoLogin(askLogin)
+                })
+
+        })
     }
 
     private fun initMotionLayout() {
     }
 
     private fun setLoginUi() {
+        loginNewMotionLayout?.setTransition(R.id.startToSignInTransition)
+        loginNewMotionLayout?.transitionToEnd()
+        progress_bar?.visibility = View.INVISIBLE
 
         loginButton?.setOnClickListener {
             login()
@@ -141,12 +139,14 @@ class LoginActivity : BaseActivity() {
                     passwordEditText?.setText(password)
                 }
 
+                progress_bar?.visibility = View.INVISIBLE
+                signUpButton?.isEnabled = true
 
                 backToLoginLabel.callOnClick()
 
-            }, errorCodeParams= {params->
+            }, customErrors= { params->
                 showErrorsForSignUp(params)
-            }, onEnd = {
+            }, onFailure = {
                 progress_bar?.visibility = View.INVISIBLE
                 signUpButton?.isEnabled = true
             })
@@ -170,9 +170,9 @@ class LoginActivity : BaseActivity() {
             checkResponse(response = it, onSuccess = { data ->
                 navigateToHome()
                 //getSettings()
-            }, errorCodeParams= {params->
+            }, customErrors= { params->
                 showErrorsForLogin(params)
-            }, onEnd = {
+            }, onFailure = {
                 progress_bar?.visibility = View.INVISIBLE
                 loginButton?.isEnabled = true
             })
