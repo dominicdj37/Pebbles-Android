@@ -19,4 +19,12 @@ class HomeViewModel: ViewModel() {
         PebblesRepository.getInstance().getPebbles(username, pebblesLiveData)
     }
 
+    fun connectNewPebble(name: String, key: String) {
+        PebblesRepository.getInstance().connectNewPebble(name, key, pebblesLiveData)
+    }
+
+    fun sharePebble(id: Int, username: String) {
+        PebblesRepository.getInstance().sharePebble(id, username, pebblesLiveData)
+    }
+
 }

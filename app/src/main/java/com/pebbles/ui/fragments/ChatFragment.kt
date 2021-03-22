@@ -116,11 +116,15 @@ class ChatFragment : BaseFragment(), CommonListAdapter.ListInteractionsListener 
         peoplesListAdapter = CommonListAdapter(peoplesArrayList, object: CommonListAdapter.ListInteractionsListener{
             override fun onDeviceSwitchClicked(device: Device) {}
 
-            override fun onAddDeviceClicked() {}
+            override fun onAddPebbleClicked() {}
 
             override fun onDeviceAddShortcutClicked(device: Device) {}
 
             override fun onGraphDataDateSelected(day: String, month: String, year: String) { }
+            override fun onSharePebbleClicked(id: Int) {
+
+
+            }
 
         })
         peoplesList.adapter = peoplesListAdapter
@@ -227,9 +231,13 @@ class ChatFragment : BaseFragment(), CommonListAdapter.ListInteractionsListener 
 
     override fun onDeviceSwitchClicked(device: Device) {}
 
-    override fun onAddDeviceClicked() {}
+    override fun onAddPebbleClicked() {}
 
     override fun onDeviceAddShortcutClicked(device: Device) {}
 
     override fun onGraphDataDateSelected(day: String, month: String, year: String) {}
+    override fun onSharePebbleClicked(id: Int) {
+
+
+    }
 }

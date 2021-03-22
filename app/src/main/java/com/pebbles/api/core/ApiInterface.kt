@@ -51,4 +51,10 @@ interface ApiInterface {
     @GET()
     fun getpebbles(@Url url: String): Observable<ResponseModel>
 
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @POST
+    fun createPebble(@Url url: String): Observable<ResponseModel>
 }

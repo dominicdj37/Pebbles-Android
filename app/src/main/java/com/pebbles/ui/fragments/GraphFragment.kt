@@ -108,7 +108,7 @@ class GraphFragment : Fragment(), ListInteractionsListener {
     override fun onDeviceSwitchClicked(device: Device) {
     }
 
-    override fun onAddDeviceClicked() {
+    override fun onAddPebbleClicked() {
     }
 
     override fun onDeviceAddShortcutClicked(device: Device) {
@@ -116,5 +116,9 @@ class GraphFragment : Fragment(), ListInteractionsListener {
 
     override fun onGraphDataDateSelected(day: String, month: String, year: String) {
         getTemperatureDataFromDate(day, month, year)
+    }
+
+    override fun onSharePebbleClicked(id: Int) {
+
     }
 }

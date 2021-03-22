@@ -67,9 +67,10 @@ class CommonListAdapter(
 
     interface ListInteractionsListener {
         fun onDeviceSwitchClicked(device: Device)
-        fun onAddDeviceClicked()
+        fun onAddPebbleClicked()
         fun onDeviceAddShortcutClicked(device: Device)
         fun onGraphDataDateSelected(day: String, month: String, year: String)
+        fun onSharePebbleClicked(id: Int)
     }
 
 }

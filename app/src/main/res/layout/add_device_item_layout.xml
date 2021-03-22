@@ -4,14 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:padding="10dp"
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/parentCardView"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        app:cardCornerRadius="40dp"
-        app:cardUseCompatPadding="true"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="4dp"
+        android:elevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
 
         app:layout_constraintStart_toStartOf="parent"
@@ -26,14 +27,12 @@
                 android:id="@+id/addDeviceButton"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="16dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:elevation="8dp"
                 android:scaleType="centerInside"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/textView"
+                app:layout_constraintStart_toStartOf="@+id/textView"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_add_button" />
 
@@ -42,13 +41,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Add your deivce"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:text="Add a Pebble"
                 android:textColor="@color/light_accent"
-                app:layout_constraintBottom_toBottomOf="@+id/addDeviceButton"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/addDeviceButton"
-                app:layout_constraintTop_toTopOf="@+id/addDeviceButton" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addDeviceButton" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -20,7 +20,7 @@
     <color name="white_partial_transparent_2">#EDFFFFFF</color>
 
     <color name="transparent">#00000000</color>
-    <color name="another_color_primary_light">#AEFFFFFF</color>
+    <color name="another_color_primary_light">#59FFFFFF</color>
     <color name="another_color_primary_dark">#EBF6FF</color>
     <color name="another_color_secondary_light">#00FFFF</color>
     <color name="another_color_secondary_dark">#52559D</color>

@@ -89,8 +89,12 @@ object APIGlobal {
                 Log.d("CookieLog","Cookies received are: ")
                 val cookies = HashSet<String>()
                 for (header in originalRequest.headers("Set-Cookie")) {
-                    Log.d("CookieLog", "Cookie: $header")
-                    cookies.add(header)
+                    val cookie = header.split(";").firstOrNull()
+                    cookie?.let {string->
+                        if(string.contains("_shared_token_cookie")) {
+                            cookies.add(header)
+                        }
+                    }
                 }
                 sessionUtils.updateCookies(cookies)
             }

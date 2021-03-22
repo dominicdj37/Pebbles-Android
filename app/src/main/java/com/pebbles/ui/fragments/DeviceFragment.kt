@@ -22,6 +22,8 @@ import com.pebbles.ui.adapters.CommonListAdapter
 import com.pebbles.ui.adapters.CommonListAdapter.ListInteractionsListener
 import com.pebbles.ui.adapters.DeviceDataHolder
 import com.pebbles.ui.adapters.PebbleDataHolder
+import com.pebbles.ui.popups.AddPebblePopup
+import com.pebbles.ui.popups.SharePebblePopup
 import com.pebbles.ui.viewModels.HomeViewModel
 import java.util.*
 
@@ -31,6 +33,8 @@ import java.util.*
  */
 class DeviceFragment : BaseFragment(), ListInteractionsListener {
 
+    private var popupAdd: AddPebblePopup? = null
+    private var popupShare: SharePebblePopup? = null
     private lateinit var pageViewModel: HomeViewModel
 
     private var columnCount = 1
@@ -98,30 +102,30 @@ class DeviceFragment : BaseFragment(), ListInteractionsListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("Pebbles_debug", "on view created")
-
-
         getPebblesList()
 
-//        initDeviceStateListener()
-//        reloadDeviceList()
+        initListObservers()
     }
 
-
-    private fun getPebblesList() {
+    private fun initListObservers() {
         pageViewModel.pebblesLiveData.observe(this, androidx.lifecycle.Observer {
             checkResponse(it, onSuccess = {
-                reloadPebbelsList()
+                reloadPebblesList()
             }, onRetry = {
                 //todo not needed. change to swipe refresh
             })
         })
+    }
+
+
+    private fun getPebblesList() {
         pageViewModel.getPebbles()
     }
 
-    private fun reloadPebbelsList() {
+    private fun reloadPebblesList() {
         pageViewModel.pebbles?.my_pebbles?.let {arrayList ->
+            deviceList.clear()
             arrayList.forEach { pebble ->
-                deviceList.clear()
                 deviceList.add(PebbleDataHolder(pebble))
             }
             deviceList.add(AddDeviceDataHolder())
@@ -129,75 +133,50 @@ class DeviceFragment : BaseFragment(), ListInteractionsListener {
         }
     }
 
+    override fun onAddPebbleClicked() {
+        popupAdd = AddPebblePopup(context!!, object: AddPebblePopup.PopupListener{
+            override fun onCancelClicked() {}
 
-    fun reloadDeviceList() {
-        Repo.user?.deviceSetId?.let {
-            DatabaseHelper.returnDevicesForUid(it, {
-                Repo.devices.takeIf { it.isNotEmpty() }?.let {
-                    deviceList.clear()
-                    it.forEach { device->
-                        deviceList.add(DeviceDataHolder(device))
-                    }
-                    deviceList.add(AddDeviceDataHolder())
-                    deviceAdapter.notifyDataSetChanged()
-                }
-
-            }, {
-               //error handel
-            })
-        }
+            override fun onNextClicked(name: String, key: String) {
+                connectNewPebble(name, key)
+            }
+        })
     }
 
-    override fun onDeviceSwitchClicked(device: Device) {
-        DatabaseHelper.switchDevice(device, {}) { }
+    private fun connectNewPebble(name: String, key: String) {
+        pageViewModel.connectNewPebble(name, key)
     }
 
 
-    private fun initDeviceStateListener() {
-        val messageListener = object : ValueEventListener {
+    override fun onSharePebbleClicked(id: Int) {
+        popupShare = SharePebblePopup(context!!, object: SharePebblePopup.PopupListener {
+            override fun onCancelClicked() {
 
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    val portData = dataSnapshot.value as HashMap<String, Long>
-                    portData.forEach { (port, state) ->
-                        Repo.devices.find { device -> device.port.toString() == port[1].toString()}?.state = state.toInt()
-                    }
-                    Repo.devices.takeIf { it.isNotEmpty() }?.let {
-                        deviceList.clear()
-                        it.forEach { device ->
-                            deviceList.add(DeviceDataHolder(device))
-                        }
-                        deviceList.add(AddDeviceDataHolder())
-                        deviceAdapter.notifyDataSetChanged()
-                    }
-                }
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Failed to read value
+            override fun onNextClicked(username: String) {
+                sharePebble(username, id)
             }
-        }
-        Repo.user?.deviceSetId?.let { DatabaseHelper.databaseReference?.child("portData")?.child(it)?.addValueEventListener(messageListener) }
 
+        } )
     }
 
-    override fun onAddDeviceClicked() {
-
+    private fun sharePebble(username: String, id: Int) {
+        pageViewModel.sharePebble(username = username, id = id)
     }
 
-    override fun onDeviceAddShortcutClicked(device: Device) {
-        DatabaseHelper.addDeviceShortCut(device, {
-            listener?.shortcutAdded() }, {
-                //error
-            })
-    }
 
+
+
+
+
+
+
+
+    override fun onDeviceAddShortcutClicked(device: Device) {}
     override fun onGraphDataDateSelected(day: String, month: String, year: String) { }
-
-    interface OnDeviceTabInteractionListener {
-        fun shortcutAdded()
-    }
-
+    interface OnDeviceTabInteractionListener { fun shortcutAdded() }
+    override fun onDeviceSwitchClicked(device: Device) { }
 
 
 }

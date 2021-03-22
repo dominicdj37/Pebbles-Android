@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@android:color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/myTabBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -56,7 +56,7 @@
         <com.pebbles.ui.Custom.MyTabBar
             android:id="@+id/myTabBar"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:elevation="10dp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"

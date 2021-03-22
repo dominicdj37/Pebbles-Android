@@ -55,7 +55,6 @@ class WaterLevelMeter @JvmOverloads constructor(
 
         var penY = 0f
         for(i in 0..100) {
-            Log.d("test_scale", "y value at $i : $penY")
             if(i%10 == 0) {
                 canvas?.drawLine(meterLeft + meterWidth + 10, scaleTopY + penY, meterLeft + meterWidth + 75, scaleTopY + penY, scalePaint  )
             } else {

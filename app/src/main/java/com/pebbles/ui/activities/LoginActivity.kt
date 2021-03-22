@@ -105,7 +105,6 @@ class LoginActivity : BaseActivity() {
 
     private fun signUp() {
 
-
         userNameTextInputField?.error = null
         passwordTextInputField?.error = null
 
@@ -113,6 +112,10 @@ class LoginActivity : BaseActivity() {
         emailSignUpTextInputField?.error = null
         userNameSignUpTextInputField?.error = null
         passwordSignUpTextInputField?.error = null
+
+        passwordEditText.setText("test")
+        userNameEditText.setText("daniel")
+
 
         val email = emailSignUpEditText?.text.toString()
         val username = userNameSignUpEditText?.text.toString()
@@ -159,6 +162,8 @@ class LoginActivity : BaseActivity() {
 
         userNameTextInputField?.error = null
         passwordTextInputField?.error = null
+
+
 
         val password = passwordEditText.text.toString()
         val username = userNameEditText.text.toString()

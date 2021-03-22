@@ -10,7 +10,7 @@ class AddDeviceViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bindTo(sectionTitleDataHolder: AddDeviceDataHolder, ListInteractionsListener: CommonListAdapter.ListInteractionsListener) {
         addDeviceButton.setOnClickListener {
-            ListInteractionsListener.onAddDeviceClicked()
+            ListInteractionsListener.onAddPebbleClicked()
         }
     }
 }
