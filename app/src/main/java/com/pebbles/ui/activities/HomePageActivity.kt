@@ -22,7 +22,6 @@ import com.pebbles.ui.PagerAdapter
 import com.pebbles.ui.fragments.ChatFragment
 import com.pebbles.ui.fragments.DeviceFragment
 import com.pebbles.ui.viewModels.HomeViewModel
-import com.pebbles.ui.viewModels.LoginViewModel
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.home_page_ui.mainViewPager
@@ -52,7 +51,7 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
         PebblesService.startService(this, "message")
 
-        askForPushNotificationPermission()
+        setUpFCMNotifications()
         fetchTokens()
 
         Run.after(5000) {
@@ -84,12 +83,14 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
 
 
-    private fun askForPushNotificationPermission() {
+    private fun setUpFCMNotifications() {
         NotificationUtils.updateTokenLiveData.observe(this, Observer { token->
-            DatabaseHelper.updateFCMToken(token) {
-                Repo.myToken = token
-                NotificationUtils.setShouldRegenerateToken()
-            }
+            viewModel.registerToken(token).observe(this, Observer {
+                if(it.sucess == true) {
+                    Repo.myToken = token
+                    NotificationUtils.setTokenRegistered()
+                }
+            })
         })
 
         if(NotificationUtils.shouldRegenerateToken()) {
@@ -304,17 +305,11 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
     private fun logout() {
 //        PebblesService.stopService(this)
-//        AuthUI.getInstance()
-//                .signOut(this)
-//                .addOnCompleteListener {
-//                    navigateToSplashScreen()
-//                }
-
-
-
-        sessionUtils.clearCookies()
-        navigateToLoginScreen()
-
+        viewModel.deRegisterToken().observe(this, Observer {
+            NotificationUtils.setTokenDestroyed()
+            sessionUtils.clearCookies()
+            navigateToLoginScreen()
+        })
     }
 
     private fun navigateToLoginScreen() {

@@ -14,4 +14,10 @@ class UserModel {
     @SerializedName("email") @Expose
     var email: String? = null
 
+    @SerializedName("mobile_devices") @Expose
+    var mobileDevice: ArrayList<MobileDevice> = arrayListOf()
+
+
+
+
 }

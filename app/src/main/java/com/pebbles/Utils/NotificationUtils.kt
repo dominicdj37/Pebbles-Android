@@ -29,8 +29,12 @@ object NotificationUtils {
         return sessionUtils.getShouldRegenerateToken()
     }
 
-    fun setShouldRegenerateToken() {
+    fun setTokenRegistered() {
         sessionUtils.setShouldRegenerateToken(false)
+    }
+
+    fun setTokenDestroyed() {
+        sessionUtils.setShouldRegenerateToken(true)
     }
 
 

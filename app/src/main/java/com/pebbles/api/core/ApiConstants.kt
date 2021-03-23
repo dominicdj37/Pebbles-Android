@@ -22,9 +22,13 @@ object ApiConstants {
     const val LOGIN = "authenticate.json?username=%s&password=%s"
     const val AUTO_LOGIN = "auto_login.json"
     const val SIGN_UP = "sign_up.json?username=%s&password=%s&email=%s"
+
     const val PEBBLES = "get_pebbles.json?"
     const val CREATE_PEBBLE = "create_pebble.json?pebble_name=%s&pebble_key=%s"
     const val SHARE_PEBBLE = "share_pebble.json?id=%d&username=%s"
+
+    const val TOKEN_REG = "save_token.json?token=%s"
+    const val TOKEN_DE_REG = "delete_token.json?token=%s"
 
 }
 

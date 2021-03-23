@@ -17,6 +17,7 @@ class SessionUtils(val context: Context) {
         private const val USER_ALERTS_PREFERENCE = "USER_ALERTS_PREFERENCE"
         private const val BIOMETRIC_SHOWN_FLAG = "BIOMETRIC_SHOWN_FLAG"
         private const val BIOMETRIC_ENABLED_FLAG = "BIOMETRIC_ENABLED_FLAG"
+        private const val DEVICE_FCM_TOKEN = "DEVICE_FCM_TOKEN"
         private const val COOKIES = "cookies"
 
 
@@ -80,6 +81,15 @@ class SessionUtils(val context: Context) {
 
     fun getUserAlertsOn(): Boolean {
         return sessionPrefs?.getBoolean(USER_ALERTS_PREFERENCE, true) ?: true
+    }
+
+
+    fun setLastDeviceToken(token: String) {
+        sessionPrefs?.edit()?.putString(DEVICE_FCM_TOKEN, token)?.apply()
+    }
+
+    fun getLastDeviceToken(): String? {
+        return sessionPrefs?.getString(DEVICE_FCM_TOKEN, null)
     }
 
 

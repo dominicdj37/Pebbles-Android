@@ -57,4 +57,20 @@ interface ApiInterface {
     )
     @POST
     fun createPebble(@Url url: String): Observable<ResponseModel>
+
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @POST
+    fun registerToken(@Url url: String): Observable<ResponseModel>
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @POST
+    fun deRegisterToken(@Url url: String): Observable<ResponseModel>
+
 }

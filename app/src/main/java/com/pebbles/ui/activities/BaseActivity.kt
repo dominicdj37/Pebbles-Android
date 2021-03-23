@@ -43,6 +43,8 @@ open class BaseActivity: AppCompatActivity() {
         win.attributes = winParams
     }
 
+
+
     fun navigateToHome() {
         startActivity(Intent(this, HomePageActivity::class.java))
     }
