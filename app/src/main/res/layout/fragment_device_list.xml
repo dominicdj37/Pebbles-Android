@@ -10,5 +10,4 @@
     android:layout_marginRight="16dp"
     android:clipChildren="false"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".ui.fragments.DeviceFragment"
-    tools:listitem="@layout/fragment_device" />
+    tools:context=".ui.fragments.DeviceFragment" />

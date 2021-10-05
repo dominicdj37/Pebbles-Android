@@ -10,31 +10,29 @@ import com.firebase.ui.auth.AuthUI
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.pebbles.BuildConfig
 import com.pebbles.R
 import com.pebbles.Utils.BiometricUtils
 import com.pebbles.Utils.NotificationUtils
 import com.pebbles.Utils.ResourceUtils.getStringResource
 import com.pebbles.backgroundServices.PebblesService
 import com.pebbles.core.*
+import com.pebbles.databinding.ActivityHomeBinding
 import com.pebbles.ui.Custom.Tab
 import com.pebbles.ui.PagerAdapter
 import com.pebbles.ui.fragments.DeviceFragment
-import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.activity_home.view.*
-import kotlinx.android.synthetic.main.home_page_ui.*
-import kotlinx.android.synthetic.main.home_page_ui.mainViewPager
-import kotlinx.android.synthetic.main.home_page_ui.myTabBar
-import kotlinx.android.synthetic.main.home_tool_bar.*
-import kotlinx.android.synthetic.main.nav_layout.view.*
+
+
 import java.util.*
 
 
 class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionListener {
 
+    lateinit var binding: ActivityHomeBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         initNavigationView()
         initToolBar()
         initializeTabs()
@@ -52,14 +50,14 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
         }
 
 
-        throw RuntimeException("Test Crash in build mode: ${BuildConfig.BUILD_TYPE}")
+        //throw RuntimeException("Test Crash in build mode: ${BuildConfig.BUILD_TYPE}")
 
     }
 
     private fun initToolBar() {
         val title = "Hi there ${Repo.user?.name?.split(" ")?.component1() ?: "fish keeper"} !"
-        toolbar_title.text = title
-        toolbar_subtitle.text = "Planted tank in Hall room"
+        binding.homepageUiLayout.include.toolbarTitle.text = title
+        binding.homepageUiLayout.include.toolbarSubtitle.text = "Planted tank in Hall room"
     }
 
 
@@ -111,19 +109,19 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
     private fun initializeTabs() {
 
-        myTabBar.addTab(Tab(0, R.drawable.ic_my_tanks, "Tank"))
-        myTabBar.addTab(Tab(1, R.drawable.ic_other_devices, "Devices"))
-        myTabBar.addTab(Tab(2 ,R.drawable.ic_tasks, "Tasks"))
-        myTabBar.addTab(Tab(3, R.drawable.ic_settings, "Settings"))
+        binding.homepageUiLayout.myTabBar.addTab(Tab(0, R.drawable.ic_my_tanks, "Tank"))
+        binding.homepageUiLayout.myTabBar.addTab(Tab(1, R.drawable.ic_other_devices, "Devices"))
+        binding.homepageUiLayout.myTabBar.addTab(Tab(2 ,R.drawable.ic_tasks, "Tasks"))
+        binding.homepageUiLayout.myTabBar.addTab(Tab(3, R.drawable.ic_settings, "Settings"))
 
-        myTabBar.onTabClicked = { tab ->
-            mainViewPager.currentItem = tab.id
+        binding.homepageUiLayout.myTabBar.onTabClicked = { tab ->
+          binding.homepageUiLayout.mainViewPager.currentItem = tab.id
         }
 
         val pagerAdapter = PagerAdapter(supportFragmentManager)
-        mainViewPager.adapter = pagerAdapter
+        binding.homepageUiLayout.mainViewPager.adapter = pagerAdapter
 
-        mainViewPager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener{
+        binding.homepageUiLayout.mainViewPager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener{
             override fun onPageScrollStateChanged(state: Int) {
                 Log.d("Pebbles_debug", "scroll state $state")
             }
@@ -133,9 +131,9 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
             }
 
             override fun onPageSelected(position: Int) {
-                myTabBar.animateToTab(myTabBar.tabList[position])
-                myTabBar.animateTextPosition(myTabBar.tabList[position])
-                myTabBar.animateTextAlpha(myTabBar.tabList[position])
+                binding.homepageUiLayout.myTabBar.animateToTab(binding.homepageUiLayout.myTabBar.tabList[position])
+                binding.homepageUiLayout.myTabBar.animateTextPosition(binding.homepageUiLayout.myTabBar.tabList[position])
+                binding.homepageUiLayout.myTabBar.animateTextAlpha(binding.homepageUiLayout.myTabBar.tabList[position])
             }
 
 
@@ -278,19 +276,19 @@ class HomePageActivity : BaseActivity(), DeviceFragment.OnDeviceTabInteractionLi
 
 
     private fun initNavigationView() {
-        nav_view.childLayout.profileNameTextView.text = Repo.user?.name
-        nav_view.childLayout.profileEmailTextView.text = Repo.user?.email
-        nav_view.childLayout.profileImageView.assignImageFromUrl(Repo.user?.profilePhotoUrl.toString(),true, isCircleCrop = true)
-        sideMenuIcon.setOnClickListener {
-            drawer_layout.openDrawer(GravityCompat.END)
+        binding.childLayout.profileNameTextView.text = Repo.user?.name
+        binding.childLayout.profileEmailTextView.text = Repo.user?.email
+        binding.childLayout.profileImageView.assignImageFromUrl(Repo.user?.profilePhotoUrl.toString(),true, isCircleCrop = true)
+        binding.homepageUiLayout.include.sideMenuIcon.setOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.END)
         }
-        nav_view.signOutTextView.setOnClickListener {
-            drawer_layout.closeDrawer(GravityCompat.END)
+        binding.childLayout.signOutTextView.setOnClickListener {
+            binding.drawerLayout.closeDrawer(GravityCompat.END)
             logout()
         }
-        nav_view.SettingsTextView.setOnClickListener {
+        binding.childLayout.SettingsTextView.setOnClickListener {
             navigateToSettings()
-            drawer_layout.closeDrawer(GravityCompat.END)
+            binding.drawerLayout.closeDrawer(GravityCompat.END)
 
         }
     }
