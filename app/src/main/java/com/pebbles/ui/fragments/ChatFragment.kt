@@ -12,24 +12,26 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.animation.AnimationUtils
+import androidx.fragment.app.activityViewModels
 import com.pebbles.R
 import com.pebbles.core.DatabaseHelper
 import com.pebbles.core.Repo
 import com.pebbles.core.awaitTransitionComplete
 import com.pebbles.data.Device
+import com.pebbles.databinding.FragmentChatBinding
 import com.pebbles.ui.adapters.CommonListAdapter
 import com.pebbles.ui.adapters.ChatDataHolder
 import com.pebbles.ui.adapters.FriendDataHolder
-import kotlinx.android.synthetic.main.fragment_chat.*
-import kotlinx.android.synthetic.main.peoples_list_layout.*
+import com.pebbles.ui.viewModels.HomeViewModel
 import kotlinx.coroutines.*
 
 
 class ChatFragment : BaseFragment(), CommonListAdapter.ListInteractionsListener {
 
+    private lateinit var binding: FragmentChatBinding
     private lateinit var peoplesListAdapter: CommonListAdapter
-    private var isPeoplesLayoutVisible: Boolean = false
-    private var job: Job? = null
+    private val viewModel: HomeViewModel by activityViewModels()
+
     private var columnCount = 1
 
     private val chatList = arrayListOf<Any>()
@@ -59,19 +61,17 @@ class ChatFragment : BaseFragment(), CommonListAdapter.ListInteractionsListener 
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_chat, container, false)
-        val listView = view.findViewById<RecyclerView>(R.id.chatRecyclerView)
-        // Set the adapter
-        if (listView is RecyclerView) {
-            with(listView) {
-                layoutManager = LinearLayoutManager(context)
-                chatListAdapter = CommonListAdapter(chatList, this@ChatFragment)
-                adapter = chatListAdapter
-            }
+        binding = FragmentChatBinding.inflate(inflater, container, false)
 
+        with(binding.chatRecyclerView) {
+            layoutManager = LinearLayoutManager(context)
+            chatListAdapter = CommonListAdapter(chatList, this@ChatFragment)
+            adapter = chatListAdapter
         }
+
+
         Log.d("Pebbles_debug", "Chat Fragment on create view")
-        return view
+        return binding.root
     }
 
     companion object {
@@ -100,19 +100,7 @@ class ChatFragment : BaseFragment(), CommonListAdapter.ListInteractionsListener 
 
 
     private fun initAddChat() {
-        addChatFabButton.setOnClickListener {
-            if(job?.isActive != true) {
-                if (isPeoplesLayoutVisible) {
-                    closePeopleList()
-                } else {
-                    openPeopleList()
-                }
-            }
-        }
-
-
-
-        peoplesList.layoutManager = LinearLayoutManager(context)
+        binding.peoplesList.layoutManager = LinearLayoutManager(context)
         peoplesListAdapter = CommonListAdapter(peoplesArrayList, object: CommonListAdapter.ListInteractionsListener{
             override fun onDeviceSwitchClicked(device: Device) {}
 
@@ -127,7 +115,7 @@ class ChatFragment : BaseFragment(), CommonListAdapter.ListInteractionsListener 
             }
 
         })
-        peoplesList.adapter = peoplesListAdapter
+        binding.peoplesList.adapter = peoplesListAdapter
         peoplesListAdapter.notifyDataSetChanged()
 
 
@@ -149,58 +137,15 @@ class ChatFragment : BaseFragment(), CommonListAdapter.ListInteractionsListener 
 
                 val controller =
                     AnimationUtils.loadLayoutAnimation(context, R.anim.layout_fall_down);
-                peoplesList.layoutAnimation = controller;
+                binding.peoplesList.layoutAnimation = controller;
                 peoplesListAdapter.notifyDataSetChanged()
-                peoplesList.scheduleLayoutAnimation()
+                binding.peoplesList.scheduleLayoutAnimation()
             } else {
                 //todo empty condition
             }
 
         }) {
             //todo error
-        }
-    }
-
-    private fun openPeopleList() {
-        job?.cancel()
-        job = GlobalScope.launch {
-            withContext(Dispatchers.Main) {
-                chatMotionLayout.setTransition(R.id.bringUpFabButton)
-                chatMotionLayout.transitionToEnd()
-                chatMotionLayout.awaitTransitionComplete(R.id.fabButtonUp)
-
-                chatMotionLayout.setTransition(R.id.expandPeopleListHorizontal)
-                chatMotionLayout.transitionToEnd()
-                chatMotionLayout.awaitTransitionComplete(R.id.peopleListHorizontalExpanded)
-
-                chatMotionLayout.setTransition(R.id.expandPeopleListWhole)
-                chatMotionLayout.transitionToEnd()
-                chatMotionLayout.awaitTransitionComplete(R.id.peopleListFullExpanded)
-                isPeoplesLayoutVisible = true
-                reloadPeoplesList()
-            }
-        }
-
-    }
-
-
-    private fun closePeopleList() {
-       job = GlobalScope.launch {
-            withContext(Dispatchers.Main) {
-                chatMotionLayout.setTransition(R.id.collapsePeopleListVertical)
-                chatMotionLayout.transitionToEnd()
-                chatMotionLayout.awaitTransitionComplete(R.id.peopleListHorizontalExpanded)
-
-                chatMotionLayout.setTransition(R.id.collapsePeopleListWhole)
-                chatMotionLayout.transitionToEnd()
-                chatMotionLayout.awaitTransitionComplete(R.id.peopleListCollapsed)
-
-                chatMotionLayout.setTransition(R.id.bringDownFabButton)
-                chatMotionLayout.transitionToEnd()
-                isPeoplesLayoutVisible = false
-                peoplesArrayList.clear()
-                peoplesListAdapter.notifyDataSetChanged()
-            }
         }
     }
 

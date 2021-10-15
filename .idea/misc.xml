@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Learning/Pebbles/Pebbles-Android/app/src/main/res/layout/activity_home.xml" value="0.10235507246376811" />
+        <entry key="..\:/Learning/Pebbles/Pebbles-Android/app/src/main/res/layout/activity_home_page.xml" value="0.1" />
+        <entry key="..\:/Learning/Pebbles/Pebbles-Android/app/src/main/res/layout/fragment_chat.xml" value="0.14" />
+        <entry key="..\:/Learning/Pebbles/Pebbles-Android/app/src/main/res/layout/fragment_device_list.xml" value="0.25" />
+        <entry key="..\:/Learning/Pebbles/Pebbles-Android/app/src/main/res/layout/fragment_home.xml" value="0.1585144927536232" />
+        <entry key="..\:/Learning/Pebbles/Pebbles-Android/app/src/main/res/layout/home_page_ui.xml" value="0.22" />
+        <entry key="..\:/Learning/Pebbles/Pebbles-Android/app/src/main/res/layout/home_tool_bar.xml" value="0.5" />
+        <entry key="..\:/Learning/Pebbles/Pebbles-Android/app/src/main/res/layout/nav_layout.xml" value="0.1094224924012158" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

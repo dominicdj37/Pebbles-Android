@@ -6,166 +6,63 @@
     <Transition
         motion:constraintSetEnd="@+id/end"
         motion:constraintSetStart="@id/start"
-        motion:duration="1000">
+        motion:duration="400">
+
        <KeyFrameSet>
        </KeyFrameSet>
+        <OnClick
+            motion:targetId="@+id/addChatFabButton"
+            motion:clickAction="toggle" />
     </Transition>
 
-
-
-
     <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:id="@id/peoplesLayout"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="1dp"
+            android:visibility="visible"
+            motion:layout_constraintBottom_toBottomOf="@id/addChatFabButton"
+            motion:layout_constraintEnd_toEndOf="@id/addChatFabButton"
+            motion:layout_constraintStart_toStartOf="@id/addChatFabButton"
+            motion:layout_constraintTop_toTopOf="@id/addChatFabButton" />
+
+        <Constraint
+            android:id="@id/addChatFabButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="30dp"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:rotation="0" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
-    </ConstraintSet>
-
-
-
-
-
-    <Transition
-        android:id="@+id/bringDownFabButton"
-        motion:constraintSetEnd="@+id/fabButtonDown"
-        motion:constraintSetStart="@id/fabButtonUp"
-        motion:motionInterpolator="easeInOut"
-        motion:duration="500">
-        <KeyFrameSet>
-            <KeyPosition
-                motion:motionTarget="@+id/addChatFabButton"
-                motion:framePosition="50"
-                motion:keyPositionType="deltaRelative"
-                motion:percentX="0.700"
-                motion:percentY="0.300" />
-        </KeyFrameSet>
-    </Transition>
-
-
-    <Transition
-        android:id="@+id/bringUpFabButton"
-        motion:constraintSetEnd="@id/fabButtonUp"
-        motion:constraintSetStart="@+id/fabButtonDown"
-        motion:motionInterpolator="easeInOut"
-        motion:duration="500">
-        <KeyFrameSet>
-            <KeyPosition
-                motion:motionTarget="@+id/addChatFabButton"
-                motion:framePosition="50"
-                motion:keyPositionType="parentRelative"
-                motion:percentX="0.700"
-                motion:percentY="0.300" />
-        </KeyFrameSet>
-    </Transition>
-
-
-    <ConstraintSet android:id="@+id/fabButtonDown">
         <Constraint
-            android:id="@+id/addChatFabButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="100dp"
-            android:rotation="0"
+            android:id="@id/peoplesLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:visibility="visible"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
-            />
-    </ConstraintSet>
-
-    <ConstraintSet android:id="@+id/fabButtonUp">
-        <Constraint
-            android:id="@+id/addChatFabButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
-            android:rotation="765"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp" />
-    </ConstraintSet>
-
-
-
-    <Transition
-        android:id="@+id/expandPeopleListHorizontal"
-        motion:constraintSetEnd="@+id/peopleListHorizontalExpanded"
-        motion:constraintSetStart="@id/peopleListCollapsed"
-        motion:motionInterpolator="easeInOut"
-        motion:duration="100">
-    </Transition>
-
-    <Transition
-        android:id="@+id/expandPeopleListWhole"
-        motion:constraintSetEnd="@+id/peopleListFullExpanded"
-        motion:constraintSetStart="@id/peopleListHorizontalExpanded"
-        motion:motionInterpolator="easeInOut"
-        motion:duration="200">
-    </Transition>
-
-
-    <Transition
-        android:id="@+id/collapsePeopleListVertical"
-        motion:constraintSetStart="@+id/peopleListFullExpanded"
-        motion:constraintSetEnd="@id/peopleListHorizontalExpanded"
-        motion:motionInterpolator="easeInOut"
-        motion:duration="100">
-    </Transition>
-
-    <Transition
-        android:id="@+id/collapsePeopleListWhole"
-        motion:constraintSetStart="@+id/peopleListHorizontalExpanded"
-        motion:constraintSetEnd="@id/peopleListCollapsed"
-        motion:motionInterpolator="easeInOut"
-        motion:duration="100">
-    </Transition>
-
-
-    <ConstraintSet android:id="@+id/peopleListCollapsed"
-        motion:deriveConstraintsFrom="@id/fabButtonUp">
+            motion:layout_constraintTop_toTopOf="parent" />
         <Constraint
-            android:id="@id/peoplesLayout"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:visibility="invisible"
-            motion:layout_constraintTop_toTopOf="@id/addChatFabButton"
-            motion:layout_constraintBottom_toBottomOf="@id/addChatFabButton"
-            motion:layout_constraintStart_toEndOf="@id/addChatFabButton"
-            />
-    </ConstraintSet>
-
-    <ConstraintSet android:id="@+id/peopleListHorizontalExpanded"
-        motion:deriveConstraintsFrom="@id/fabButtonUp">
-    <Constraint
-        android:id="@id/peoplesLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="50dp"
-        android:visibility="visible"
-        motion:layout_constraintTop_toTopOf="@id/addChatFabButton"
-        motion:layout_constraintBottom_toBottomOf="@id/addChatFabButton"
-        motion:layout_constraintEnd_toEndOf="parent"
-        motion:layout_constraintStart_toEndOf="@id/addChatFabButton" />
-    </ConstraintSet>
-
-    <ConstraintSet android:id="@+id/peopleListFullExpanded"
-        motion:deriveConstraintsFrom="@id/fabButtonUp">
-    <Constraint
-            android:id="@id/peoplesLayout"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="50dp"
-            android:layout_marginBottom="100dp"
-        android:visibility="visible"
-            motion:layout_constraintBottom_toBottomOf="parent"
+            android:id="@id/addChatFabButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="30dp"
             motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintStart_toEndOf="@id/addChatFabButton"
-            motion:layout_constraintTop_toTopOf="@id/addChatFabButton" />
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:rotation="45" />
     </ConstraintSet>
-
-
-
-
 </MotionScene>

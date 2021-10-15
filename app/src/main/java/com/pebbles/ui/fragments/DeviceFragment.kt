@@ -17,6 +17,7 @@ import com.pebbles.R
 import com.pebbles.core.DatabaseHelper
 import com.pebbles.core.Repo
 import com.pebbles.data.Device
+import com.pebbles.databinding.FragmentDeviceListBinding
 import com.pebbles.ui.adapters.AddDeviceDataHolder
 import com.pebbles.ui.adapters.CommonListAdapter
 import com.pebbles.ui.adapters.CommonListAdapter.ListInteractionsListener
@@ -66,20 +67,15 @@ class DeviceFragment : BaseFragment(), ListInteractionsListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_device_list, container, false)
-
+        val binding = FragmentDeviceListBinding.inflate(inflater,container,false)
         // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = LinearLayoutManager(context)
-                deviceAdapter = CommonListAdapter(deviceList, this@DeviceFragment)
-                adapter = deviceAdapter
-
-            }
-
+        with(binding.list) {
+            layoutManager = LinearLayoutManager(context)
+            deviceAdapter = CommonListAdapter(deviceList, this@DeviceFragment)
+            adapter = deviceAdapter
         }
         Log.d("Pebbles_debug", "on create view")
-        return view
+        return binding.root
     }
 
     companion object {
